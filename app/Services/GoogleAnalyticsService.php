@@ -52,4 +52,64 @@ class GoogleAnalyticsService
 
         return $response->toSimpleObject();
     }
+
+    public function getNewUsers($propertyId, $startDate, $endDate)
+{
+    $response = $this->analytics->properties->runReport(
+        "properties/{$propertyId}",
+        new \Google_Service_AnalyticsData_RunReportRequest([
+            'dateRanges' => [
+                ['startDate' => $startDate, 'endDate' => $endDate],
+            ],
+            'metrics' => [['name' => 'newUsers']],
+        ])
+    );
+
+    return $response->toSimpleObject();
+}
+
+public function getAvgEngagementTime($propertyId, $startDate, $endDate)
+{
+    $response = $this->analytics->properties->runReport(
+        "properties/{$propertyId}",
+        new \Google_Service_AnalyticsData_RunReportRequest([
+            'dateRanges' => [
+                ['startDate' => $startDate, 'endDate' => $endDate],
+            ],
+            'metrics' => [['name' => 'engagementRate']],
+        ])
+    );
+   
+    // Get the engagement rate value in seconds
+    $engagementRate = $response->toSimpleObject()->rows[0]->metricValues[0]->value ?? 0;
+
+    // Format the engagement rate into MM:SS format
+    $formattedEngagementRate = $this->formatEngagementTime($engagementRate);
+
+    // Convert engagement rate to milliseconds with 2 decimal places
+    $engagementRateInMilliseconds = $this->convertToMilliseconds($engagementRate);
+
+    return [
+        'formatted' => $formattedEngagementRate,
+        'milliseconds' => $engagementRateInMilliseconds,
+    ];
+}
+
+private function formatEngagementTime($seconds)
+{
+    // Convert seconds into minutes and seconds format
+    $minutes = floor($seconds / 60);
+    $remainingSeconds = $seconds % 60;
+
+    // Format it as MM:SS
+    return sprintf("%02d:%02d", $minutes, $remainingSeconds);
+}
+
+private function convertToMilliseconds($seconds)
+{
+    // Convert seconds to milliseconds and format to 2 decimal places
+    $milliseconds = $seconds * 1000;
+    return number_format($milliseconds, 2); // Format to 2 decimal places
+}
+
 }

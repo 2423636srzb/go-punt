@@ -162,7 +162,7 @@ aria-hidden="true">
             </div>
 
             <!-- Radio Buttons for Account Selection -->
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label class="form-label">Select Option</label>
 
                 <div class="form-check checked-success d-flex align-items-center gap-2">
@@ -180,20 +180,20 @@ aria-hidden="true">
                         Add new account
                     </label>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Saved Accounts Dropdown -->
             <div class="mb-3" id="savedAccountsDropdown">
                 <label for="savedAccounts" class="form-label">Select Saved Account</label>
                 <select class="form-select" id="savedAccounts">
                     @foreach ($user->bankAccounts as $bankAccount)
-                        <option value="{{ $bankAccount->id }}">{{ $bankAccount->bank_name }}</option>
+                        <option value="{{ $bankAccount->id }}"> {{ $bankAccount->account_holder_name }}  ( {{ $bankAccount->payment_method}} ) </option>
                     @endforeach
                 </select>
             </div>
 
             <!-- New Account Fields -->
-            <div id="newAccountFields" style="display: none;">
+            {{-- <div id="newAccountFields" style="display: none;">
                 <div class="mb-3">
                     <label for="bankName" class="form-label">Bank Name</label>
                     <input type="text" class="form-control" id="bankName" placeholder="Enter bank name">
@@ -212,7 +212,7 @@ aria-hidden="true">
                     <label for="iban" class="form-label">IBAN #</label>
                     <input type="text" class="form-control" id="iban" placeholder="Enter IBAN">
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Submit Button -->
             <div class="modal-footer">

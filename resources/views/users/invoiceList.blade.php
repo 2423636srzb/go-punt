@@ -164,10 +164,11 @@
                                             @endif
 
                                             <a href="javascript:void(0)"
-                                                class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                data-transaction-id="{{ $transaction->id }}" id="deleteTransactionBtn">
-                                                <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                            </a>
+                                            class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center deleteTransactionBtn"
+                                            data-transaction-id="{{ $transaction->id }}">
+                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                         </a>
+                                         
                                         </td>
                                     </tr>
                                 @endforeach
@@ -187,6 +188,7 @@
                                     <th scope="col">Requested On</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,9 +200,22 @@
                                     <td>{{$withdraw->created_at}}</td>
                                     <td>{{ setCurrency($withdraw->amount) }}</td>
                                     <td> <span
-                                            class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">pending</span>
+                                            class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">{{$withdraw->status}}</span>
                                     </td>
-                                    
+                                    <td>
+                                      
+                                        <a href="javascript:void(0)" onclick="viewWithDrawRequest({{ $withdraw->id }})"
+                                            class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+                                        </a>
+                             
+                                        <a href="javascript:void(0)"
+                                        class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center deleteWithdrawBtn"
+                                        data-withdraw-id="{{ $withdraw->id }}">
+                                        <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                     </a>
+                                     
+                                    </td>
                                 </tr>
                                 @endforeach
                                 
@@ -264,7 +279,60 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="withdrawRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h6 class="modal-title" id="withdrawModalLabel">WithDrawal Request</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+       <!-- Modal Body -->
+        <div class="modal-body">
+            <form id="withdrawFormView" enctype="multipart/form-data">
+                <div class="row">
+                    <!-- Right Side: Form Fields -->
+                    <div class="col-md-6">
+                        <!-- Platform Selection -->
+                        <div class="mb-3">
+                            <label for="platform" class="form-label">User: </label>
+                            <label id="withdrawRequestUser" class="form-label"></label>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="platform" class="form-label">Selected Platform: </label>
+                            <label id="withdrawPlatform" class="form-label"></label>
+                        </div>
+
+                        <!-- Amount -->
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount: </label>
+                            <label id="withdrawAmount" class="form-label"></label>
+                        </div>
+
+                        <!-- Created At -->
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Created At: </label>
+                            <label id="withdrawRequestCreatedAt" class="form-label"></label>
+                        </div>
+
+                        {{-- <div class="mt-5">
+                            <a class="approve-withdraw_request">
+                                <button type="button" class="btn btn-info w-100">Approve</button>
+                            </a>
+                            <a class="reject-withdraw_request">
+                                <button type="button" class="btn btn-danger w-100">Reject</button>
+                            </a>
+                        </div> --}}
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+</div>
     <!-- Modal Structure -->
     {{-- <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -692,37 +760,64 @@
       </script>  
     <script>
         $(document).ready(function() {
-            // Event listener for delete button
-            $('#deleteTransactionBtn').on('click', function() {
-                var transactionId = $(this).data(
-                    'transaction-id'); // Get transaction ID from data attribute
+    // Event delegation for dynamically generated transaction delete buttons
+    $(document).on('click', '.deleteTransactionBtn', function() {
+        var transactionId = $(this).data('transaction-id'); // Get transaction ID from data attribute
 
-                // Confirm before delete
-                if (confirm('Are you sure you want to delete this transaction?')) {
-                    // Send AJAX request to delete the transaction
-                    $.ajax({
-                        url: '{{ route('transaction.destroy', '') }}/' +
-                            transactionId, // The delete route
-                        type: 'DELETE', // Using DELETE method
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                'content') // Include CSRF token
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                alert(response.success); // Show success message
-                                location.reload(); // Refresh the page
-                            } else {
-                                alert('Failed to delete transaction.');
-                            }
-                        },
-                        error: function(xhr) {
-                            alert('Error: ' + xhr.responseText); // Show error message
-                        }
-                    });
+        // Confirm before delete
+        if (confirm('Are you sure you want to delete this transaction?')) {
+            // Send AJAX request to delete the transaction
+            $.ajax({
+                url: '{{ route('transaction.destroy', '') }}/' + transactionId, // The delete route
+                type: 'DELETE', // Using DELETE method
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.success); // Show success message
+                        location.reload(); // Refresh the page
+                    } else {
+                        alert('Failed to delete transaction.');
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText); // Show error message
                 }
             });
-        });
+        }
+    });
+});
+
+        $(document).ready(function() {
+    // Event delegation for dynamically generated rows
+    $(document).on('click', '.deleteWithdrawBtn', function() {
+        var withdrawId = $(this).data('withdraw-id'); // Get withdraw ID from data attribute
+
+        // Confirm before delete
+        if (confirm('Are you sure you want to delete this Request?')) {
+            // Send AJAX request to delete the withdraw
+            $.ajax({
+                url: '{{ route('withdraw.destroy', '') }}/' + withdrawId, // The delete route
+                type: 'DELETE', // Using DELETE method
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.success); // Show success message
+                        location.reload(); // Refresh the page
+                    } else {
+                        alert('Failed to delete Withdraw Request.');
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseText); // Show error message
+                }
+            });
+        }
+    });
+});
 
 
         $(document).ready(function() {

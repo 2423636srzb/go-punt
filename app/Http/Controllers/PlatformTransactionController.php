@@ -125,6 +125,20 @@ public function submitWithdrawal(Request $request)
     return response()->json(['message' => 'Withdrawal request submitted successfully.']);
 }
 
+public function withdrawDestroy($id)
+{
 
+    $withdrawal = Withdrawal::find($id);
+
+    if (!$withdrawal) {
+        return response()->json(['error' => 'Withdrawal not found.'], 404);
+    }
+
+    // Delete the transaction
+    $withdrawal->delete();
+
+    // Return a success response
+    return response()->json(['success' => 'Withdrawal deleted successfully.']);
+}
 
 }

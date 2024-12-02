@@ -308,26 +308,5 @@
         </div>
     </div>
 </div>
-<script>
-    function viewWithDrawRequest(id) {
-        // Fetch withdrawal data using AJAX
-        fetch(`/withdrawal/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                // Populate the form fields with the fetched data
-                document.getElementById('withdrawRequestUser').textContent = data.user_id;  // Update user field
-                document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Update platform
-                document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Update amount
-                document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Update created at
-                
-                // Show the modal
-                $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
-                $('.reject-withdraw_request').attr('href', '{{ url('withdraw-request-reject') }}' + '/' + data.id);
-                $('#withdrawRequestViewModal').modal('show');
-            })
-            .catch(error => {
-                console.error('Error fetching withdrawal data:', error);
-            });
-    }
-</script>
+
 @endsection

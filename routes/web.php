@@ -144,6 +144,7 @@ Route::get('/download-sample', [AccountManageController::class, 'downloadSample'
 // For web routes
 Route::post('/transaction-store', [PlatformTransactionController::class, 'storeTransaction'])->name('transaction.store');
 Route::delete('/transaction/{id}', [PlatformTransactionController::class, 'destroy'])->name('transaction.destroy');
+Route::delete('/withdraw/{id}', [PlatformTransactionController::class, 'withdrawDestroy'])->name('withdraw.destroy');
 Route::post('/submit-withdrawal', [PlatformTransactionController::class, 'submitWithdrawal'])->name('submitWithdrawal');
 
 

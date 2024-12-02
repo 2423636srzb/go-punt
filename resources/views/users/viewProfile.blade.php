@@ -952,6 +952,10 @@ $(document).on('click', '.edit', function () {
             document.getElementById('account-title').style.display = 'block';
             document.getElementById('UPI-number').style.display = 'block';
         document.getElementById('upi-qr-code').style.display = 'block';
+        var label = document.querySelector('#upi-qr-code .form-label');
+    if (label) {
+        label.innerHTML = 'UPI QR Code';  // This will change the label text to "Crypto QR Code"
+    }
         } else if (paymentMethod === 'crypto') {
             document.getElementById('account-title').style.display = 'block';
         document.getElementById('crypto-wallet').style.display = 'block';

@@ -156,21 +156,26 @@
                                         <td>{{ $withdraw->created_at }}</td>
                                         <td>{{ setCurrency($withdraw->amount) }}</td>
                                         <td>
-                                            <span class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                pending
-                                            </span>
+
+                                            <span class="@if ($withdraw->status == 'approved') bg-success-focus text-success-main @endif
+                                                @if ($withdraw->status == 'pending') bg-info-focus text-info-main @endif
+                                                @if ($withdraw->status == 'rejected') bg-danger-focus text-danger-main @endif 
+                                                px-24 py-4 rounded-pill fw-medium text-sm">
+                                       {{ $withdraw->status }}
+                                   </span>
+                                        
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0)" onclick="viewRequest({{ $withdraw->id }})"
+                                            <a href="javascript:void(0)" onclick="viewWithDrawRequest({{ $withdraw->id }})"
                                                 class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
                                                 <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                                             </a>
                                             @if ($withdraw->status == 'pending')
-                                                <a href="{{ url('withdrawal-request-approve') }}/{{ $withdraw->id }}" title="Approve"
+                                                <a href="{{ url('/withdraw-request-approve') }}/{{ $withdraw->id }}" title="Approve"
                                                    class="w-32-px h-32-px bg-success-focus text-success-600 rounded-circle d-inline-flex align-items-center justify-content-center">
                                                     <iconify-icon icon="charm:tick"></iconify-icon>
                                                 </a>
-                                                <a href="{{ url('withdrawal-request-reject') }}/{{ $withdraw->id }}" title="Reject"
+                                                <a href="{{ url('/withdraw-request-reject') }}/{{ $withdraw->id }}" title="Reject"
                                                    class="w-32-px h-32-px bg-danger-focus text-danger-600 rounded-circle d-inline-flex align-items-center justify-content-center">
                                                     <iconify-icon icon="twemoji:cross-mark"></iconify-icon>
                                                 </a>
@@ -248,5 +253,81 @@
             </div>
         </div>
     </div>
- 
+
+    <div class="modal fade" id="withdrawRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h6 class="modal-title" id="withdrawModalLabel">WithDrawal Request</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="withdrawFormView" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- Right Side: Form Fields -->
+                        <div class="col-md-6">
+                            <!-- Platform Selection -->
+                            <div class="mb-3">
+                                <label for="platform" class="form-label">User: </label>
+                                <label id="withdrawRequestUser" class="form-label"></label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="platform" class="form-label">Selected Platform: </label>
+                                <label id="withdrawPlatform" class="form-label"></label>
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Amount: </label>
+                                <label id="withdrawAmount" class="form-label"></label>
+                            </div>
+
+                            <!-- Created At -->
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Created At: </label>
+                                <label id="withdrawRequestCreatedAt" class="form-label"></label>
+                            </div>
+
+                            <div class="mt-5">
+                                <a class="approve-withdraw_request">
+                                    <button type="button" class="btn btn-info w-100">Approve</button>
+                                </a>
+                                <a class="reject-withdraw_request">
+                                    <button type="button" class="btn btn-danger w-100">Reject</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function viewWithDrawRequest(id) {
+        // Fetch withdrawal data using AJAX
+        fetch(`/withdrawal/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the form fields with the fetched data
+                document.getElementById('withdrawRequestUser').textContent = data.user_id;  // Update user field
+                document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Update platform
+                document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Update amount
+                document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Update created at
+                
+                // Show the modal
+                $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
+                $('.reject-withdraw_request').attr('href', '{{ url('withdraw-request-reject') }}' + '/' + data.id);
+                $('#withdrawRequestViewModal').modal('show');
+            })
+            .catch(error => {
+                console.error('Error fetching withdrawal data:', error);
+            });
+    }
+</script>
 @endsection

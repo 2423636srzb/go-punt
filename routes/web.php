@@ -77,6 +77,9 @@ Route::get('/get-payment-request/{id}', [PaymentController::class, 'getPaymentRe
 
 Route::get('/payment-request-approve/{id}', [PaymentController::class, 'acceptPaymentRequest']);
 Route::get('/payment-request-reject/{id}', [PaymentController::class, 'rejectPaymentRequest']);
+Route::get('/withdraw-request-approve/{id}', [PaymentController::class, 'acceptWithdrawRequest']);
+Route::get('/withdraw-request-reject/{id}', [PaymentController::class, 'rejectWithdrawRequest']);
+Route::get('/withdrawal/{id}', [PaymentController::class, 'getWithdrawalData']);
 
 Route::get('/admin/user/edit/{id}', [UsersController::class, 'getUser'])->middleware('auth');
 Route::post('/admin/user/update', [UsersController::class, 'updateUser'])->name('user.update')->middleware('auth');

@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\BankAccount;
+use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,4 +58,46 @@ class PaymentController extends Controller
         return redirect()->back()->with('success' , 'Payment Request Rejected Successfully');
        
     }
+
+    public function rejectWithdrawRequest($id)
+    {
+        DB::table('withdrawals')->where('id',$id)->update(['status'=>'rejected']);
+        return redirect()->back()->with('success' , 'Withdrawal Request Rejected Successfully');
+    }
+    public function acceptWithdrawRequest($id)
+    {
+        DB::table('withdrawals')->where('id',$id)->update(['status'=>'approved']);
+        return redirect()->back()->with('success' , 'Withdrawal Request Approved Successfully');
+    }
+
+  
+
+public function getWithdrawalData($id)
+{
+    // Fetch the withdrawal data
+    $withdrawal = Withdrawal::find($id);
+
+    // If withdrawal exists, fetch the associated bank name
+    if ($withdrawal) {
+        $bank = BankAccount::find($withdrawal->bank_account_id);
+
+        // Prepare the response data
+        $response = [
+            'id' => $id,
+            'user_id' => $withdrawal->user_id,
+            'amount' => $withdrawal->amount,
+            'bank_account_id' => $withdrawal->bank_account_id,
+            'status' => $withdrawal->status,
+            'created_at' => $withdrawal->created_at->format('Y-m-d H:i:s'),
+            'payment_method' => $bank ? $bank->payment_method: 'Not Available',
+        ];
+
+        // Return the data as a JSON response
+        return response()->json($response);
+    }
+
+    // If withdrawal doesn't exist, return an error message
+    return response()->json(['error' => 'Withdrawal not found'], 404);
+}
+
 }

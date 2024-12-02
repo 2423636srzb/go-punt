@@ -25,12 +25,43 @@ class UsersController extends Controller
     public function dashboard()
     {
         $user = Auth::user(); // Get the authenticated user
+
         $userAccounts = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
         ->where('accounts.status', 1) // Filter accounts with status = 1
         ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
         ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
-        ->select('accounts.*', 'games.*') // Select columns from accounts and games, modify as needed
+        ->leftJoin('user_platform_transactions', function ($join) use ($user) {
+            $join->on('user_platform_transactions.platform_id', '=', 'games.id') // Match platform_id with game_id
+                 ->where('user_platform_transactions.user_id', '=', $user->id) // Match user_id
+                 ->where('user_platform_transactions.status', '=', 'approved'); // Match status as approved
+        })
+        ->select(
+            'accounts.id as account_id',
+            'accounts.game_id as account_game_id',
+            'accounts.username', // Select username
+            'accounts.password', // Select password
+            'accounts.status',
+            'games.id as game_id',
+            'games.name as game_name', // Correct column for game name
+            'games.logo as game_logo',
+            DB::raw('SUM(user_platform_transactions.amount) as transaction_amount') // Sum the amount from transactions
+        )
+        ->groupBy(
+            'accounts.id',
+            'accounts.game_id',
+            'accounts.username', // Include username in GROUP BY
+            'accounts.password', // Include password in GROUP BY
+            'accounts.status', // Include password in GROUP BY
+            'games.id',
+            'games.name',
+            'games.logo'
+        )
         ->get();
+    
+    
+    
+    
+        
 
         $userAccountsCount = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
     ->where('accounts.status', 1) // Filter accounts with status = 1

@@ -289,10 +289,10 @@ $script = '
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{url($userAccount->logo)}}" alt=""
+                                                <img src="{{url($userAccount->game_logo)}}" alt=""
                                                     class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                                                 <div class="flex-grow-1">
-                                                    <h6 class="text-md mb-0 fw-medium">{{$userAccount->name}}</h6>
+                                                    <h6 class="text-md mb-0 fw-medium">{{$userAccount->account_name}}</h6>
                                                     <span class="text-sm text-secondary-light fw-medium"><a
                                                             href="{{$userAccount->login_link}}"
                                                             target="_blank">{{$userAccount->login_link}}</a></span>
@@ -318,10 +318,10 @@ $script = '
                                             </div>
                                             
                                         </td>
-                                        <td>{{$depositeSum}}</td>
+                                        <td>{{ $userAccount->transaction_amount ?? 0 }}</td>
                                         <td class="text-center">
-                                            <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                    {{$userAccount->status}}
+                                            <span class="bg-{{ $userAccount->status == 1 ? 'success-focus text-success-main' : 'danger-focus text-danger-main' }} px-24 py-4 rounded-pill fw-medium text-sm">
+                                                {{ $userAccount->status == 1 ? 'Active' : 'Inactive' }}
                                             </span>
                                         </td>
                                     </tr>

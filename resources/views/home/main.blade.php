@@ -4,36 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bet Dalal</title>
+    <title>{{ $websiteSettings->name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        @keyframes rotateText {
-            0% {
-                transform: translateY(0);
-            }
+      @keyframes rotateText {
+    0% {
+        transform: translateX(100%);
+    }
 
-            25% {
-                transform: translateY(-100%);
-            }
+    25% {
+        transform: translateX(0);
+    }
 
-            50% {
-                transform: translateY(-200%);
-            }
+    50% {
+        transform: translateX(-100%);
+    }
 
-            75% {
-                transform: translateY(-300%);
-            }
+    75% {
+        transform: translateX(-200%);
+    }
 
-            100% {
-                transform: translateY(0);
-            }
-        }
+    100% {
+        transform: translateX(100%);
+    }
+}
 
-        .rotating-text {
-            display: inline-block;
-            animation: rotateText 30s infinite;
-        }
+.rotating-text {
+    display: inline-block;
+    animation: rotateText 30s infinite linear;
+    white-space: nowrap; /* Prevents text wrapping */
+}
 
         .game-item:hover img {
             transform: scale(1.05);
@@ -282,7 +283,7 @@ if (Auth::check() && Auth::user()->profile_image) {
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white text-center py-4 mt-8">
-        &copy; 2024 Bet Dalal. All Rights Reserved.
+        &copy; 2024 {{ $websiteSettings->name }}. All Rights Reserved.
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

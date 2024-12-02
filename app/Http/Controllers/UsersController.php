@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Exports\UserGamesExport;
 use App\Imports\UserGamesImport;
 use App\Models\Announcement;
+use App\Models\UserAccount;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +25,19 @@ class UsersController extends Controller
     public function dashboard()
     {
         $user = Auth::user(); // Get the authenticated user
-        $accounts = DB::table('user_accounts')
-        ->where('user_accounts.user_id',$user->id)
-        ->where('accounts.status',1)
-        ->join('accounts','accounts.id','=','user_accounts.account_id')
-        ->join('games','games.id','=','accounts.game_id')
+        $userAccounts = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
+        ->where('accounts.status', 1) // Filter accounts with status = 1
+        ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
+        ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
+        ->select('accounts.*', 'games.*') // Select columns from accounts and games, modify as needed
         ->get();
+
+        $userAccountsCount = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
+    ->where('accounts.status', 1) // Filter accounts with status = 1
+    ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
+    ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
+    ->count();
+    
         $transactions = DB::table('user_platform_transactions')
             ->where('user_platform_transactions.user_id',$user->id)
             ->join('games', 'user_platform_transactions.platform_id', '=', 'games.id')  // Joining on platform_id
@@ -38,16 +46,16 @@ class UsersController extends Controller
             ->get();
             // dd($accounts);
         // You can pass the user data to the view
-        $depositeSum = DB::table('user_platform_transactions')->where('user_id',$user->id)->sum('amount');
+        $depositeSum = DB::table('user_platform_transactions')->where('status','Approved')->where('user_id',$user->id)->sum('amount');
         $depositePendingRequest = DB::table('user_platform_transactions')->where('user_id',$user->id)->where('status','pending')->count('id');
-        $withDrawSum = DB::table('withdrawals')->where('user_id',$user->id)->sum('amount');
+        $withDrawSum = DB::table('withdrawals')->where('status','Approved')->where('user_id',$user->id)->sum('amount');
         $withDrawSumPendingRequest = DB::table('withdrawals')->where('user_id',$user->id)->where('status','pending')->count('id');
         $lastApprovedRequest = DB::table('user_platform_transactions')
         ->where('user_id', $user->id)
         ->where('status', 'approved') // Fix the typo in 'statua' to 'status'
         ->orderBy('created_at', 'desc') // Assuming 'created_at' is the timestamp column
         ->first();
-        return view('users.dashboard', compact('user','accounts','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
+        return view('users.dashboard', compact('user','userAccounts','userAccountsCount','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
     }
 
     // Example for another method
@@ -95,23 +103,23 @@ class UsersController extends Controller
     }
 
     public function updateUserStatus($id, $status)
-    {
-        // Find the user and update the details
-        if ($status == 'disable') {
-            $status = 'inactive';
-        } else {
-            $status = 'active';
-        }
-
-        $user = User::find($id);
-        if ($user) {
-            $user->user_status = $status;
-            $user->save();
-            return response()->json(['success' => true, 'message' => 'User status updated successfully']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'User not found']);
-        }
+{
+    if ($status == 'disable') {
+        $status = 'inactive';
+    } else {
+        $status = 'active';
     }
+
+    $user = User::find($id);
+    if ($user) {
+        $user->user_status = $status;
+        $user->save();
+        return response()->json(['success' => true, 'message' => 'User status updated successfully']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'User not found']);
+    }
+}
+
 
     public function uploadProfileImage(Request $request)
     {
@@ -342,7 +350,7 @@ class UsersController extends Controller
         ->select('user_platform_transactions.*', 'games.name as name')  // Selecting necessary columns
         ->limit(10)
         ->get();
-        $depositeSum = DB::table('user_platform_transactions')->sum('amount');
+        $depositeSum = DB::table('user_platform_transactions')->where('status','Approved')->sum('amount');
         $depositePendingRequest = DB::table('user_platform_transactions')->where('status','pending')->count('id');
         $withDrawSum = DB::table('withdrawals')->where('status','Approved')->sum('amount');
         $withDrawSumPendingRequest = DB::table('withdrawals')->where('status','pending')->count('id');
@@ -350,7 +358,6 @@ class UsersController extends Controller
     }
 
     // NOT USED Kept for Future Reference
-
     public function addUser()
     {
         return view('users/addUser');

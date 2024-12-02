@@ -54,13 +54,10 @@
                             <td>{{ $account->username }}</td>
                             <td>{{ $account->password }}</td>
                             <td>
-                       
-                                <a href="javascript:void(0)" onclick="editAccunt({{ $account->id }})"
-                                    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                    <iconify-5icon icon="lucide:edit"></iconify-icon>
+                                <a href="javascript:void(0)" onclick="editAccount({{ $account->id }})"
+                                   class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                                   <iconify-icon icon="lucide:edit"></iconify-icon>
                                 </a>
-
-                         
                             </td>
                         </tr>
                     @endforeach

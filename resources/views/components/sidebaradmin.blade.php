@@ -6,8 +6,8 @@
         <a href="{{ route('index') }}" class="sidebar-logo">
             <?php $setting = DB::table('settings')->first(); ?>
             <img src="{{ asset($setting->logo) }}" alt="site logo" class="light-logo" width="180">
-            <img src="{{ asset('assets/images/logo-light.png') }}" alt="site logo" class="dark-logo" width="180">
-            <img src="{{ asset('assets/images/logo-dark.png') }}" width="43" alt="site logo" class="logo-icon">
+            <img src="{{ asset('assets/images/GP247LogoLite.png') }}" alt="site logo" class="dark-logo" width="180">
+            <img src="{{ asset('assets/images/GP247LogoDark.png') }}" width="43" alt="site logo" class="logo-icon">
         </a>
     </div>
     <div class="sidebar-menu-area">
@@ -51,13 +51,16 @@
 
             </li>                     
           @endcan
-            <li>
-                <a href="{{route('admin.staff.setting')}}">
-                    <iconify-icon icon="tdesign:user-setting"  class="menu-icon"></iconify-icon>
-                    <span>Staff Management</span>
-                </a>
-
-            </li>
+          @can('Staff Management')
+              
+          <li>
+              <a href="{{route('admin.staff.setting')}}">
+                <iconify-icon icon="tdesign:user-setting"  class="menu-icon"></iconify-icon>
+                <span>Staff Management</span>
+            </a>
+            
+        </li>
+        @endcan
           
                
            
@@ -78,14 +81,16 @@
                 </a>
             </li>
             @endif
-
+            @can('Google Analytics')
             <li>
-                <a href="#">
+                <a href="{{route('analytics.index')}}">
                     <iconify-icon icon="carbon:analytics"  class="menu-icon"></iconify-icon>
-                    <span>Google Analytics</span>
+                    <span>Analytics</span>
                 </a>
-
+                
             </li>
+            @endcan
+                
         </ul>
     </div>
 </aside>

@@ -55,21 +55,21 @@ $subTitle = 'Staff List';
     </div>
     <div class="card-body p-24">
         <div class="table-responsive scroll-sm">
-            <table class="table bordered-table sm-table mb-0">
+            <table class="table bordered-table sm-table mb-0" id="dataTable">
                 <thead>
                     <tr>
-                        <th scope="col">
+                        {{-- <th scope="col">
                             <div class="d-flex align-items-center gap-10">
                                 <div class="form-check style-check d-flex align-items-center">
                                     <input class="form-check-input radius-4 border input-form-dark" type="checkbox" name="checkbox" id="selectAll">
                                 </div>
-                                S.L
                             </div>
-                        </th>
-                        <th scope="col">Join Date</th>
+                        </th> --}}
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Designation</th>
+                        <th scope="col">Phone No</th>
+                        <th scope="col">Join Date</th>
+                        {{-- <th scope="col">Designation</th> --}}
                         <th scope="col" class="text-center">Status</th>
                         <th scope="col" class="text-center">Action</th>
                     </tr>
@@ -77,33 +77,49 @@ $subTitle = 'Staff List';
                 <tbody>
                     @foreach ($admins as $admin)
                     <tr>
-                        <td>
+                        {{-- <td>
                             <div class="d-flex align-items-center gap-10">
                                 <div class="form-check style-check d-flex align-items-center">
                                     <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox" id="SL">
                                 </div>
-                                01
                             </div>
-                        </td>
-                        <td>{{$admin->created_at}}</td>
+                        </td> --}}
+                       
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/user-list/user-list1.png') }}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                                <img src="{{ asset('assets/images/users/avatar-large-square.jpg') }}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                                 <div class="flex-grow-1">
                                     <span class="text-md mb-0 fw-normal text-secondary-light">{{$admin->username}}</span>
                                 </div>
                             </div>
                         </td>
                         <td><span class="text-md mb-0 fw-normal text-secondary-light">{{$admin->email}}</span></td>
-                        <td>Manager</td>
+                        <td><span class="text-md mb-0 fw-normal text-secondary-light">{{$admin->phone_number}}</span></td>
+                        <td>{{$admin->created_at}}</td>
+                        {{-- <td>Manager</td> --}}
+                        @php
+                        // Dynamically determine the status class and text
+                        if ($admin->user_status == 'active') {
+                            $statusClass = 'bg-success-focus text-success-600 border border-success-main';
+                            $statusText = 'Active';
+                        } else {
+                            $statusClass = 'bg-danger-focus text-danger-600 border border-danger-main';
+                            $statusText = 'Inactive';
+                        }
+                    @endphp
                         <td class="text-center">
-                            <span class="bg-success-focus text-success-600 border border-success-main px-24 py-4 radius-4 fw-medium text-sm">Active</span>
+                            <span class="{{ $statusClass }} px-24 py-4 radius-4 fw-medium text-sm">
+                                {{ $statusText }}
+                            </span>
                         </td>
                         <td class="text-center">
                             <div class="d-flex align-items-center gap-10 justify-content-center">
-                                <button type="button" class="bg-info-focus bg-hover-info-200 text-info-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
-                                    <iconify-icon icon="majesticons:eye-line" class="icon text-xl"></iconify-icon>
-                                </button>
+                                <div class="form-switch switch-success d-flex align-items-center gap-3">
+                                    <input class="form-check-input switch-input" type="checkbox"
+                                           data-id="{{ $admin->id }}" role="switch"
+                                           @if ($admin->user_status == 'active') checked @endif>
+                                </div>
+                                
                                 <button 
                                 type="button" 
                                 class="edit-btn bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
@@ -112,6 +128,7 @@ $subTitle = 'Staff List';
                                 data-id="{{ $admin->id }}"
                                 data-name="{{ $admin->username }}"
                                 data-email="{{ $admin->email }}"
+                                data-number="{{ $admin->phone_number }}"
                                 data-permissions="{{ $admin->permissions->map(fn($p) => ['id' => $p->id, 'name' => $p->name])->toJson() }}">
                                 <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                             </button>
@@ -133,33 +150,8 @@ $subTitle = 'Staff List';
         </div>
 
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
-            <span>Showing 1 to 10 of 12 entries</span>
-            <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center">
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">
-                        <iconify-icon icon="ep:d-arrow-left" class=""></iconify-icon>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md bg-primary-600 text-white" href="javascript:void(0)">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px" href="javascript:void(0)">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">4</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">5</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link bg-neutral-300 text-secondary-light fw-semibold radius-8 border-0 d-flex align-items-center justify-content-center h-32-px w-32-px text-md" href="javascript:void(0)">
-                        <iconify-icon icon="ep:d-arrow-right" class=""></iconify-icon>
-                    </a>
-                </li>
+            <span id="entriesInfo"></span>
+            <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center" id="pagination">
             </ul>
         </div>
     </div>
@@ -176,17 +168,21 @@ $subTitle = 'Staff List';
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" value="" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
+                            <label for="phone-number" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" value="" required>
+                        </div>
+                        <div class="mb-3 col-md-12">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" value="" required>
                         </div>
                     </div>
             
@@ -195,7 +191,7 @@ $subTitle = 'Staff List';
                         <label for="permissions" class="form-label">Permissions:</label>
                         <div class="row">
                             @foreach ($permissions as $permission)
-                                <div class="col-md-4 d-flex align-items-center">
+                                <div class="col-md-12 d-flex align-items-center">
                                     <input type="checkbox" 
                                            id="permission_{{ $permission->id }}" 
                                            name="permissions[]" 
@@ -232,15 +228,19 @@ $subTitle = 'Staff List';
                 @method('PUT')
                 <div class="modal-body">
                     <div class="row">
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
                             <label for="update_name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="update_name" name="name" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
                             <label for="update_email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="update_email" name="email" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-12">
+                            <label for="update_phone" class="form-label">Phone No</label>
+                            <input type="text" class="form-control" id="update_phone" name="phone_number" required>
+                        </div>
+                        <div class="mb-3 col-md-12">
                             <label for="update_password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="update_password" name="password" placeholder="Leave blank to keep current password">
                         </div>
@@ -251,7 +251,7 @@ $subTitle = 'Staff List';
                         <label for="permissions" class="form-label">Permissions:</label>
                         <div class="row">
                             @foreach ($permissions as $permission)
-                            <div class="col-md-4 d-flex align-items-center">
+                            <div class="col-md-12 d-flex align-items-center">
                                 <input 
                                     type="checkbox" 
                                     id="update_permission_{{ $permission->id }}" 
@@ -274,8 +274,196 @@ $subTitle = 'Staff List';
         </div>
     </div>
 </div>
+@section('js')
+    <script src="{{ asset('assets/js/lib/') }}/confirmation-modal.min.js"></script>
 
+    <script>
+       $(document).ready(function() {
+    // Disable user
+    $('.switch-input').on('click', function() {
+        const userId = $(this).data('id');
+        var curr_obj = $(this);
+        var status = '';
+        if ($(this).is(":checked")) {
+            status = 'enable';
+        } else {
+            status = 'disable';
+        }
 
+        // Confirmation Modal
+        confirmationModal.show({
+            closeIcon: true,
+            message: 'Are you sure you want to ' + status + ' this user?',
+            title: 'User Status',
+            no: {
+                class: 'btn btn-danger',
+                text: 'No'
+            },
+            yes: {
+                class: 'btn btn-success',
+                text: 'Yes'
+            }
+        }).then(() => modalClosed(true))
+        .catch(() => modalClosed(false));
+
+        const modalClosed = isYes => {
+            if (isYes) {
+                $.ajax({
+                    url: `{{ url('admin/users/updateUserStatus/') }}` + "/" + userId + "/" + status,
+                    type: 'PATCH', // Use PATCH to update the status
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Show success toast
+                        showToast('User ' + status + ' successfully.', 'success');
+
+                        // Update the status in the frontend
+                        if (status == 'enable') {
+                            $('#user-status-' + userId).removeClass('text-danger-main bg-danger-focus');
+                            $('#user-status-' + userId).addClass('text-success-main bg-success-focus');
+                            $('#user-status-' + userId).html('Active');
+                        } else {
+                            $('#user-status-' + userId).addClass('text-danger-main bg-danger-focus');
+                            $('#user-status-' + userId).removeClass('text-success-main bg-success-focus');
+                            $('#user-status-' + userId).html('Inactive');
+                        }
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error and show error toast
+                        showToast('Error ' + status + ' user.', 'error');
+                        curr_obj.prop('checked', !curr_obj.is(":checked"));
+                    }
+                });
+            } else {
+                // Reset checkbox state if the modal is closed without confirming
+                curr_obj.prop('checked', !curr_obj.is(":checked"));
+            }
+        };
+    });
+});
+
+    </script>
+@endsection
+ <script>
+        // Variables for managing table and pagination
+        const rowsPerPage = 5;  // Number of rows per page
+        let currentPage = 1;    // Initial page
+
+        // Function to update the entries info dynamically
+        function updateEntriesInfo() {
+            const table = document.getElementById("dataTable");
+            const totalRows = table.rows.length - 1; // Exclude header row
+            const startIndex = (currentPage - 1) * rowsPerPage + 1;
+            const endIndex = Math.min(currentPage * rowsPerPage, totalRows);
+            
+            const entriesInfo = document.getElementById("entriesInfo");
+            entriesInfo.textContent = `Showing ${startIndex} to ${endIndex} of ${totalRows} entries`;
+        }
+
+        // Function to generate pagination links dynamically
+        function generatePagination() {
+            const table = document.getElementById("dataTable");
+            const totalRows = table.rows.length - 1; // Exclude header row
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            const pagination = document.getElementById("pagination");
+
+            // Clear existing pagination links
+            pagination.innerHTML = '';
+
+            // Add "Previous" button
+            const prevPage = document.createElement("li");
+            prevPage.classList.add("page-item");
+            prevPage.innerHTML = `<a class="page-link" href="javascript:void(0)" onclick="changePage(${currentPage - 1})">&laquo;</a>`;
+            if (currentPage === 1) prevPage.classList.add("disabled");
+            pagination.appendChild(prevPage);
+
+            // Generate page number buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement("li");
+                pageItem.classList.add("page-item");
+                const pageLink = document.createElement("a");
+                pageLink.classList.add("page-link");
+                pageLink.href = "javascript:void(0)";
+                pageLink.textContent = i;
+                pageLink.onclick = () => changePage(i);
+
+                if (i === currentPage) {
+                    pageLink.classList.add("bg-primary-600", "text-white");
+                } else {
+                    pageLink.classList.add("bg-neutral-300", "text-secondary-light");
+                }
+
+                pageItem.appendChild(pageLink);
+                pagination.appendChild(pageItem);
+            }
+
+            // Add "Next" button
+            const nextPage = document.createElement("li");
+            nextPage.classList.add("page-item");
+            nextPage.innerHTML = `<a class="page-link" href="javascript:void(0)" onclick="changePage(${currentPage + 1})">&raquo;</a>`;
+            if (currentPage === totalPages) nextPage.classList.add("disabled");
+            pagination.appendChild(nextPage);
+        }
+
+        // Change the page number and update the table and pagination
+        function changePage(page) {
+            const table = document.getElementById("dataTable");
+            const totalRows = table.rows.length - 1; // Exclude header row
+
+            // Ensure the page number is within the valid range
+            if (page < 1 || page > Math.ceil(totalRows / rowsPerPage)) return;
+
+            currentPage = page;
+            updateEntriesInfo();
+            generatePagination();
+            displayPageRows();
+        }
+
+        // Function to display only the rows for the current page
+        function displayPageRows() {
+            const table = document.getElementById("dataTable");
+            const rows = table.querySelectorAll("tbody tr");
+
+            // Hide all rows first
+            rows.forEach(row => row.style.display = 'none');
+
+            // Display the rows for the current page
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = Math.min(currentPage * rowsPerPage, rows.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                rows[i].style.display = 'table-row';
+            }
+        }
+
+        // Initialize the table, pagination, and entries info
+        function initialize() {
+            updateEntriesInfo();
+            generatePagination();
+            displayPageRows();
+        }
+
+        // Call the initialize function on page load
+        initialize();
+    </script>
+
+<script>
+    // Function to update the entries info dynamically
+    function updateEntriesInfo(page = 1, rowsPerPage = 10) {
+        const table = document.getElementById("dataTable");
+        const totalRows = table.rows.length - 1; // Exclude header row
+        const startIndex = (page - 1) * rowsPerPage + 1;
+        const endIndex = Math.min(page * rowsPerPage, totalRows);
+        
+        const entriesInfo = document.getElementById("entriesInfo");
+        entriesInfo.textContent = `Showing ${startIndex} to ${endIndex} of ${totalRows} entries`;
+    }
+
+    // Initialize by calling the function with the default page and rows per page
+    updateEntriesInfo();
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -287,11 +475,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = button.getAttribute('data-id');
             const name = button.getAttribute('data-name');
             const email = button.getAttribute('data-email');
+            const phone_number = button.getAttribute('data-number');
             const permissions = JSON.parse(button.getAttribute('data-permissions'));
 
             // Set modal fields
             document.getElementById('update_name').value = name;
             document.getElementById('update_email').value = email;
+            document.getElementById('update_phone').value = phone_number;
 
             // Reset all checkboxes
             document.querySelectorAll('#updateUserModal input[name="permissions[]"]').forEach(checkbox => {

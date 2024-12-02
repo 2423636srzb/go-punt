@@ -24,6 +24,8 @@ class BankAccount extends Model
         'ifc_number',
         'upi_number',
         'upi_qr_code',
+        'crypto_wallet',
+
     ];
 
     // Define relationship with User

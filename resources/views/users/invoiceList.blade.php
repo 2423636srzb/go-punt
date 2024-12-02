@@ -123,7 +123,7 @@
                                                 class="text-primary-600">#{{ $transaction->id }}</a></td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img width="50" src="{{ url($transaction->image) }}" alt=""
+                                                <img width="50" src="{{ asset($transaction->image) }}" alt=""
                                                     class="flex-shrink-0 me-12 radius-8">
                                                 <div class="flex-grow-1">
                                                     <h6 class="text-md mb-0 fw-medium">{{ $transaction->name ?? 'N/A' }}
@@ -211,9 +211,62 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="paymentRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h6 class="modal-title" id="uploadModalLabel">Deposit Request</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="transactionFormView" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- Left Side: File Upload Area -->
+                        <div class="col-md-6 d-flex align-items-center justify-content-center">
+                            <div
+                                class="requestScreenShot upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center">
+                                <!-- Image will go here -->
+                            </div>
+                        </div>
 
-    {{-- <!-- Modal Structure -->
-    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                        <!-- Right Side: Form Fields -->
+                        <div class="col-md-6">
+                            <!-- Platform Selection -->
+                            <div class="mb-3">
+                                <label for="platform" class="form-label">User: </label>
+                                <label id="paymentRequestUser" class="form-label"></label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="platform" class="form-label">Selected Platform: </label>
+                                <label id="viewPlatform" class="form-label"></label>
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Amount: </label>
+                                <label id="enteredAmount" class="form-label"></label>
+                            </div>
+
+                            <!-- Created At -->
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Created At: </label>
+                                <label id="paymentRequestCreatedAt" class="form-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <!-- Modal Structure -->
+    {{-- <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -474,7 +527,7 @@
 
  
 @section('js')
-{{--
+{{-- 
     <script src="{{ asset('assets/js/lib/') }}/confirmation-modal.min.js"></script>
     <script type="text/javascript" src="{{ asset('assets/js/lib/') }}/pekeUpload.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/lib/') }}/pekeUpload.css" type="text/css" />
@@ -588,7 +641,55 @@
                 });
             });
         });
-    </script> --}}
+    </script>  --}}
+
+    <script>
+        function viewRequest(id) {
+             $.ajax({
+          url: `{{ url('get-payment-request/') }}` + "/" + id,
+          type: 'GET',
+          processData: false, // Prevent jQuery from processing the data
+          contentType: false, // Set content type to false for FormData
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+          },
+          success: function(response) {
+      // Log the response to ensure it has the data
+      console.log(response);
+    
+      // Check if the necessary fields exist in the response
+      if(response.user_name && response.name && response.amount && response.created_at) {
+          $('#paymentRequestUser').html(response.user_name);
+          $('#viewPlatform').html(response.name);
+          $('#enteredAmount').html(response.amount);
+          $('#paymentRequestCreatedAt').html(response.created_at);
+      } else {
+          console.error("Missing required data:", response);
+      }
+    
+      // Display the image if available
+      if (response.image) {
+          $('.requestScreenShot').html('<img width="500" src="' + '{{ url('/') }}/' + response.image + '" alt="Screenshot" />');
+      }
+    
+      // Show the modal
+      $('#paymentRequestViewModal').modal('show');
+    },
+    
+          error: function(xhr) {
+              // Handle error response
+              if (xhr.status === 422) {
+                  let errors = xhr.responseJSON.errors;
+                  let errorMessages = Object.values(errors).flat().join('\n');
+                  showToast('Validation Error:\n' + errorMessages);
+              } else {
+                  showToast('An unexpected error occurred. Please try again.');
+              }
+          }
+      });
+    }
+    
+      </script>  
     <script>
         $(document).ready(function() {
             // Event listener for delete button

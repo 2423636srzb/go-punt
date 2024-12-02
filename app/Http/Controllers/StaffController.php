@@ -28,6 +28,7 @@ class StaffController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
+            'phone_number' => 'required|integer',
             'permissions' => 'nullable|array',
             'permissions.*' => 'string|exists:permissions,name',
         ]);
@@ -36,6 +37,7 @@ class StaffController extends Controller
             $user = User::create([
                 'username' => $validated['name'],
                 'email' => $validated['email'],
+                'phone_number' => $validated['phone_number'],
                 'password' => bcrypt($validated['password']),
                 'is_admin' => 1, // Mark as admin since you're only giving permissions to admin users
             ]);
@@ -71,13 +73,17 @@ class StaffController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $admin->id,
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string',
+            'phone_number' => 'required|string',
             'permissions' => 'array',
         ]);
+
         // dd($admin->id);
+
         $admin->update([
             'username' => $validated['name'],
             'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'],
             'password' => $validated['password'] ? bcrypt($validated['password']) : $admin->password,
         ]);
     

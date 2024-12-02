@@ -95,22 +95,26 @@
                         <div class="col-md-6 d-flex align-items-center justify-content-center">
                             <div id="dropArea"
                                 class="upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center"
-                                style="width: 100%; min-height: 200px;">
+                                style="width: 100%; min-height: 200px; cursor: pointer;">
                                 <p class="text-muted">Drag and drop your file here</p>
-                                <input type="file" name="file" accept=".jpg, .png, .jpeg" class="d-none">
+                                
+                                <!-- Hidden file input -->
+                                <input type="file" name="file" accept=".jpg, .png, .jpeg" class="d-none" id="fileInput">
+                        
+                                <!-- Image preview (optional) -->
                                 <img id="imagePreview" src="" alt="Image Preview"
                                     style="max-width: 100%; max-height: 150px; display: none;">
                             </div>
                         </div>
 
-                        @if (count($accounts) > 0)
+                        @if (count($shareaccounts) > 0)
                             <!-- Right Side: Form Fields -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="platform" class="form-label">Select Platform</label>
                                     <select class="form-select" id="platform" name="platform_id" required>
                                         <option selected disabled>Choose a platform</option>
-                                        @foreach ($accounts as $account)
+                                        @foreach ($shareaccounts as $account)
                                             <option value="{{ $account->game->id }}">{{ $account->game->name }}</option>
                                         @endforeach
                                     </select>
@@ -268,40 +272,81 @@ aria-hidden="true">
 </div>
 </div>  --}}
 
+
 <script>
     function viewRequest(id) {
-        $.ajax({
-            url: `{{ url('get-payment-request/') }}` + "/" + id,
-            type: 'GET',
-            processData: false, // Prevent jQuery from processing the data
-            contentType: false, // Set content type to false for FormData
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
-            },
-            success: function(response) {
-                // Handle success response
-                $('#enteredAmount').val(response.amount);
-                $('#viewPlatform').val(response.name);
-                $('.requestScreenShot').html('<img width="500" src="{{ url("/") }}/' + response.image + '" />');
+         $.ajax({
+      url: `{{ url('get-payment-request/') }}` + "/" + id,
+      type: 'GET',
+      processData: false, // Prevent jQuery from processing the data
+      contentType: false, // Set content type to false for FormData
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+      },
+      success: function(response) {
+  // Log the response to ensure it has the data
+  console.log(response);
 
-                $('#paymentRequestViewModal').modal('show');
+  // Check if the necessary fields exist in the response
+  if(response.user_name && response.name && response.amount && response.created_at) {
+      $('#paymentRequestUser').html(response.user_name);
+      $('#viewPlatform').html(response.name);
+      $('#enteredAmount').html(response.amount);
+      $('#paymentRequestCreatedAt').html(response.created_at);
+  } else {
+      console.error("Missing required data:", response);
+  }
 
-            
-            },
-            error: function(xhr) {
-                // Handle error response
-                if (xhr.status === 422) {
-                    let errors = xhr.responseJSON.errors;
-                    let errorMessages = Object.values(errors).flat().join('\n');
-                    showToast('Validation Error:\n' + errorMessages);
-                } else {
-                    showToast('An unexpected error occurred. Please try again.');
-                }
-            },
-            complete: function() {
-                // Re-enable the submit button
-                $('#transactionForm button[type="submit"]').prop('disabled', false).text('Send Request');
-            }
-        });
-    }
+  // Display the image if available
+  if (response.image) {
+      $('.requestScreenShot').html('<img width="500" src="' + '{{ url('/') }}/' + response.image + '" alt="Screenshot" />');
+  }
+
+  // Set the approve/reject URLs
+  $('.approve-request').attr('href', '{{ url('payment-request-approve') }}' + '/' + response.id);
+  $('.reject-request').attr('href', '{{ url('payment-request-reject') }}' + '/' + response.id);
+
+  // Show the modal
+  $('#paymentRequestViewModal').modal('show');
+},
+
+      error: function(xhr) {
+          // Handle error response
+          if (xhr.status === 422) {
+              let errors = xhr.responseJSON.errors;
+              let errorMessages = Object.values(errors).flat().join('\n');
+              showToast('Validation Error:\n' + errorMessages);
+          } else {
+              showToast('An unexpected error occurred. Please try again.');
+          }
+      }
+  });
+}
+
+  </script>    
+
+
+<script>
+    // Get the drop area and file input elements
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    // Trigger click on the file input when the user clicks the drop area
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Optional: Show image preview when a file is selected
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block'; // Show the image preview
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>

@@ -19,6 +19,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'Account Management']);
         Permission::create(['name' => 'Game Management']);
         Permission::create(['name' => 'Setting Management']);
+        Permission::create(['name' => 'Staff Management']);
+        Permission::create(['name' => 'Google Analytics']);
         // Create roles and assign existing permissions
         // $admin = Role::create(['name' => 'Admin']);
         // $staff = Role::create(['name' => 'Staff']);

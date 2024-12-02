@@ -76,10 +76,9 @@ public function edit($id)
         $validated = $request->validate([
             'payment_method' => 'required|string|in:bank-transfer,upi,crypto',
             'account_holder_name' => 'required|string|max:255',
-            'account_number' => 'required_if:payment_method,bank-transfer,crypto|string|max:255',
-            // 'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
-            'iban_number' => 'nullable|string|max:255',
-            'branch_name' => 'required_if:payment_method,bank-transfer|string|max:255',
+            'account_number' => 'required_if:payment_method,bank-transfer|string|max:255',
+            'crypto_wallet' => 'required_if:payment_method,crypto|string|max:255',
+            'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
             'ifc_number' => 'required_if:payment_method,bank-transfer|string|max:255',
             'upi_number' => 'required_if:payment_method,upi|string|max:255',
             'upi_qr_code' => 'nullable|file|mimes:jpg,png,jpeg|max:2048',
@@ -103,8 +102,8 @@ public function edit($id)
             if ($validated['payment_method'] === 'bank-transfer') {
                 $paymentData = array_merge($paymentData, [
                     'account_number' => $validated['account_number'],
-                    'iban_number' => $validated['iban_number'] ?? null,
-                    'branch_name' => $validated['branch_name'],
+                    // 'iban_number' => $validated['iban_number'] ?? null,
+                    'bank_name' => $validated['bank_name'],
                     'ifc_number' => $validated['ifc_number'],
                 ]);
             } elseif ($validated['payment_method'] === 'upi') {
@@ -114,7 +113,9 @@ public function edit($id)
                 ]);
             } elseif ($validated['payment_method'] === 'crypto') {
                 $paymentData = array_merge($paymentData, [
-                    'account_number' => $validated['account_number'],
+                    'crypto_wallet' => $validated['crypto_wallet'],
+                    'upi_qr_code' => $upiQrCodePath,
+
                 ]);
             }
     
@@ -143,9 +144,8 @@ public function edit($id)
         'payment_method' => 'required|string|in:bank-transfer,upi,crypto',
         'account_holder_name' => 'required|string|max:255',
         'account_number' => 'required_if:payment_method,bank-transfer,crypto|string|max:255',
-        // 'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
-        'iban_number' => 'nullable|string|max:255',
-        'branch_name' => 'required_if:payment_method,bank-transfer|string|max:255',
+        'crypto_wallet' => 'nullable|string|max:255',
+        'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
         'ifc_number' => 'required_if:payment_method,bank-transfer|string|max:255',
         'upi_number' => 'required_if:payment_method,upi|string|max:255',
         'upi_qr_code' => 'nullable|file|mimes:jpg,png,jpeg|max:2048',
@@ -176,8 +176,8 @@ public function edit($id)
             $paymentData = array_merge($paymentData, [
                 // 'bank_name' => $validated['bank_name'],
                 'account_number' => $validated['account_number'],
-                'iban_number' => $validated['iban_number'] ?? null,
-                'branch_name' => $validated['branch_name'],
+                // 'iban_number' => $validated['iban_number'] ?? null,
+                'bank_name' => $validated['bank_name'],
                 'ifc_number' => $validated['ifc_number'],
             ]);
         } elseif ($validated['payment_method'] === 'upi') {
@@ -187,7 +187,9 @@ public function edit($id)
             ]);
         } elseif ($validated['payment_method'] === 'crypto') {
             $paymentData = array_merge($paymentData, [
-                'account_number' => $validated['account_number'],
+                'crypto_wallet' => $validated['crypto_wallet'],
+                'upi_qr_code' => $upiQrCodePath,
+
             ]);
         }
 

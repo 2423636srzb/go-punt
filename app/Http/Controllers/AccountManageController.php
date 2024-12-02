@@ -29,7 +29,10 @@ class AccountManageController extends Controller
     }
     public function assignedAccount($id)
     {
-        $accounts = Account::where('game_id',$id)->where('is_assigned',1)->with('game')->get();
+        $accounts = Account::where('is_assigned', 1)
+    ->where('game_id', $id) // Ensure is_assigned is 1 
+    ->with(['game', 'userAccount.user'])
+    ->get();
         return view('accountmanage.assignedaccount',compact('accounts'));
     }
     public function getAccount($id)

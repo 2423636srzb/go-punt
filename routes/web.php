@@ -14,6 +14,7 @@ use App\Http\Controllers\TableController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AccountManageController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\PlatformTransactionController;
@@ -71,7 +72,7 @@ Route::middleware('auth')->prefix('staffSetting')->name('admin.staff.')->group(f
 
 
 });
-
+Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 Route::get('/get-payment-request/{id}', [PaymentController::class, 'getPaymentRequest'])->middleware('auth')->name('payment_request');
 
 Route::get('/payment-request-approve/{id}', [PaymentController::class, 'acceptPaymentRequest']);
@@ -79,6 +80,9 @@ Route::get('/payment-request-reject/{id}', [PaymentController::class, 'rejectPay
 
 Route::get('/admin/user/edit/{id}', [UsersController::class, 'getUser'])->middleware('auth');
 Route::post('/admin/user/update', [UsersController::class, 'updateUser'])->name('user.update')->middleware('auth');
+
+
+// Route::post('/admin/update-user-status/{id}', [UsersController::class, 'updateUserStatus']);
 
 
 Route::get('/admin/website-setting', [UsersController::class, 'webSiteSetting'])->middleware('auth')->name('admin.website.setting');

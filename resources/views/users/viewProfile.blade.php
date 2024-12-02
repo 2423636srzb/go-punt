@@ -235,11 +235,19 @@ $script = '
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-6" style="display: none;" id="bank-name">
+                                    <div class="mb-20">
+                                        <label class="form-label fw-semibold text-primary-light text-sm mb-8">Bank Name</label>
+                                        <div class="position-relative">
+                                            <input type="text" class="form-control radius-8" name="bank_name" placeholder="Bank Name" value="">
+                                        </div>
+                                    </div>
+                                </div>
                                     <div class="col-sm-6" id="account-title" style="display: none;" >
                                         <div class="mb-20">
-                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Account Title</label>
+                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Account Holder Name</label>
                                             <div class="position-relative">
-                                                <input type="text" class="form-control radius-8" name="account_holder_name" placeholder="Account Title" value="">
+                                                <input type="text" class="form-control radius-8" name="account_holder_name" placeholder="Account Holder Name" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -251,25 +259,25 @@ $script = '
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6" style="display: none;" id="IBAN-number">
+                                    <div class="col-sm-6" style="display: none;" id="crypto-wallet">
+                                        <div class="mb-20">
+                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Crypto Wallet Address</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control radius-8" name="crypto_wallet" placeholder="Crypto Wallet " value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-sm-6" style="display: none;" id="IBAN-number">
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">IBAN Number</label>
                                             <div class="position-relative">
                                                 <input type="text" class="form-control radius-8" name="iban_number" placeholder="IBAN" value="">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6" style="display: none;" id="branch-name">
-                                        <div class="mb-20">
-                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Branch Name</label>
-                                            <div class="position-relative">
-                                                <input type="text" class="form-control radius-8" name="branch_name" placeholder="Branch Name" value="">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-6" style="display: none;" id="ifc-number">
                                         <div class="mb-20">
-                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">IFC Number</label>
+                                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">IFSC Number</label>
                                             <div class="position-relative">
                                                 <input type="text" class="form-control radius-8" name="ifc_number" placeholder="IFC Number" value="">
                                             </div>
@@ -290,60 +298,120 @@ $script = '
                                                 <input type="file" class="form-control radius-8" name="upi_qr_code" value="">
                                             </div>
                                         </div>
-                                    </div>           
+                                    </div>         
                             
-                            <button type="submit" id="btnBankProfile"
-                                class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                                Save
-                            </button>
+                                    <div class="col-sm-12 d-flex justify-content-center mt-3 mb-3">
+                                        <!-- Save button centered and small -->
+                                        <button type="submit" id="btnBankProfile"
+                                            class="btn btn-primary border border-primary-600 text-md px-40 py-10 radius-8">
+                                            Save
+                                        </button>
+                                    </div>
                         </form>
                         <br />
                         <div class="row">
+                            <!-- Bank Transfer Table -->
                             <div class="col-12">
-                                <!-- Table to show the Bank Account Numbers -->
+                                <h6 class="text-xl mb-16 mt-16">Bank</h6>
                                 <table class="table bordered-table mb-0">
                                     <thead>
                                         <tr>
-
-                                            <th scope="col">Account Title</th>
-                                            {{-- <th scope="col">Bank Name</th> --}}
+                                            <th scope="col">Account Holder Name</th>
+                                            <th scope="col">Bank Name</th>
                                             <th scope="col">Account #</th>
-                                            <th scope="col">IBAN</th>
+                                            <th scope="col">IFSC No</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($user->bankAccounts as $bankAccount)
+                                            @if($bankAccount->payment_method == 'bank-transfer') <!-- Filter for Bank Transfer -->
+                                                <tr>
+                                                    <td><a href="javascript:void(0)" class="text-primary-600" id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a></td>
+                                                    <td id="{{$bankAccount->id}}-bank_name">{{$bankAccount->bank_name}}</td>
+                                                    <td id="{{$bankAccount->id}}-account_number">{{$bankAccount->account_number}}</td>
+                                                    <td id="{{$bankAccount->id}}-iban">{{$bankAccount->ifc_number}}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
+                                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                                        </a>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete">
+                                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                            <!-- UPI Table -->
+                            <div class="col-12">
+                                <h6 class="text-xl mb-16 mt-16">UPI</h6>
+                                <table class="table bordered-table mb-0">
+                                    <thead>
                                         <tr>
-                                            <td><a href="javascript:void(0)" class="text-primary-600"
-                                                    id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a>
-                                            </td>
-                                            {{-- <td id="{{$bankAccount->id}}-bank_name">
-                                                {{$bankAccount->}}
-                                            </td> --}}
-
-                                            <td id="{{$bankAccount->id}}-account_number">
-                                                {{$bankAccount->account_number}}</td>
-                                            <td id="{{$bankAccount->id}}-iban">{{$bankAccount->iban_number}}
-                                            </td>
-
-                                            <td>
-                                                <a href=" javascript:void(0)" data-id="{{$bankAccount->id}}"
-                                                    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
-                                                    <iconify-icon icon="lucide:edit"></iconify-icon>
-                                                </a>
-
-                                                <a href="javascript:void(0)" data-id="{{$bankAccount->id}}"
-                                                    class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete">
-                                                    <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                                </a>
-                                            </td>
+                                            <th scope="col">Account Holder Name</th>
+                                            <th scope="col">UPI ID</th>
+                                            <th scope="col">Action</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($user->bankAccounts as $bankAccount)
+                                            @if($bankAccount->payment_method == 'upi') <!-- Filter for UPI -->
+                                                <tr>
+                                                    <td><a href="javascript:void(0)" class="text-primary-600" id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a></td>
+                                                    <td id="{{$bankAccount->id}}-upi_number">{{$bankAccount->upi_number}}</td>
+                                            
+                                                    <td>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
+                                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                                        </a>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete">
+                                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                            <!-- Crypto Table -->
+                            <div class="col-12">
+                                <h6 class="text-xl mb-16 mt-16">Crypto</h6>
+                                <table class="table bordered-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Account Holder Name</th>
+                                            <th scope="col">Crypto Wallet</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($user->bankAccounts as $bankAccount)
+                                            @if($bankAccount->payment_method == 'crypto') <!-- Filter for Crypto -->
+                                                <tr>
+                                                    <td><a href="javascript:void(0)" class="text-primary-600" id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a></td>
+                                                    <td id="{{$bankAccount->id}}-crypto_wallet">{{$bankAccount->crypto_wallet}}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
+                                                            <iconify-icon icon="lucide:edit"></iconify-icon>
+                                                        </a>
+                                                        <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete">
+                                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -464,7 +532,7 @@ function submitBankAccountForm() {
 
     // Additional validation for 'bank-transfer' method
     if (formData['payment_method'] === 'bank-transfer') {
-        const requiredFields = ['account_holder_name', 'account_number', 'branch_name','ifc_number','iban_number'];
+        const requiredFields = ['account_holder_name', 'account_number', 'bank_name','ifc_number'];
         const missingFields = requiredFields.filter(field => !formData[field]);
 
         if (missingFields.length > 0) {
@@ -519,17 +587,19 @@ function togglePaymentFieldsEdit() {
     console.log("Payment Method:", paymentMethod);
 
     // Hide all optional fields initially
-    $('#account-title, #account-number, #IBAN-number, #branch-name, #ifc-number, #UPI-number, #upi-qr-code').hide();
+    $('#account-title, #account-number, #IBAN-number, #bank-name, #ifc-number, #UPI-number, #upi-qr-code,#crypto-wallet').hide();
 
     if (paymentMethod === 'bank-transfer') {
         console.log("Toggling fields for bank-transfer");
-        $('#account-title, #account-number, #IBAN-number, #branch-name, #ifc-number').show();
+        $('#account-title, #account-number, #bank-name, #ifc-number').show();
     } else if (paymentMethod === 'upi') {
         console.log("Toggling fields for UPI");
         $('#account-title, #UPI-number, #upi-qr-code').show();
+        $('#upi-qr-code .form-label').html('UPI QR Code'); 
     } else if (paymentMethod === 'crypto') {
         console.log("Toggling fields for Crypto");
-        $('#account-title, #account-number').show(); // Added `.show()`
+        $('#account-title, #crypto-wallet, #upi-qr-code').show(); 
+        $('#upi-qr-code .form-label').html('Crypto QR Code'); 
     } else {
         console.log("No matching payment method");
     }
@@ -566,8 +636,8 @@ $(document).on('click', '.edit', function () {
                 $('#payment-method').val(bankAccount.payment_method).change();
                 $('input[name="account_holder_name"]').val(bankAccount.account_holder_name || '');
                 $('input[name="account_number"]').val(bankAccount.account_number || '');
-                $('input[name="iban_number"]').val(bankAccount.iban_number || '');
-                $('input[name="branch_name"]').val(bankAccount.branch_name || '');
+                $('input[name="crypto_wallet"]').val(bankAccount.crypto_wallet || '');
+                $('input[name="bank_name"]').val(bankAccount.bank_name || '');
                 $('input[name="ifc_number"]').val(bankAccount.ifc_number || '');
                 $('input[name="upi_number"]').val(bankAccount.upi_number || '');
                 $('input[name="_method"]').val('PUT');
@@ -863,8 +933,8 @@ $(document).on('click', '.edit', function () {
         // Hide all fields initially
         document.getElementById('account-title').style.display = 'none';
         document.getElementById('account-number').style.display = 'none';
-        document.getElementById('IBAN-number').style.display = 'none';
-        document.getElementById('branch-name').style.display = 'none';
+        document.getElementById('crypto-wallet').style.display = 'none';
+        document.getElementById('bank-name').style.display = 'none';
         document.getElementById('ifc-number').style.display = 'none';
         document.getElementById('UPI-number').style.display = 'none';
         document.getElementById('upi-qr-code').style.display = 'none';
@@ -875,8 +945,8 @@ $(document).on('click', '.edit', function () {
         if (paymentMethod === 'bank-transfer') {
             document.getElementById('account-title').style.display = 'block';
         document.getElementById('account-number').style.display = 'block';
-        document.getElementById('IBAN-number').style.display = 'block';
-        document.getElementById('branch-name').style.display = 'block';
+        // document.getElementById('IBAN-number').style.display = 'block';
+        document.getElementById('bank-name').style.display = 'block';
         document.getElementById('ifc-number').style.display = 'block';
         } else if (paymentMethod === 'upi') {
             document.getElementById('account-title').style.display = 'block';
@@ -884,7 +954,12 @@ $(document).on('click', '.edit', function () {
         document.getElementById('upi-qr-code').style.display = 'block';
         } else if (paymentMethod === 'crypto') {
             document.getElementById('account-title').style.display = 'block';
-        document.getElementById('account-number').style.display = 'block';
+        document.getElementById('crypto-wallet').style.display = 'block';
+        document.getElementById('upi-qr-code').style.display = 'block';
+        var label = document.querySelector('#upi-qr-code .form-label');
+    if (label) {
+        label.innerHTML = 'Crypto QR Code';  // This will change the label text to "Crypto QR Code"
+    }
         }
     }
 </script>

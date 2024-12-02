@@ -75,7 +75,6 @@ class PlatformTransactionController extends Controller
 
 public function submitWithdrawal(Request $request)
 {
-    // dd($request->all());
     // Validate the data coming from the form
     $request->validate([
         'amount' => 'required|numeric|min:1',
@@ -125,6 +124,7 @@ public function submitWithdrawal(Request $request)
 
     return response()->json(['message' => 'Withdrawal request submitted successfully.']);
 }
+
 
 
 }

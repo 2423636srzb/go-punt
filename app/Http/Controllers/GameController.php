@@ -31,13 +31,15 @@ class GameController extends Controller
         foreach ($unassignedAccounts as $account) {
             // Find a user who doesn't have an account for the given game
             $user = DB::table('users')
-                ->whereNotIn('id', function ($query) use ($account) {
-                    $query->select('user_id')
-                        ->from('user_accounts')
-                        ->join('accounts', 'user_accounts.account_id', '=', 'accounts.id')
-                        ->where('accounts.game_id', $account->game_id);
-                })
-                ->first();
+            ->whereNotIn('id', function ($query) use ($account) {
+                $query->select('user_id')
+                    ->from('user_accounts')
+                    ->join('accounts', 'user_accounts.account_id', '=', 'accounts.id')
+                    ->where('accounts.game_id', $account->game_id);
+            })
+            ->where('is_admin', 0)  // Make sure the user is not an admin
+            ->first();
+        
 
             if ($user) {
                 // Assign the account to the user
@@ -91,11 +93,16 @@ class GameController extends Controller
         ]);
 
         // Find a user who does not already have an account for this specific game
-        $user = User::whereDoesntHave('userAccount', function ($query) use ($gameId) {
-            $query->whereHas('account', function ($q) use ($gameId) {
-                $q->where('game_id', $gameId);
-            });
-        })->first();
+        $user = DB::table('users')
+        ->whereNotIn('id', function ($query) use ($account) {
+            $query->select('user_id')
+                ->from('user_accounts')
+                ->join('accounts', 'user_accounts.account_id', '=', 'accounts.id')
+                ->where('accounts.game_id', $account->game_id);
+        })
+        ->where('is_admin', 0)  // Make sure the user is not an admin
+        ->first();
+    
 
         if ($user) {
             // Assign the account to the user
@@ -345,11 +352,16 @@ class GameController extends Controller
                         ]);
 
                         // Find a user who does not already have an account for this specific game
-                        $user = User::whereDoesntHave('userAccount', function ($query) use ($gameId) {
-                            $query->whereHas('account', function ($q) use ($gameId) {
-                                $q->where('game_id', $gameId);
-                            });
-                        })->first();
+                        $user = DB::table('users')
+                        ->whereNotIn('id', function ($query) use ($account) {
+                            $query->select('user_id')
+                                ->from('user_accounts')
+                                ->join('accounts', 'user_accounts.account_id', '=', 'accounts.id')
+                                ->where('accounts.game_id', $account->game_id);
+                        })
+                        ->where('is_admin', 0)  // Make sure the user is not an admin
+                        ->first();
+                    
 
                         if ($user) {
                             // Assign the account to the user

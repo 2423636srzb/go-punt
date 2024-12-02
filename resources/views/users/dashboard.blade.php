@@ -53,7 +53,7 @@ $script = '
                 <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
                     <span class="d-inline-flex align-items-center gap-1 text-success-main">
                         <!-- <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> --> {{ isset($lastApprovedRequest->amount)?$lastApprovedRequest->amount:0}}
-                        Withdrawal request submitted successfully.
+                       
                     </span>
                     Last Transaction
                 </p>
@@ -249,7 +249,7 @@ $script = '
                                 aria-controls="pills-to-do-list" aria-selected="true">
                                 Assigned Accounts
                                 <span
-                                    class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{count($accounts)}}</span>
+                                    class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{$userAccountsCount}}</span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -258,7 +258,7 @@ $script = '
                                 aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
                                 Pending Accounts
                                 <span
-                                    class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{count($accounts)}}</span>
+                                    class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">0</span>
                             </button>
                         </li>
                     </ul>
@@ -283,26 +283,26 @@ $script = '
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   @foreach ($accounts as $account)
+                                   @foreach ($userAccounts as $userAccount)
                                        
-                                   {{-- {{url($account->logo)}} --}}
+                                   {{--  --}}
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="#" alt=""
+                                                <img src="{{url($userAccount->logo)}}" alt=""
                                                     class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                                                 <div class="flex-grow-1">
-                                                    <h6 class="text-md mb-0 fw-medium">{{$account->name}}</h6>
+                                                    <h6 class="text-md mb-0 fw-medium">{{$userAccount->name}}</h6>
                                                     <span class="text-sm text-secondary-light fw-medium"><a
-                                                            href="https://bmw.com/"
-                                                            target="_blank">{{$account->login_link}}</a></span>
+                                                            href="{{$userAccount->login_link}}"
+                                                            target="_blank">{{$userAccount->login_link}}</a></span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <!-- Container for Email and Copy Icon -->
                                             <div class="copy-container">
-                                                <span id="user-email">{{$account->username}}</span>
+                                                <span id="user-email">{{$userAccount->username}}</span>
                                                 <iconify-icon icon="mage:copy" class="icon"
                                                     onclick="copyToClipboard('user-email')"
                                                     title="Copy Email"></iconify-icon>
@@ -310,24 +310,18 @@ $script = '
                                             <br />
                                             <!-- Container for Password and Copy Icon -->
                                             <div class="copy-container">
-                                                <span id="user-password"
-                                                    data-password="{{$account->password}}">..........</span>
-                                                <iconify-icon icon="mage:copy" class="icon"
-                                                    onclick="copyToClipboard('user-password', true)"
-                                                    title="Copy Password"></iconify-icon>
-                                                    <iconify-icon id="view-password-icon" icon="mdi:eye" class="icon" 
-                                                    onclick="showPassword('user-password')" 
-                                                    title="Show Password"></iconify-icon>
+                                                <span class="user-password" data-password="{{$userAccount->password}}" data-row-id="{{$userAccount->id}}">
+                                                    ..........
+                                                </span>
+                                                <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard(this)" title="Copy Password"></iconify-icon>
+                                                <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye" onclick="showPassword(this)" title="Show Password"></iconify-icon>
                                             </div>
+                                            
                                         </td>
                                         <td>{{$depositeSum}}</td>
                                         <td class="text-center">
                                             <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                @if ($account->status == 1)
-                                                    Active
-                                                @else
-                                                    Unactive
-                                                @endif
+                                                    {{$userAccount->status}}
                                             </span>
                                         </td>
                                     </tr>
@@ -337,19 +331,23 @@ $script = '
                         </div>
                     </div>
                     <script>
-                        function showPassword(spanId) {
-                            const passwordSpan = document.getElementById(spanId);
-                            const password = passwordSpan.getAttribute('data-password');
-                            
-                            // Temporarily show the password
-                            const originalText = passwordSpan.innerText; // Save the original text
-                            passwordSpan.innerText = password;
-                    
-                            // Revert back to dots after 3 seconds
-                            setTimeout(() => {
-                                passwordSpan.innerText = originalText;
-                            }, 3000); // 3 seconds delay
-                        }
+                      function showPassword(iconElement) {
+                                // Get the parent span element that holds the password
+                                const passwordSpan = iconElement.closest('.copy-container').querySelector('.user-password');
+                                
+                                // Get the password from the data attribute
+                                const password = passwordSpan.getAttribute('data-password');
+                                
+                                // Temporarily show the password
+                                const originalText = passwordSpan.innerText; // Save the original text
+                                passwordSpan.innerText = password;
+                                
+                                // Revert back to dots after 3 seconds
+                                setTimeout(() => {
+                                    passwordSpan.innerText = originalText;
+                                }, 3000); // 3 seconds delay
+                            }
+
                     </script>
                     <div class="tab-pane fade" id="pills-recent-leads" role="tabpanel"
                         aria-labelledby="pills-recent-leads-tab" tabindex="0">
@@ -408,7 +406,7 @@ $script = '
                     @foreach ($transactions as $transaction )
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
                         <div class="d-flex align-items-center">
-                            <img src="{{ url($transaction->image) }}" alt=""
+                            <img src="{{ asset($transaction->image) }}" alt=""
                                 class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                             <div class="flex-grow-1">
                                 <h6 class="text-md mb-0 fw-medium">{{ $transaction->name }}</h6>

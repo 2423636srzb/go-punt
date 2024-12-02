@@ -27,7 +27,7 @@
             <!-- ..::  header area end ::.. -->
 
             @yield('content')
-            @include('layout.paymentModal');
+            @include('layout.paymentModal')
         </div>
         <!-- ..::  footer  start ::.. -->
         <x-footer />
@@ -66,9 +66,54 @@
 
 @section('js')
     <script src="{{ asset('assets/js/lib/') }}/confirmation-modal.min.js"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/lib/') }}/pekeUpload.js"></scrip>
+    <script type="text/javascript" src="{{ asset('assets/js/lib/') }}/pekeUpload.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/lib/') }}/pekeUpload.css" type="text/css" />
 @endsection
+
+<script>
+    $('#withdrawalForm').on('submit', function (e) { 
+    e.preventDefault(); // Prevent page reload
+
+    var amount = $('#withDrawamount').val();
+    var accountOption = $("input[name='accountOption']:checked").val();
+
+    var formData = new FormData();
+    formData.append('amount', amount);
+    formData.append('accountOption', accountOption);
+
+    if (accountOption === 'newAccount') {
+        formData.append('newAccountData[bankName]', $('#bankName').val());
+        formData.append('newAccountData[accountNumber]', $('#accountNumber').val());
+        formData.append('newAccountData[accountHolderName]', $('#accountHolderName').val());
+        formData.append('newAccountData[iban]', $('#iban').val());
+    } else {
+        formData.append('bankId', $('#savedAccounts').val());
+    }
+
+    console.log([...formData]); // Debugging to check the data being sent
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: '{{ route('submitWithdrawal') }}',
+        type: 'POST',
+        data: formData,
+        processData: false, // Don't process the data
+        contentType: false, // Let the browser set the content type
+        success: function (response) {
+            location.reload(); 
+        },
+        error: function (xhr, status, error) {
+            alert('Error occurred while processing withdrawal');
+        }
+    });
+});
+
+</script>
+
+
+
     <!-- JavaScript to Toggle Account Options -->
     <script>
         function toggleAccountOptions() {

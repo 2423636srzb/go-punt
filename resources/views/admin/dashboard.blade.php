@@ -246,12 +246,18 @@ $script = '
                     @foreach ($transactions as $transaction )
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
                         <div class="d-flex align-items-center">
-                            <img src="{{ url($transaction->image) }}" alt=""
+                            <img src="{{ asset($transaction->image) }}" alt=""
                                 class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                             <div class="flex-grow-1">
                                 <h6 class="text-md mb-0 fw-medium">{{ $transaction->name }}</h6>
-                                <span class="text-sm text-secondary-light fw-medium">Status: <span
-                                        class="@if($transaction->status == 'approved') text-success @endif @if($transaction->status == 'rejected') text-danger @endif @if($transaction->status == 'pending') text-info @endif">{{ $transaction->status }}</span></span>
+                                <span class="text-secondary-light fw-medium d-block" style="font-size: 0.8rem; margin-bottom: -0.3rem !important;">Deposit Request</span>
+                                <span class="text-secondary-light fw-medium" style="font-size: 0.6rem;">Status: 
+                                    <span class="@if($transaction->status == 'approved') text-success @endif @if($transaction->status == 'rejected') text-danger @endif @if($transaction->status == 'pending') text-info @endif" style="font-size: 0.6rem;">
+                                        {{ $transaction->status }}
+                                    </span>
+                                </span>
+                                
+                                
                             </div>
                         </div>
                         <span class="text-primary-light text-md fw-medium">{{setCurrency($transaction->amount)}}</span>

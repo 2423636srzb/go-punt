@@ -37,7 +37,7 @@ class Account extends Model
     {
         return $this->hasOne(UserAccount::class);
     }
-    public function users()
+    public function user()
     {
         return $this->belongsToMany(User::class, 'user_accounts', 'account_id', 'user_id');
     }

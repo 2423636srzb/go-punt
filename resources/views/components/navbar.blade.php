@@ -16,28 +16,39 @@
             </div>
         </div>
         <div class="col-auto">
+            
             <div class="d-flex flex-wrap align-items-center gap-3">
+                @if (!Auth::user()->is_admin)
                                     {{-- create request dropdown --}}
-                <div class="dropdown">
-                    <button style="width: 40px; height: 40px;" class="btn  bg-neutral-200  not-active   rounded-circle d-flex align-items-center justify-content-center"
-                        type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 50px; height: 50px;">
-                        <iconify-icon icon="fluent:payment-32-filled"  style="color: black"></iconify-icon>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
-                                href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#uploadModal">
-                                Deposit Request
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
-                                href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#withdrawalModal">
-                                Withdrawal Request
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                                    <div class="d-flex align-items-center">
+                                        <!-- Text Label -->
+                                        <span class="me-2" style="font-size: 12px;">Deposit/Withdrawal</span>
+                                        
+                                        <!-- Dropdown Button -->
+                                        <div class="dropdown">
+                                            <button style="width: 40px; height: 40px;" 
+                                                class="btn bg-neutral-200 not-active rounded-circle d-flex align-items-center justify-content-center"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <iconify-icon icon="fluent:payment-32-filled" style="color: black"></iconify-icon>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
+                                                        href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                                        Deposit Request
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item px-16 py-8 rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
+                                                        href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#withdrawalModal">
+                                                        Withdrawal Request
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+            @endif
                 
 
 

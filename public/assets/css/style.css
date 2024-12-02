@@ -10972,6 +10972,9 @@ div.dt-container .dt-paging .dt-paging-button.current:hover {
 /* Table Common Css End */
 /* === table css end === */
 /* === form css start === */
+.form-control[type=file]{
+  line-height: 1.5;
+}
 .form-select,
 .form-control,
 textarea {

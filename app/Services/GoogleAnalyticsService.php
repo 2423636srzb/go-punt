@@ -19,24 +19,19 @@ class GoogleAnalyticsService
     }
 
     public function getActiveUsers($propertyId)
-    {
-        // Cache key is unique to the propertyId
-        $cacheKey = "analytics_active_users_{$propertyId}";
+{
+    // API call to get active users data from Google Analytics
+    $response = $this->analytics->properties->runRealtimeReport(
+        "properties/{$propertyId}",
+        new \Google_Service_AnalyticsData_RunRealtimeReportRequest([
+            'metrics' => [['name' => 'activeUsers']],
+        ])
+    );
 
-        // Try to get the data from cache, or fetch from API if not cached
-        return Cache::remember($cacheKey, 3600, function () use ($propertyId) {
-            // API call to get active users data from Google Analytics
-            $response = $this->analytics->properties->runRealtimeReport(
-                "properties/{$propertyId}",
-                new \Google_Service_AnalyticsData_RunRealtimeReportRequest([
-                    'metrics' => [['name' => 'activeUsers']],
-                ])
-            );
+    // Return the API response as a simple object
+    return $response->toSimpleObject();
+}
 
-            // Return the API response as a simple object
-            return $response->toSimpleObject();
-        });
-    }
 
     public function getUniqueUsers($propertyId, $startDate, $endDate)
     {

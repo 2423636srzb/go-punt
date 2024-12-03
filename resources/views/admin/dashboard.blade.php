@@ -82,8 +82,8 @@ $script = '
             <div class="card-body p-20">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
-                        <p class="fw-medium text-primary-light mb-1">Total Users</p>
-                        <h6 class="mb-0">{{$totalUsers}}</h6>
+                        <p class="fw-medium text-primary-light mb-1">Active Users</p>
+                        <h6 class="mb-0">{{ $activeUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}</h6>
                     </div>
                     <div
                         class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
@@ -92,9 +92,9 @@ $script = '
                 </div>
                 <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
                     <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                        {{$activeUsers}}
+                        {{ $uniqueUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}
                     </span>
-                    Last Active users
+                    Unique users
                 </p>
             </div>
         </div><!-- card end -->

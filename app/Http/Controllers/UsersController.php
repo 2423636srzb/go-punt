@@ -11,6 +11,7 @@ use App\Exports\UserGamesExport;
 use App\Imports\UserGamesImport;
 use App\Models\Announcement;
 use App\Models\UserAccount;
+use App\Services\GoogleAnalyticsService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class UsersController extends Controller
 {
-    public function __construct() {}
+    protected $analytics;
+
+    public function __construct(GoogleAnalyticsService $analytics)
+    {
+        $this->analytics = $analytics;
+    }
 
     public function dashboard()
     {
@@ -60,10 +66,6 @@ class UsersController extends Controller
         )
         ->get();
     
-    
-    
-    
-        
 
         $userAccountsCount = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
     ->where('accounts.status', 1) // Filter accounts with status = 1
@@ -376,8 +378,10 @@ class UsersController extends Controller
 
         // Get total users
         $totalUsers = User::count();
-
-        $activeUsers = User::where('user_status', 'active')->count();
+        $propertyId = '468590145'; // Replace with your property ID
+        $activeUsers = $this->analytics->getActiveUsers($propertyId);
+        $uniqueUsers = $this->analytics->getUniqueUsers($propertyId, '7daysAgo', 'today');
+        // $activeUsers = User::where('user_status', 'active')->count();
         $transactions = DB::table('user_platform_transactions')
         ->join('games', 'user_platform_transactions.platform_id', '=', 'games.id')  // Joining on platform_id
         ->select('user_platform_transactions.*', 'games.name as name')  // Selecting necessary columns
@@ -387,7 +391,7 @@ class UsersController extends Controller
         $depositePendingRequest = DB::table('user_platform_transactions')->where('status','pending')->count('id');
         $withDrawSum = DB::table('withdrawals')->where('status','Approved')->sum('amount');
         $withDrawSumPendingRequest = DB::table('withdrawals')->where('status','pending')->count('id');
-        return view('admin/dashboard', compact('games', 'activeGamesCount', 'activeAndRecentGamesCount', 'totalUsers', 'activeUsers','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest'));
+        return view('admin/dashboard', compact('games', 'activeGamesCount', 'activeAndRecentGamesCount', 'totalUsers', 'activeUsers','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','uniqueUsers'));
     }
 
     // NOT USED Kept for Future Reference

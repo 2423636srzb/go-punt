@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Google_Client;
 use Google_Service_AnalyticsData;
-use Illuminate\Support\Facades\Cache;
 class GoogleAnalyticsService
 {
     protected $analytics;
@@ -73,8 +72,8 @@ public function getAvgEngagementTime($propertyId, $startDate, $endDate)
                 ['startDate' => $startDate, 'endDate' => $endDate],
             ],
             'metrics' => [
-                ['name' => 'engagementRate'], // Total engagement time in seconds
-                ['name' => 'sessions'], // Total sessions
+                ['name' => 'userEngagementDuration'], // Total engagement time in seconds
+                ['name' => 'activeUsers'], // Total sessions
             ],
         ])
     );

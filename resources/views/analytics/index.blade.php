@@ -14,7 +14,7 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
                         <p class="fw-medium text-primary-light mb-1">Active Users</p>
-                        <h6 class="mb-0">{{ $activeUsers->rows[0]->metricValues[0]->value ?? 'No active users' }}</h6>
+                        <h6 class="mb-0" id="activeUsers">{{ $activeUsers->rows[0]->metricValues[0]->value ?? 'No active users' }}</h6>
                     </div>
                     <div
                         class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
@@ -35,7 +35,7 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
                         <p class="fw-medium text-primary-light mb-1">New Users</p>
-                        <h6 class="mb-0">{{ $newUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}</h6>
+                        <h6 class="mb-0" id="newUsers">{{ $newUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}</h6>
                     </div>
                     <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
                         <iconify-icon icon="fa6-solid:user-plus" class="text-white text-2xl mb-0"></iconify-icon>
@@ -57,7 +57,7 @@
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <div>
                         <p class="fw-medium text-primary-light mb-1">Unique Users</p>
-                        <h6 class="mb-0"> {{ $uniqueUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}</h6>
+                        <h6 class="mb-0" id="uniqueUsers"> {{ $uniqueUsers->rows[0]->metricValues[0]->value ?? 'N/A' }}</h6>
                     </div>
                     <div
                         class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
@@ -80,7 +80,7 @@
                     <!-- Text Section -->
                     <div>
                         <p class="fw-medium text-primary-light mb-1">Avg Engagement Time</p>
-                        <h6 class="mb-0">
+                        <h6 class="mb-0" id="avgEngagementTime">
                             {{ $avgEngagementTimeFormatted }}
                         </h6>
                     </div>
@@ -120,4 +120,28 @@
         </div>
     </div>
 </div> --}}
+
+<script>
+    function refreshAnalytics() {
+        axios.get('/analytics-data')
+            .then(response => {
+                const data = response.data;
+
+                // Update DOM elements
+                document.querySelector('#activeUsers').innerText = data.activeUsers;
+                document.querySelector('#newUsers').innerText = data.newUsers;
+                document.querySelector('#uniqueUsers').innerText = data.uniqueUsers;
+                document.querySelector('#avgEngagementTime').innerText = data.avgEngagementTime;
+            })
+            .catch(error => {
+                console.error('Error fetching analytics data:', error);
+            });
+    }
+
+    // Refresh every 60 seconds
+    setInterval(refreshAnalytics, 60000);
+
+    // Initial load
+    refreshAnalytics();
+</script>
 @endsection

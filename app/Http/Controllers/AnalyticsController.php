@@ -32,5 +32,24 @@ class AnalyticsController extends Controller
         'avgEngagementTimeFormatted' => $avgEngagementTimeFormatted, // MM:SS format
     ]);
     }
+
+
+    public function fetchData()
+    {
+    $propertyId = '468590145'; // Replace with your property ID
+
+    $activeUsers = $this->analytics->getActiveUsers($propertyId);
+    $uniqueUsers = $this->analytics->getUniqueUsers($propertyId, '30daysAgo', 'today');
+    $newUsers = $this->analytics->getNewUsers($propertyId, '30daysAgo', 'today');
+    $avgEngagementTimeFormatted = $this->analytics->getAvgEngagementTime($propertyId, '7daysAgo', 'today');
+
+    return response()->json([
+        'activeUsers' => $activeUsers->rows[0]->metricValues[0]->value ?? 'No active users',
+        'uniqueUsers' => $uniqueUsers->rows[0]->metricValues[0]->value ?? 'N/A',
+        'newUsers' => $newUsers->rows[0]->metricValues[0]->value ?? 'N/A',
+        'avgEngagementTime' => $avgEngagementTimeFormatted,
+    ]);
+    }
+
 }
 

@@ -73,6 +73,7 @@ Route::middleware('auth')->prefix('staffSetting')->name('admin.staff.')->group(f
 
 });
 Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+Route::get('/analytics-data', [AnalyticsController::class, 'fetchData']);
 Route::get('/get-payment-request/{id}', [PaymentController::class, 'getPaymentRequest'])->middleware('auth')->name('payment_request');
 
 Route::get('/payment-request-approve/{id}', [PaymentController::class, 'acceptPaymentRequest']);

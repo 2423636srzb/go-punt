@@ -41,6 +41,7 @@ class UsersController extends Controller
             'accounts.username', // Select username
             'accounts.password', // Select password
             'accounts.status',
+            'games.login_link',
             'games.id as game_id',
             'games.name as game_name', // Correct column for game name
             'games.logo as game_logo',
@@ -51,7 +52,8 @@ class UsersController extends Controller
             'accounts.game_id',
             'accounts.username', // Include username in GROUP BY
             'accounts.password', // Include password in GROUP BY
-            'accounts.status', // Include password in GROUP BY
+            'accounts.status', 
+            'games.login_link',
             'games.id',
             'games.name',
             'games.logo'

@@ -81,11 +81,7 @@
                     <div>
                         <p class="fw-medium text-primary-light mb-1">Avg Engagement Time</p>
                         <h6 class="mb-0">
-                            @if(!empty($avgEngagementTimeFormatted))
-                                {{ $avgEngagementTimeFormatted }} <!-- Display MM:SS format if available -->
-                            @else
-                                {{ $avgEngagementTimeMilliseconds }} ms <!-- Fallback to milliseconds if not available -->
-                            @endif
+                            {{ $avgEngagementTimeFormatted }}
                         </h6>
                     </div>
                     <!-- Icon Section -->

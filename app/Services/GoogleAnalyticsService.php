@@ -33,22 +33,7 @@ class GoogleAnalyticsService
 }
 
 
-    public function getUniqueUsers($propertyId, $startDate, $endDate)
-    {
-        $response = $this->analytics->properties->runReport(
-            "properties/{$propertyId}",
-            new \Google_Service_AnalyticsData_RunReportRequest([
-                'dateRanges' => [
-                    ['startDate' => $startDate, 'endDate' => $endDate],
-                ],
-                'metrics' => [['name' => 'totalUsers']],
-            ])
-        );
-
-        return $response->toSimpleObject();
-    }
-
-    public function getNewUsers($propertyId, $startDate, $endDate)
+public function getUniqueUsers($propertyId, $startDate, $endDate)
 {
     $response = $this->analytics->properties->runReport(
         "properties/{$propertyId}",
@@ -56,12 +41,28 @@ class GoogleAnalyticsService
             'dateRanges' => [
                 ['startDate' => $startDate, 'endDate' => $endDate],
             ],
-            'metrics' => [['name' => 'newUsers']],
+            'metrics' => [['name' => 'totalUsers']], // Make sure the correct metric is passed here
         ])
     );
 
     return $response->toSimpleObject();
 }
+
+public function getNewUsers($propertyId, $startDate, $endDate)
+{
+    $response = $this->analytics->properties->runReport(
+        "properties/{$propertyId}",
+        new \Google_Service_AnalyticsData_RunReportRequest([
+            'dateRanges' => [
+                ['startDate' => $startDate, 'endDate' => $endDate],
+            ],
+            'metrics' => [['name' => 'newUsers']], // Ensure newUsers metric is used here
+        ])
+    );
+
+    return $response->toSimpleObject();
+}
+
 
 public function getAvgEngagementTime($propertyId, $startDate, $endDate)
 {
@@ -71,40 +72,38 @@ public function getAvgEngagementTime($propertyId, $startDate, $endDate)
             'dateRanges' => [
                 ['startDate' => $startDate, 'endDate' => $endDate],
             ],
-            'metrics' => [['name' => 'engagementRate']],
+            'metrics' => [
+                ['name' => 'engagementRate'], // Total engagement time in seconds
+                ['name' => 'sessions'], // Total sessions
+            ],
         ])
     );
-   
-    // Get the engagement rate value in seconds
-    $engagementRate = $response->toSimpleObject()->rows[0]->metricValues[0]->value ?? 0;
 
-    // Format the engagement rate into MM:SS format
-    $formattedEngagementRate = $this->formatEngagementTime($engagementRate);
+    // Extract metric values
+    $userEngagementDuration = $response->toSimpleObject()->rows[0]->metricValues[0]->value ?? 0;
+    $sessions = $response->toSimpleObject()->rows[0]->metricValues[1]->value ?? 1;
 
-    // Convert engagement rate to milliseconds with 2 decimal places
-    $engagementRateInMilliseconds = $this->convertToMilliseconds($engagementRate);
+    // Calculate the average engagement time
+    if ($sessions > 0) {
+        $averageEngagementTime = $userEngagementDuration / $sessions;
+    } else {
+        $averageEngagementTime = 0;
+    }
 
-    return [
-        'formatted' => $formattedEngagementRate,
-        'milliseconds' => $engagementRateInMilliseconds,
-    ];
+    // Return formatted engagement time
+    return $this->formatEngagementTime($averageEngagementTime);
 }
+
 
 private function formatEngagementTime($seconds)
 {
-    // Convert seconds into minutes and seconds format
-    $minutes = floor($seconds / 60);
+    $hours = floor($seconds / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
     $remainingSeconds = $seconds % 60;
 
-    // Format it as MM:SS
-    return sprintf("%02d:%02d", $minutes, $remainingSeconds);
+    // Format as HH:MM:SS
+    return sprintf("%02d:%02d:%02d", $hours, $minutes, $remainingSeconds);
 }
 
-private function convertToMilliseconds($seconds)
-{
-    // Convert seconds to milliseconds and format to 2 decimal places
-    $milliseconds = $seconds * 1000;
-    return number_format($milliseconds, 2); // Format to 2 decimal places
-}
 
 }

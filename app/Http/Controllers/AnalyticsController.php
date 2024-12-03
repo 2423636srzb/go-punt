@@ -22,15 +22,14 @@ class AnalyticsController extends Controller
         $newUsers = $this->analytics->getNewUsers($propertyId, '30daysAgo', 'today');
        
            // Get engagement time and process it
-    $avgEngagementTimeData = $this->analytics->getAvgEngagementTime($propertyId, '30daysAgo', 'today');
+           $avgEngagementTimeFormatted = $this->analytics->getAvgEngagementTime($propertyId, '7daysAgo', 'today');
 
     // Pass both formatted and milliseconds data to the view
     return view('analytics.index', [
         'activeUsers' => $activeUsers,
         'uniqueUsers' => $uniqueUsers,
         'newUsers' => $newUsers,
-        'avgEngagementTimeFormatted' => $avgEngagementTimeData['formatted'], // Formatted MM:SS
-        'avgEngagementTimeMilliseconds' => $avgEngagementTimeData['milliseconds'] // In milliseconds
+        'avgEngagementTimeFormatted' => $avgEngagementTimeFormatted, // MM:SS format
     ]);
     }
 }

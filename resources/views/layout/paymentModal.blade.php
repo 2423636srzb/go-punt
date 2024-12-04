@@ -158,7 +158,7 @@ aria-hidden="true">
             <!-- Amount Field -->
             <div class="mb-3">
                 <label for="amount" class="form-label">Enter Amount</label>
-                <input class="form-control" type="number" value="" name="amount" id="withDrawamount" required>
+                <input class="form-control" type="number" value="" name="amount" id="Drawamount" required>
             </div>
 
             <!-- Radio Buttons for Account Selection -->

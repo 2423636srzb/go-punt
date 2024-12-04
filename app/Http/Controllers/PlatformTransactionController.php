@@ -7,7 +7,10 @@ use App\Models\BankAccount;
 use Illuminate\Http\Request;
 use App\Models\PlatformTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Notifications\TransactionStatusNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class PlatformTransactionController extends Controller
 {
@@ -41,7 +44,7 @@ class PlatformTransactionController extends Controller
         }
 
         // Create the transaction record
-        PlatformTransaction::create([
+        $transaction = PlatformTransaction::create([
             'user_id' => Auth::id(), // Get the currently authenticated user ID
             'platform_id' => $validatedData['platform_id'],
             'amount' => $validatedData['amount'],
@@ -49,7 +52,9 @@ class PlatformTransactionController extends Controller
             'image' => $imagePath,
             'status' => 'pending', // Default status for a new transaction
         ]);
-
+        $status = 'Created';
+        $admin = User::where('is_admin',1)->get(); // Assuming you use roles.
+        Notification::send($admin, new TransactionStatusNotification($transaction, $status));
         // Return a JSON response indicating success
         return response()->json([
             'success' => true,
@@ -73,57 +78,32 @@ class PlatformTransactionController extends Controller
 }
 
 
-public function submitWithdrawal(Request $request)
+public function submitWithdrawal(Request $request) 
 {
-    // Validate the data coming from the form
+    // Validate the data
     $request->validate([
         'amount' => 'required|numeric|min:1',
-        'accountOption' => 'required|string',
-        'bankId' => 'nullable|exists:bank_accounts,id', // for existing bank accounts
-        'newAccountData.bankName' => 'nullable|string|max:255',
-        'newAccountData.accountNumber' => 'nullable|string|max:255',
-        'newAccountData.accountHolderName' => 'nullable|string|max:255',
-        'newAccountData.iban' => 'nullable|string|max:255',
+        'bankId' => 'nullable|exists:bank_accounts,id',
     ]);
 
-    // Get the logged-in user
+    // Get the user
     $user = Auth::user();
 
-    // Initialize bankId to null
-    $bankId = null;
-
-    if ($request->accountOption == 'newAccount') {
-        // Save the new bank account details to the bank_accounts table
-        $bankAccount = new BankAccount([
-            'user_id' => $user->id,
-            'bank_name' => $request->newAccountData['bankName'],
-            'account_number' => $request->newAccountData['accountNumber'],
-            'account_holder_name' => $request->newAccountData['accountHolderName'],
-            'iban' => $request->newAccountData['iban'],
-        ]);
-
-        // Save the new bank account
-        $bankAccount->save();
-
-        // Set the bankId to the newly created bank account's id
-        $bankId = $bankAccount->id;  // This is the bank_account_id that needs to be saved
-    } else {
-        // Use the saved bank account id from the selection
-        $bankId = $request->bankId;
-    }
-
-    // Store the withdrawal record in the withdrawals table
+    // Store withdrawal record
     $withdrawal = new Withdrawal([
         'user_id' => $user->id,
         'amount' => $request->amount,
         'status' => 'pending',
-        'bank_account_id' => $bankId,  // Store the bank account id here
+        'bank_account_id' => $request->bankId,
     ]);
 
-    $withdrawal->save();
+        $transaction = $withdrawal->save();
+   
 
-    return response()->json(['message' => 'Withdrawal request submitted successfully.']);
+        return response()->json(['message' => 'Withdrawal request submitted successfully.']);
+   
 }
+
 
 public function withdrawDestroy($id)
 {

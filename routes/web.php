@@ -19,10 +19,20 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\PlatformTransactionController;
 use App\Http\Controllers\StaffController;
+use Illuminate\Support\Facades\Broadcast;
 
 //Route::controller(DashboardController::class)->group(function () {
 //    Route::get('/', 'index')->name('index');
 //});
+
+// Register broadcasting routes
+Broadcast::routes();
+
+// Include channels definition
+require base_path('routes/channels.php');
+
+Route::get('/notifications', [UsersController::class, 'showNotification'])->name('notifications.show');
+Route::get('/notifications/{id}/read', [UsersController::class, 'markAsRead'])->name('notifications.read');
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');

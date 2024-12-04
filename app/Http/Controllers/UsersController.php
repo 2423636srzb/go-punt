@@ -466,5 +466,23 @@ class UsersController extends Controller
             return redirect()->back()->with('success', 'Announcememnt Created Successfully');
         }
     }
+
+    public function fetchNotifications()
+    {
+        return Auth::user()->notifications; // or ->unreadNotifications
+    }  
+    
+    public function markAsRead($notificationId)
+    {
+        Auth::user()->notifications()->find($notificationId)->markAsRead();
+        return back();
+    }
+    public function showNotification()
+    {
+        // Fetch all notifications for the authenticated user
+        $notifications = Auth::user()->notifications;
+
+        return view('users.notifications', compact('notifications'));
+    }
     
 }

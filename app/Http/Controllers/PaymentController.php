@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
+use App\Models\User;
 use App\Models\Withdrawal;
+use App\Notifications\TransactionStatusNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,26 +52,109 @@ class PaymentController extends Controller
     
     public function acceptPaymentRequest($id)
     {
-        DB::table('user_platform_transactions')->where('id',$id)->update(['status'=>'approved']);
-        return redirect()->back()->with('success' , 'Payment Request Accepted Successfully');
-       
+        // Update the transaction status to "approved"
+        $updated = DB::table('user_platform_transactions')->where('id', $id)->update(['status' => 'approved']);
+    
+        if ($updated) {
+            // Retrieve the updated transaction
+            $transaction = DB::table('user_platform_transactions')->where('id', $id)->first();
+    
+            if ($transaction && isset($transaction->user_id)) {
+                // Find the associated user
+                $user = User::find($transaction->user_id);
+    
+                if ($user) {
+                    // Send notification to the user
+                    $user->notify(new TransactionStatusNotification($transaction, 'approved'));
+    
+                    // Redirect with success message
+                    return redirect()->back()->with('success', 'Payment Request Accepted Successfully');
+                }
+    
+                // User not found
+                return redirect()->back()->withErrors(['error' => 'User associated with this transaction not found.']);
+            }
+    
+            // Transaction record not found
+            return redirect()->back()->withErrors(['error' => 'Transaction record not found.']);
+        }
+    
+        // Update operation failed
+        return redirect()->back()->withErrors(['error' => 'Failed to approve the payment request.']);
     }
+    
     public function rejectPaymentRequest($id)
     {
-        DB::table('user_platform_transactions')->where('id',$id)->update(['status'=>'rejected']);
-        return redirect()->back()->with('success' , 'Payment Request Rejected Successfully');
+       $updated = DB::table('user_platform_transactions')->where('id',$id)->update(['status'=>'rejected']);
+        
+        if ($updated) {
+            // Retrieve the updated transaction
+            $transaction = DB::table('user_platform_transactions')->where('id', $id)->first();
+    
+            if ($transaction && isset($transaction->user_id)) {
+                // Find the associated user
+                $user = User::find($transaction->user_id);
+    
+                if ($user) {
+                    // Send notification to the user
+                    $user->notify(new TransactionStatusNotification($transaction, 'Rejected'));
+    
+                    // Redirect with success message
+                    return redirect()->back()->with('success', 'Payment Request Rejected Successfully');
+                }
+            }
+            return redirect()->back()->with('success' , 'Payment Request Rejected Successfully');
+        }
+
        
     }
 
     public function rejectWithdrawRequest($id)
     {
-        DB::table('withdrawals')->where('id',$id)->update(['status'=>'rejected']);
-        return redirect()->back()->with('success' , 'Withdrawal Request Rejected Successfully');
-    }
+        $updated = DB::table('withdrawals')->where('id',$id)->update(['status'=>'rejected']);
+
+        if ($updated) {
+            // Retrieve the updated transaction
+            $transaction = DB::table('withdrawals')->where('id', $id)->first();
+    
+           
+                // Find the associated user
+                $user = User::find($transaction->user_id);
+    
+               
+                    // Send notification to the user
+                    $user->notify(new TransactionStatusNotification($transaction, 'Rejected'));
+    
+                    // Redirect with success message
+                    return redirect()->back()->with('success', 'Payment Request Rejected Successfully');
+                
+            }
+            return redirect()->back()->with('error' , 'Payment Request Not Rejected');
+        }
+
+
+    
     public function acceptWithdrawRequest($id)
     {
-        DB::table('withdrawals')->where('id',$id)->update(['status'=>'approved']);
-        return redirect()->back()->with('success' , 'Withdrawal Request Approved Successfully');
+        $updated = DB::table('withdrawals')->where('id',$id)->update(['status'=>'approved']);
+        if ($updated) {
+            // Retrieve the updated transaction
+            $transaction = DB::table('withdrawals')->where('id', $id)->first();
+    
+           
+                // Find the associated user
+                $user = User::find($transaction->user_id);
+    
+               
+                    // Send notification to the user
+                    $user->notify(new TransactionStatusNotification($transaction, 'Approved'));
+    
+                    // Redirect with success message
+                    
+                    return redirect()->back()->with('success' , 'Withdrawal Request Approved Successfully');
+            }
+      
+        return redirect()->back()->with('error' , 'Withdrawal Request Not Approved');
     }
 
   

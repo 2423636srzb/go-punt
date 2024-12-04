@@ -121,27 +121,5 @@
     </div>
 </div> --}}
 
-<script>
-    function refreshAnalytics() {
-        axios.get('/analytics-data')
-            .then(response => {
-                const data = response.data;
 
-                // Update DOM elements
-                document.querySelector('#activeUsers').innerText = data.activeUsers;
-                document.querySelector('#newUsers').innerText = data.newUsers;
-                document.querySelector('#uniqueUsers').innerText = data.uniqueUsers;
-                document.querySelector('#avgEngagementTime').innerText = data.avgEngagementTime;
-            })
-            .catch(error => {
-                console.error('Error fetching analytics data:', error);
-            });
-    }
-
-    // Refresh every 60 seconds
-    setInterval(refreshAnalytics, 60000);
-
-    // Initial load
-    refreshAnalytics();
-</script>
 @endsection

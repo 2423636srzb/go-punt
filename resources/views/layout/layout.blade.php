@@ -97,21 +97,21 @@
     $('#withdrawalForm').on('submit', function (e) { 
     e.preventDefault(); // Prevent page reload
 
-    var amount = $('#withDrawamount').val();
-    var accountOption = $("input[name='accountOption']:checked").val();
+    var amount = $('#Drawamount').val();
+    // var accountOption = $("input[name='accountOption']:checked").val();
 
     var formData = new FormData();
     formData.append('amount', amount);
-    formData.append('accountOption', accountOption);
+    // formData.append('accountOption', accountOption);
 
-    if (accountOption === 'newAccount') {
-        formData.append('newAccountData[bankName]', $('#bankName').val());
-        formData.append('newAccountData[accountNumber]', $('#accountNumber').val());
-        formData.append('newAccountData[accountHolderName]', $('#accountHolderName').val());
-        formData.append('newAccountData[iban]', $('#iban').val());
-    } else {
+    // if (accountOption === 'newAccount') {
+    //     formData.append('newAccountData[bankName]', $('#bankName').val());
+    //     formData.append('newAccountData[accountNumber]', $('#accountNumber').val());
+    //     formData.append('newAccountData[accountHolderName]', $('#accountHolderName').val());
+    //     formData.append('newAccountData[iban]', $('#iban').val());
+    // } else {
         formData.append('bankId', $('#savedAccounts').val());
-    }
+    // }
 
     console.log([...formData]); // Debugging to check the data being sent
 
@@ -245,6 +245,31 @@ $(document).ready(function () {
    
 
 
+</script>
+
+
+<script>
+    function refreshAnalytics() {
+        axios.get('/analytics-data')
+            .then(response => {
+                const data = response.data;
+
+                // Update DOM elements
+                document.querySelector('#activeUsers').innerText = data.activeUsers;
+                document.querySelector('#newUsers').innerText = data.newUsers;
+                document.querySelector('#uniqueUsers').innerText = data.uniqueUsers;
+                document.querySelector('#avgEngagementTime').innerText = data.avgEngagementTime;
+            })
+            .catch(error => {
+                console.error('Error fetching analytics data:', error);
+            });
+    }
+
+    // Refresh every 60 seconds
+    setInterval(refreshAnalytics, 60000);
+
+    // Initial load
+    refreshAnalytics();
 </script>
 </body>
 

@@ -91,6 +91,46 @@
                 console.error('Error fetching withdrawal data:', error);
             });
     }
+
+    let inactivityTimeout;
+let logoutTime; // Timeout duration in milliseconds
+const warningTime = 3300 * 1000; // 55 minutes for users (adjust as needed)
+
+// Dynamically set `logoutTime` based on user role
+function setLogoutTime() {
+    // Example: Fetch user role from a meta tag or another source
+    const isAdmin = document.querySelector('meta[name="is-admin"]').getAttribute('content') === '1';
+
+    // Set timeout: 24 hours for admins, 1 hour for users
+    logoutTime = isAdmin ? 86400 * 1000 : 3600 * 1000; // 24 hours or 1 hour
+}
+
+function resetInactivityTimer() {
+    clearTimeout(inactivityTimeout);
+    inactivityTimeout = setTimeout(() => {
+        alert('You have been inactive. You will be logged out.');
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/'; // Redirect to the home page or login page
+            } else {
+                console.error('Logout failed');
+            }
+        }).catch(error => console.error('Error:', error));
+    }, logoutTime);
+}
+
+// Initialize the script
+setLogoutTime(); // Set logout time based on role
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+
+resetInactivityTimer(); // Initialize the inactivity timer
+ // Initialize the timer
 </script>
 
 <script>

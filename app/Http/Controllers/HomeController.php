@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Game;
 use App\Models\UserAccount;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,38 @@ class HomeController extends Controller
         return view('home/signUp');
     }
 
+    //otp verification
+    public function verifyOtp(Request $request)
+    {
+        $validated = $request->validate([
+            'otp' => 'required|digits:6', // Validate the OTP input
+        ]);
+    
+        $storedOtp = session('otp');
+        $otpExpiresAt = session('otp_expires_at');
+    
+        if ($storedOtp && $otpExpiresAt && now()->lessThanOrEqualTo($otpExpiresAt)) {
+            if ($validated['otp'] == $storedOtp) {
+                // OTP is valid, clear it from the session
+                session()->forget(['otp', 'otp_expires_at']);
+    
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'OTP verified successfully. You are now logged in.',
+                ]);
+            }
+    
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid OTP.',
+            ], 401);
+        }
+    
+        return response()->json([
+            'status' => 'error',
+            'message' => 'OTP has expired. Please request a new one.',
+        ], 401);
+    }
     // Login function
     public function login(Request $request)
     {
@@ -39,14 +72,44 @@ class HomeController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:8',
         ]);
-
+    
         // Attempt to log the user in
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], true)) {
-            // If login is successful
+            $user = Auth::user();
+    
+            // Check if the user is an admin
+            if ($user->is_admin) {
+                // Generate OTP and store it in session
+                $otp = rand(100000, 999999); // Generate a random 6-digit OTP
+                $expiresAt = now()->addMinutes(10); // Set OTP expiration time
+    
+                session(['otp' => $otp, 'otp_expires_at' => $expiresAt]);
+    
+                // Send OTP to admin's email
+                try {
+                    Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+    
+                    return response()->json([
+                        'status' => 'otp_required',
+                        'message' => 'An OTP has been sent to your email for verification.',
+                        'user_id' => $user->id, // Pass user ID for verification
+                    ]);
+                } catch (\Exception $e) {
+                
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Failed to send OTP. Please try again later.',
+                    ], 500);
+                }
+            }
+    
+            // If the user is not an admin, login normally
             return response()->json([
-                'username' => Auth::user()->name,
-                'is_admin' => Auth::user()->is_admin,
-                'profile_image' => Auth::user()->profile_image == "" ? "https://placehold.co/40x40" : asset('storage/profile_images/' . Auth::user()->profile_image),
+                'username' => $user->name,
+                'is_admin' => $user->is_admin,
+                'profile_image' => $user->profile_image == "" 
+                    ? "https://placehold.co/40x40" 
+                    : asset('storage/profile_images/' . $user->profile_image),
                 'status' => 'success',
                 'message' => 'Login successful. Welcome!',
             ]);
@@ -58,6 +121,7 @@ class HomeController extends Controller
             ], 401); // 401 Unauthorized error
         }
     }
+    
 
     public function forgotPassword()
     {

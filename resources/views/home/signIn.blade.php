@@ -37,6 +37,22 @@
     <link rel="stylesheet" href="{{ asset('assets/css/lib/audioplayer.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        #otp-verification-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 1050;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
 
 </head>
 
@@ -57,7 +73,7 @@
                     <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
-                <form id="login-form" action="{{ route('login.store') }}">
+                <form id="login-form">
                     @csrf <!-- CSRF token -->
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
@@ -101,6 +117,18 @@
                 </form>
             </div>
         </div>
+
+        <div id="otp-verification-popup" style="display: none;">
+            <h4>OTP Verification</h4>
+            <p>An OTP has been sent to your email. Please enter it below to continue.</p>
+            <form id="otp-form">
+                @csrf
+                <input type="text" name="otp" class="form-control" placeholder="Enter OTP">
+                <button type="submit" class="btn btn-primary mt-3">Verify OTP</button>
+            </form>
+            <p class="text-danger mt-2" id="otp-error" style="display: none;"></p>
+        </div>
+
     </section>
     <div id="toast"
         class="toast hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50">
@@ -155,49 +183,90 @@
         // ========================= Password Show Hide Js End ===========================
 
 
-
         $('#login-form').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+    e.preventDefault(); // Prevent default form submission
 
-            var formData = $(this).serialize(); // Serialize the login form data
+    var formData = $(this).serialize(); // Serialize the login form data, including the CSRF token
 
-            $.ajax({
-                url: '{{ route("login.store") }}', // Route for login action
-                method: 'POST',
-                data: formData,
-                success: function (response) {
-                    if (response.status === 'success') {
-                        // Display success toast message
-                        showToast(response.message, 'success'); // Green toast for success
-                        setTimeout(function () {
-                            //closeLoginModal(); // Close the modal after a short delay
-                        }, 1000);
-                        if (response.is_admin == '1') {
-                            window.location.href = "{{ route('admin.dashboard') }}";
-                        } else {
-                            window.location.href = '{{ route("users.dashboard") }}';
-                        }
-                    }
-                },
-                error: function (xhr) {
-                    let errors = xhr.responseJSON.errors;
-                    let errorMessage = '';
+    $.ajax({
+        url: '{{ route("login") }}', // Route for login action
+        method: 'POST',
+        data: formData,
+        success: function (response) {
+            if (response.status === 'otp_required') {
+                $('#otp-verification-popup').show(); // Show OTP modal
+            } else if (response.status === 'success') {
+                alert(response.message);
+                window.location.href = '{{ route('users.dashboard') }}'; // Redirect after successful login
+            } else {
+                alert(response.message || 'An unexpected error occurred.');
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.responseJSON.message || 'Login failed.');
+        }
+    });
+});
 
-                    // Check if there are specific errors or a general message
-                    if (errors) {
-                        // Loop through each error and concatenate them
-                        $.each(errors, function (key, messages) {
-                            errorMessage += messages.join(' ') + '<br>';
-                        });
-                    } else {
-                        errorMessage = xhr.responseJSON.message || 'An unknown error occurred.';
-                    }
 
-                    // Display error message in the toast or any other notification element
-                    showToast(errorMessage, 'error');
-                }
-            });
-        });
+// OTP verification
+$('#otp-form').on('submit', function (e) {
+    e.preventDefault();
+
+    const otp = $('input[name="otp"]').val();
+
+    $.ajax({
+        url: '/verify-otp', // Update to your OTP verification route
+        method: 'POST',
+        data: {
+            otp: otp,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            alert(response.message);
+            window.location.href = '{{ route('admin.dashboard') }}'; // Redirect after OTP verification
+        },
+        error: function (xhr) {
+            $('#otp-error').text(xhr.responseJSON.message).show(); // Display error
+        }
+    });
+});
+
+
+
+
+    
+                // success: function (response) {
+                //     if (response.status === 'success') {
+                //         // Display success toast message
+                //         showToast(response.message, 'success'); // Green toast for success
+                //         setTimeout(function () {
+                //             //closeLoginModal(); // Close the modal after a short delay
+                //         }, 1000);
+                //         if (response.is_admin == '1') {
+                //             window.location.href = "{{ route('admin.dashboard') }}";
+                //         } else {
+                //             window.location.href = '{{ route("users.dashboard") }}';
+                //         }
+                //     }
+                // },
+                // error: function (xhr) {
+                //     let errors = xhr.responseJSON.errors;
+                //     let errorMessage = '';
+
+                //     // Check if there are specific errors or a general message
+                //     if (errors) {
+                //         // Loop through each error and concatenate them
+                //         $.each(errors, function (key, messages) {
+                //             errorMessage += messages.join(' ') + '<br>';
+                //         });
+                //     } else {
+                //         errorMessage = xhr.responseJSON.message || 'An unknown error occurred.';
+                //     }
+
+                //     // Display error message in the toast or any other notification element
+                //     showToast(errorMessage, 'error');
+                // }
     </script>
 
 

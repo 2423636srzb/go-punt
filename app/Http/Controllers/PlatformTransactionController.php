@@ -90,14 +90,16 @@ public function submitWithdrawal(Request $request)
     $user = Auth::user();
 
     // Store withdrawal record
-    $withdrawal = new Withdrawal([
+    $transaction = Withdrawal::create([
         'user_id' => $user->id,
         'amount' => $request->amount,
         'status' => 'pending',
         'bank_account_id' => $request->bankId,
     ]);
 
-        $transaction = $withdrawal->save();
+    $status = 'Created';
+    $admin = User::where('is_admin',1)->get(); // Assuming you use roles.
+    Notification::send($admin, new TransactionStatusNotification($transaction, $status));
    
 
         return response()->json(['message' => 'Withdrawal request submitted successfully.']);

@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn(Request $request) => route('home'));
         $middleware->priority([
             \Illuminate\Auth\Middleware\Authenticate::class,
+             \App\Http\Middleware\InactivityTimeout::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

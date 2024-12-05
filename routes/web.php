@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\PlatformTransactionController;
 use App\Http\Controllers\StaffController;
+use App\Http\Middleware\InactivityTimeout;
 use Illuminate\Support\Facades\Broadcast;
 
 //Route::controller(DashboardController::class)->group(function () {
@@ -30,25 +31,24 @@ Broadcast::routes();
 
 // Include channels definition
 require base_path('routes/channels.php');
-
-Route::get('/notifications', [UsersController::class, 'showNotification'])->name('notifications.show');
-Route::get('/notifications/{id}/read', [UsersController::class, 'markAsRead'])->name('notifications.read');
-
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
 });
-
-Route::post('games/uploadAccountMultiplee', [GameController::class, 'uploadAccountsMultiple']);
 
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
 
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
-Route::post('/login', [HomeController::class, 'login'])->name('login.store');
+Route::post('/login', [HomeController::class, 'login'])->name('login');
 
 Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
-
+Route::post('/verify-otp', [HomeController::class, 'verifyOtp']);
+Route::middleware(['auth', InactivityTimeout::class])->group(function () {
+    
+Route::get('/notifications', [UsersController::class, 'showNotification'])->name('notifications.show');
+Route::get('/notifications/{id}/read', [UsersController::class, 'markAsRead'])->name('notifications.read');
+Route::post('games/uploadAccountMultiplee', [GameController::class, 'uploadAccountsMultiple']);
 Route::get('/users/dashboard', [UsersController::class, 'dashboard'])->middleware('auth')->name('users.dashboard');
 
 Route::get('/users/profile', [UsersController::class, 'profile'])->middleware('auth')->name('users.user_profile');
@@ -302,4 +302,5 @@ Route::prefix('users')->group(function () {
         //Route::get('/users-list', 'usersList')->name('usersList');
         Route::get('/view-profile', 'viewProfile')->name('viewProfile');
     });
+});
 });

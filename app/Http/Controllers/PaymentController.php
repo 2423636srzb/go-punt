@@ -174,11 +174,11 @@ class PaymentController extends Controller
     
             // Check payment method and assign the corresponding value
             if ($bank) {
-                if ($withdrawal->payment_method == 'Bank Transfer') {
+                if ($withdrawal->payment_method == 'bank-transfer') {
                     $paymentDetail = $bank->account_number;  // Use account number for bank transfer
-                } elseif ($withdrawal->payment_method == 'Crypto') {
+                } elseif ($withdrawal->payment_method == 'crypto') {
                     $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
-                } elseif ($withdrawal->payment_method == 'UPI') {
+                } elseif ($withdrawal->payment_method == 'upi') {
                     $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
                 }
             }
@@ -186,7 +186,7 @@ class PaymentController extends Controller
             // Prepare the response data
             $response = [
                 'id' => $id,
-                'user_name' => $user ? $user->name : 'Not Available',  // Get the user's name
+                'user_name' => $user ? $user->username : 'Not Available',  // Get the user's name
                 'amount' => $withdrawal->amount,  // Withdrawal amount
                 'bank_account_id' => $withdrawal->bank_account_id,  // Bank account ID
                 'status' => $withdrawal->status,  // Status of the withdrawal

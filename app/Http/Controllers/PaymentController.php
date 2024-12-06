@@ -174,11 +174,11 @@ class PaymentController extends Controller
         
         // Check the payment method and assign the correct value to the payment detail
         if ($bank) {
-            if ($withdrawal->payment_method == 'Bank Transfer') {
+            if ($withdrawal->payment_method == 'bank-transfer') {
                 $paymentDetail = $bank->account_number;  // Use account number for bank transfer
-            } elseif ($withdrawal->payment_method == 'Crypto') {
+            } elseif ($withdrawal->payment_method == 'crypto') {
                 $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
-            } elseif ($withdrawal->payment_method == 'UPI') {
+            } elseif ($withdrawal->payment_method == 'upi') {
                 $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
             }
         }

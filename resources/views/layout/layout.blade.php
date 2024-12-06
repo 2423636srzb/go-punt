@@ -71,26 +71,29 @@
 @endsection
 
 <script>
-    function viewWithDrawRequest(id) {
-        // Fetch withdrawal data using AJAX
-        fetch(`/withdrawal/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                // Populate the form fields with the fetched data
-                document.getElementById('withdrawRequestUser').textContent = data.user_id;  // Update user field
-                document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Update platform
-                document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Update amount
-                document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Update created at
-                
-                // Show the modal
-                $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
-                $('.reject-withdraw_request').attr('href', '{{ url('withdraw-request-reject') }}' + '/' + data.id);
-                $('#withdrawRequestViewModal').modal('show');
-            })
-            .catch(error => {
-                console.error('Error fetching withdrawal data:', error);
-            });
-    }
+function viewWithDrawRequest(id) {
+    // Fetch withdrawal data using AJAX
+    fetch(`/withdrawal/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            // Populate the modal with fetched data
+            document.getElementById('withdrawRequestUser').textContent = data.user_name;  // Show the user's name
+            document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Show the payment method (Bank Transfer, Crypto, UPI)
+            document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Show the withdrawal amount
+            document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Show the created date
+
+            // Show the correct payment detail based on the payment method
+            document.getElementById('withdrawAccountDetail').textContent = data.payment_detail;  // Show account number, crypto wallet, or UPI number
+
+            // Show the modal
+            $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
+            $('.reject-withdraw_request').attr('href', '{{ url('withdraw-request-reject') }}' + '/' + data.id);
+            $('#withdrawRequestViewModal').modal('show');
+        })
+        .catch(error => {
+            console.error('Error fetching withdrawal data:', error);
+        });
+}
 
     let inactivityTimeout;
 let logoutTime; // Timeout duration in milliseconds

@@ -159,32 +159,49 @@ class PaymentController extends Controller
 
   
 
-public function getWithdrawalData($id)
-{
-    // Fetch the withdrawal data
-    $withdrawal = Withdrawal::find($id);
-
-    // If withdrawal exists, fetch the associated bank name
-    if ($withdrawal) {
-        $bank = BankAccount::find($withdrawal->bank_account_id);
-
-        // Prepare the response data
-        $response = [
-            'id' => $id,
-            'user_id' => $withdrawal->user_id,
-            'amount' => $withdrawal->amount,
-            'bank_account_id' => $withdrawal->bank_account_id,
-            'status' => $withdrawal->status,
-            'created_at' => $withdrawal->created_at->format('Y-m-d H:i:s'),
-            'payment_method' => $bank ? $bank->payment_method: 'Not Available',
-        ];
-
-        // Return the data as a JSON response
-        return response()->json($response);
+    public function getWithdrawalData($id)
+    {
+        // Fetch the withdrawal data
+        $withdrawal = Withdrawal::find($id);
+    
+        // If withdrawal exists, fetch the associated bank account and user data
+        if ($withdrawal) {
+            $bank = BankAccount::find($withdrawal->bank_account_id);  // Get the bank account linked to the withdrawal
+            $user = User::find($withdrawal->user_id);  // Get the user who made the withdrawal request
+    
+            // Define the payment detail variable to hold the correct value
+            $paymentDetail = '';
+    
+            // Check payment method and assign the corresponding value
+            if ($bank) {
+                if ($withdrawal->payment_method == 'Bank Transfer') {
+                    $paymentDetail = $bank->account_number;  // Use account number for bank transfer
+                } elseif ($withdrawal->payment_method == 'Crypto') {
+                    $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
+                } elseif ($withdrawal->payment_method == 'UPI') {
+                    $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
+                }
+            }
+    
+            // Prepare the response data
+            $response = [
+                'id' => $id,
+                'user_name' => $user ? $user->name : 'Not Available',  // Get the user's name
+                'amount' => $withdrawal->amount,  // Withdrawal amount
+                'bank_account_id' => $withdrawal->bank_account_id,  // Bank account ID
+                'status' => $withdrawal->status,  // Status of the withdrawal
+                'created_at' => $withdrawal->created_at->format('Y-m-d H:i:s'),  // Created date and time
+                'payment_method' => $withdrawal->payment_method,  // Payment method (Bank Transfer, Crypto, or UPI)
+                'payment_detail' => $paymentDetail,  // Account number, crypto wallet, or UPI number based on payment method
+            ];
+    
+            // Return the data as a JSON response
+            return response()->json($response);
+        }
+    
+        // If withdrawal doesn't exist, return an error message
+        return response()->json(['error' => 'Withdrawal not found'], 404);
     }
-
-    // If withdrawal doesn't exist, return an error message
-    return response()->json(['error' => 'Withdrawal not found'], 404);
-}
+    
 
 }

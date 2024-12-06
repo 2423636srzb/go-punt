@@ -279,7 +279,17 @@
                                 <label for="platform" class="form-label">Selected Platform: </label>
                                 <label id="withdrawPlatform" class="form-label"></label>
                             </div>
-
+                            <div class="mb-3">
+                                <label for="payment_detail" class="form-label">Account Number: </label>
+                                <label id="withdrawAccountDetail" class="form-label"></label>  
+                            </div>
+                            
+                            
+                            <div class="mb-3">
+                                <label for="account_number" class="form-label">Account Number: </label>
+                                <label id="withdrawAccountNumber" class="form-label"></label>
+                            </div>
+                            
                             <!-- Amount -->
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Amount: </label>

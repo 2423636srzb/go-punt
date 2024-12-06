@@ -196,7 +196,7 @@
             if (response.status === 'otp_required') {
                 $('#otp-verification-popup').show(); // Show OTP modal
             } else if (response.status === 'success') {
-                alert(response.message);
+                // alert(response.message);
                 window.location.href = '{{ route('users.dashboard') }}'; // Redirect after successful login
             } else {
                 alert(response.message || 'An unexpected error occurred.');
@@ -223,7 +223,7 @@ $('#otp-form').on('submit', function (e) {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            alert(response.message);
+            // alert(response.message);
             window.location.href = '{{ route('admin.dashboard') }}'; // Redirect after OTP verification
         },
         error: function (xhr) {

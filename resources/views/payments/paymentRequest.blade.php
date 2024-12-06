@@ -280,7 +280,12 @@
                                 <label for="platform" class="form-label">Selected Platform: </label>
                                 <label id="withdrawPlatform" class="form-label"></label>
                             </div>
-
+                                    
+                            <!-- Payment Detail Field (Account number, crypto wallet, or UPI number) -->
+                            <div class="mb-3">
+                                <label for="payment_detail" class="form-label">Account Number: </label>
+                                <label id="withdrawAccountDetail" class="form-label"></label>  <!-- Dynamic payment detail -->
+                            </div>
                             <!-- Amount Field -->
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Amount: </label>
@@ -291,12 +296,6 @@
                             <div class="mb-3">
                                 <label for="amount" class="form-label">Created At: </label>
                                 <label id="withdrawRequestCreatedAt" class="form-label"></label>
-                            </div>
-
-                            <!-- Payment Detail Field (Account number, crypto wallet, or UPI number) -->
-                            <div class="mb-3">
-                                <label for="payment_detail" class="form-label">Payment Detail: </label>
-                                <label id="withdrawAccountDetail" class="form-label"></label>  <!-- Dynamic payment detail -->
                             </div>
 
                             <div class="mt-5">

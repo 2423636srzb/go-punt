@@ -174,11 +174,11 @@ class PaymentController extends Controller
     
             // Check payment method and assign the corresponding value
             if ($bank) {
-                if ($withdrawal->payment_method == 'bank-transfer') {
+                if ($bank->payment_method == 'bank-transfer') {
                     $paymentDetail = $bank->account_number;  // Use account number for bank transfer
-                } elseif ($withdrawal->payment_method == 'crypto') {
+                } elseif ($bank->payment_method == 'crypto') {
                     $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
-                } elseif ($withdrawal->payment_method == 'upi') {
+                } elseif ($bank->payment_method == 'upi') {
                     $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
                 }
             }
@@ -191,12 +191,13 @@ class PaymentController extends Controller
                 'bank_account_id' => $withdrawal->bank_account_id,  // Bank account ID
                 'status' => $withdrawal->status,  // Status of the withdrawal
                 'created_at' => $withdrawal->created_at->format('Y-m-d H:i:s'),  // Created date and time
-                'payment_method' => $withdrawal->payment_method,  // Payment method (Bank Transfer, Crypto, or UPI)
+                'payment_method' => $bank->payment_method,  // Payment method (Bank Transfer, Crypto, or UPI)
                 'payment_detail' => $paymentDetail,  // Account number, crypto wallet, or UPI number based on payment method
             ];
     
             // Return the data as a JSON response
             return response()->json($response);
+            
         }
     
         // If withdrawal doesn't exist, return an error message

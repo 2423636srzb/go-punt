@@ -76,6 +76,9 @@ function viewWithDrawRequest(id) {
     fetch(`/withdrawal/${id}`)
         .then(response => response.json())
         .then(data => {
+
+            console.log(data.payment_method);
+            console.log(data.payment_detail);
             // Populate the modal with fetched data
             document.getElementById('withdrawRequestUser').textContent = data.user_name;  // Show the user's name
             document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Show the payment method (Bank Transfer, Crypto, UPI)

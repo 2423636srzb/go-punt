@@ -190,6 +190,7 @@ class PaymentController extends Controller
                 } elseif ($bank->payment_method == 'upi') {
                     $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
                     $upiQRCode = $bank->upi_qr_code ? asset('storage/'.$bank->upi_qr_code) : null;
+
   // Set UPI QR code if available
                 }
             }

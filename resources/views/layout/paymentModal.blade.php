@@ -107,9 +107,9 @@
                             </div>
                         </div>
 
-                        @if (count($shareaccounts) > 0)
-                            <!-- Right Side: Form Fields -->
-                            <div class="col-md-6">
+                        <!-- Right Side: Form Fields -->
+                        <div class="col-md-6">
+                                @if (count($shareaccounts) > 0)
                                 <div class="mb-3">
                                     <label for="platform" class="form-label">Select Platform</label>
                                     <select class="form-select" id="platform" name="platform_id" required>
@@ -119,7 +119,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-
+                        @endif
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Amount</label>
                                     <input type="number" class="form-control" id="amount" name="amount"
@@ -134,7 +134,6 @@
 
                                 <button type="submit" class="btn btn-primary w-100">Send Request</button>
                             </div>
-                        @endif
                     </div>
                 </form>
             </div>

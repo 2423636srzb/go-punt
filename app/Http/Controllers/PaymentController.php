@@ -169,17 +169,28 @@ class PaymentController extends Controller
             $bank = BankAccount::find($withdrawal->bank_account_id);  // Get the bank account linked to the withdrawal
             $user = User::find($withdrawal->user_id);  // Get the user who made the withdrawal request
     
-            // Define the payment detail variable to hold the correct value
+            // Initialize variables to hold the payment details
             $paymentDetail = '';
+            $bankName = '';
+            $branchName = '';
+            $ifcNumber = '';
+            $cryptoQRCode = '';
+            $upiQRCode = '';
     
-            // Check payment method and assign the corresponding value
+            // Check if the bank account exists and set the payment details
             if ($bank) {
                 if ($bank->payment_method == 'bank-transfer') {
                     $paymentDetail = $bank->account_number;  // Use account number for bank transfer
+                    $bankName = !empty($bank->bank_name) ? $bank->bank_name : null;  // Set bank name if available
+                    $branchName = !empty($bank->branch_name) ? $bank->branch_name : null;  // Set branch name if available
+                    $ifcNumber = !empty($bank->ifc_number) ? $bank->ifc_number : null;  // Set IFC number if available
                 } elseif ($bank->payment_method == 'crypto') {
                     $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
+                    $cryptoQRCode = $bank->upi_qr_code ? asset('storage/upi_qr_codes/' . $bank->upi_qr_code) : null; // Set crypto QR code if available
                 } elseif ($bank->payment_method == 'upi') {
                     $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
+                    $upiQRCode = $bank->upi_qr_code ? asset('storage/upi_qr_codes/' . $bank->upi_qr_code) : null;
+  // Set UPI QR code if available
                 }
             }
     
@@ -191,18 +202,23 @@ class PaymentController extends Controller
                 'bank_account_id' => $withdrawal->bank_account_id,  // Bank account ID
                 'status' => $withdrawal->status,  // Status of the withdrawal
                 'created_at' => $withdrawal->created_at->format('Y-m-d H:i:s'),  // Created date and time
-                'payment_method' => $bank->payment_method,  // Payment method (Bank Transfer, Crypto, or UPI)
+                'payment_method' => $bank ? $bank->payment_method : 'Not Available',  // Payment method (Bank Transfer, Crypto, or UPI)
                 'payment_detail' => $paymentDetail,  // Account number, crypto wallet, or UPI number based on payment method
+                'bankName' => $bankName,  // Bank name (or null if not available)
+                'branchName' => $branchName,  // Branch name (or null if not available)
+                'cryptoQRCode' => $cryptoQRCode,  // Crypto QR code (or null if not available)
+                'upiQRCode' => $upiQRCode,  // UPI QR code (or null if not available)
+                'ifcNumber' => $ifcNumber,  // IFC number (or null if not available)
             ];
     
             // Return the data as a JSON response
             return response()->json($response);
-            
         }
     
         // If withdrawal doesn't exist, return an error message
         return response()->json(['error' => 'Withdrawal not found'], 404);
     }
+    
     
 
 }

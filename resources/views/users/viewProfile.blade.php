@@ -515,59 +515,34 @@ $('#verify-otp-btn').click(function () {
 
 
 function submitBankAccountForm() {
-    // Gather all input fields including hidden ones
-    const formData = $('#bank-account-form').serializeArray().reduce(function(obj, item) {
-        // Only include non-empty fields
-        if (item.value.trim() !== '') {
-            obj[item.name] = item.value;
-        }
-        return obj;
-    }, {});
+    const formData = new FormData($('#bank-account-form')[0]);
 
-    // Basic validation: Ensure 'payment_method' is selected
-    if (!formData['payment_method']) {
-        showToast('Please select a payment method.', 'error');
-        return;
-    }
+    for (let [key, value] of formData.entries()) {
+    console.log(key + ": " + value);
+}
+    // If validation passes, submit the form using AJAX
+    const method = formData.get('bank_id') ? 'PUT' : 'POST';
+    const url = formData.get('bank_id') ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id')) : '{{ route("users.bankAccount") }}';
 
-    // Additional validation for 'bank-transfer' method
-    if (formData['payment_method'] === 'bank-transfer') {
-        const requiredFields = ['account_holder_name', 'account_number', 'bank_name','ifc_number'];
-        const missingFields = requiredFields.filter(field => !formData[field]);
-
-        if (missingFields.length > 0) {
-            showToast('Please fill all the required fields for Bank Transfer.', 'error');
-            return;
-        }
-    }
-
-    // Determine method and URL based on `bank_id`
-    const method = formData['bank_id'] ? 'PUT' : 'POST';
-    const url = formData['bank_id']
-        ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData['bank_id'])
-        : '{{ route("users.bankAccount") }}';
-
-    // AJAX request
+    // AJAX request to submit the form
     $.ajax({
         url: url,
         method: method,
-        headers: {
-            "X-CSRF-TOKEN": '{{ csrf_token() }}'
-        },
+        headers: { "X-CSRF-TOKEN": '{{ csrf_token() }}' },
         data: formData,
+        processData: false,
+        contentType: false,
         success: function(response) {
             if (response.status === 'success') {
                 showToast(response.message, 'success');
-                // Reload the page to ensure updates are reflected
                 window.location.reload();
             }
         },
         error: function(xhr) {
             const errors = xhr.responseJSON.errors;
             let errorMessage = '';
-            // Check for specific errors or a general message
+
             if (errors) {
-                // Loop through each error and concatenate them
                 $.each(errors, function(key, messages) {
                     errorMessage += messages.join(' ') + '<br>';
                 });
@@ -581,8 +556,11 @@ function submitBankAccountForm() {
 }
 
 
+
+
+
+// Ensure the togglePaymentFieldsEdit() is executed after form data is populated.
 function togglePaymentFieldsEdit() {
-    
     const paymentMethod = $('#payment-method').val();
     console.log("Payment Method:", paymentMethod);
 
@@ -595,19 +573,18 @@ function togglePaymentFieldsEdit() {
     } else if (paymentMethod === 'upi') {
         console.log("Toggling fields for UPI");
         $('#account-title, #UPI-number, #upi-qr-code').show();
-        $('#upi-qr-code .form-label').html('UPI QR Code'); 
+        $('#upi-qr-code .form-label').html('UPI QR Code');
     } else if (paymentMethod === 'crypto') {
         console.log("Toggling fields for Crypto");
-        $('#account-title, #crypto-wallet, #upi-qr-code').show(); 
-        $('#upi-qr-code .form-label').html('Crypto QR Code'); 
+        $('#account-title, #crypto-wallet, #upi-qr-code').show();
+        $('#upi-qr-code .form-label').html('Crypto QR Code');
     } else {
         console.log("No matching payment method");
     }
-
     console.log("toggle4 - togglePaymentFields execution ended");
 }
 
-
+// On clicking the edit button, populate form data
 $(document).on('click', '.edit', function () {
     const bankAccountId = $(this).data('id');
 
@@ -617,7 +594,6 @@ $(document).on('click', '.edit', function () {
         return;
     }
 
-    // Construct the URL dynamically
     const url = '{{ route("users.bankAccount.edit", ":id") }}'.replace(':id', bankAccountId);
 
     // Fetch bank account details via AJAX
@@ -630,21 +606,22 @@ $(document).on('click', '.edit', function () {
         success: function (response) {
             if (response.status === 'success') {
                 const bankAccount = response.data;
-                
+
                 // Populate form fields
                 $('#bank_id').val(bankAccount.id);
                 $('#payment-method').val(bankAccount.payment_method).change();
-                $('input[name="account_holder_name"]').val(bankAccount.account_holder_name || '');
+                $('input[name="account_holder_name"]').val(bankAccount.account_holder_name);
                 $('input[name="account_number"]').val(bankAccount.account_number || '');
                 $('input[name="crypto_wallet"]').val(bankAccount.crypto_wallet || '');
                 $('input[name="bank_name"]').val(bankAccount.bank_name || '');
                 $('input[name="ifc_number"]').val(bankAccount.ifc_number || '');
                 $('input[name="upi_number"]').val(bankAccount.upi_number || '');
                 $('input[name="_method"]').val('PUT');
+                
                 togglePaymentFieldsEdit();
-                console.log(typeof togglePaymentFields);
+                
+                // Scroll to form
                 $('html, body').animate({
-
                     scrollTop: $('#bank-account-form').offset().top
                 }, 500);
                   
@@ -659,6 +636,7 @@ $(document).on('click', '.edit', function () {
         }
     });
 });
+
 </script>
 
 <script>

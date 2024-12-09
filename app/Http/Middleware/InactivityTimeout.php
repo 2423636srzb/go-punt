@@ -20,7 +20,7 @@ class InactivityTimeout
             $role = Auth::user()->is_admin == 1 ? 'admin' : 'user'; // Assuming `role` is a field in your users table
 
             // Define timeouts based on roles (in seconds)
-            $timeout = $role === 'admin' ? 86400 : 30;
+            $timeout = $role === 'admin' ? 86400 : 3600;
 
             $lastActivity = session('last_activity_time');
             $currentTime = now()->timestamp;

@@ -72,16 +72,17 @@ public function edit($id)
 
     public function store(Request $request)
     {
+
         // Validate the form input based on the selected payment method
         $validated = $request->validate([
-            'payment_method' => 'required|string|in:bank-transfer,upi,crypto',
-            'account_holder_name' => 'required|string|max:255',
-            'account_number' => 'required_if:payment_method,bank-transfer|string|max:255',
-            'crypto_wallet' => 'required_if:payment_method,crypto|string|max:255',
-            'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
-            'ifc_number' => 'required_if:payment_method,bank-transfer|string|max:255',
-            'upi_number' => 'required_if:payment_method,upi|string|max:255',
-            'upi_qr_code' => 'nullable|file|mimes:jpg,png,jpeg|max:2048',
+            'payment_method' => 'required|in:bank-transfer,upi,crypto',
+            'account_holder_name' => 'required|max:255',
+            'account_number' => 'required_if:payment_method,bank-transfer|max:255',
+            'crypto_wallet' => 'required_if:payment_method,crypto|max:255',
+            'bank_name' => 'required_if:payment_method,bank-transfer|max:255',
+            'ifc_number' => 'required_if:payment_method,bank-transfer|max:255',
+            'upi_number' => 'required_if:payment_method,upi|max:255',
+            'upi_qr_code' => 'nullable|mimes:jpg,png,jpeg|max:2048',
         ]);
     
         try {
@@ -139,16 +140,15 @@ public function edit($id)
     
     public function update(Request $request, $id)
 {
-    // Validate the form input based on the selected payment method
     $validated = $request->validate([
-        'payment_method' => 'required|string|in:bank-transfer,upi,crypto',
-        'account_holder_name' => 'required|string|max:255',
-        'account_number' => 'required_if:payment_method,bank-transfer,crypto|string|max:255',
-        'crypto_wallet' => 'nullable|string|max:255',
-        'bank_name' => 'required_if:payment_method,bank-transfer|string|max:255',
-        'ifc_number' => 'required_if:payment_method,bank-transfer|string|max:255',
-        'upi_number' => 'required_if:payment_method,upi|string|max:255',
-        'upi_qr_code' => 'nullable|file|mimes:jpg,png,jpeg|max:2048',
+        'payment_method' => 'required|in:bank-transfer,upi,crypto',
+        'account_holder_name' => 'required|max:255',
+        'account_number' => 'required_if:payment_method,bank-transfer|max:255',
+        'crypto_wallet' => 'required_if:payment_method,crypto|max:255',
+        'bank_name' => 'required_if:payment_method,bank-transfer|max:255',
+        'ifc_number' => 'required_if:payment_method,bank-transfer|max:255',
+        'upi_number' => 'required_if:payment_method,upi|max:255',
+        'upi_qr_code' => 'nullable|mimes:jpg,png,jpeg|max:2048',
     ]);
 
     try {

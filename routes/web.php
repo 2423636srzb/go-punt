@@ -64,7 +64,7 @@ Route::get('/users/bankAccount/{id}', [BankAccountController::class, 'edit'])->n
 Route::put('/user/bank-accounts/{id}', [BankAccountController::class, 'update'])->name('bank_accounts.update');
 Route::post('/user/bank-accounts', [BankAccountController::class, 'store'])->name('users.bankAccount');
 
-Route::delete('/user/bank-accounts/{id}', [BankAccountController::class, 'destroy'])->name('bank_accounts.destroy');
+Route::delete('/user/bank-accounts/delete/{id}', [BankAccountController::class, 'destroy'])->name('bank_accounts.destroy');
 
 
 

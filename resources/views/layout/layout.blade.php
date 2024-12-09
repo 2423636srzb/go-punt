@@ -76,17 +76,55 @@ function viewWithDrawRequest(id) {
     fetch(`/withdrawal/${id}`)
         .then(response => response.json())
         .then(data => {
-
             console.log(data.payment_method);
             console.log(data.payment_detail);
+            
             // Populate the modal with fetched data
-            document.getElementById('withdrawRequestUser').textContent = data.user_name;  // Show the user's name
-            document.getElementById('withdrawPlatform').textContent = data.payment_method;  // Show the payment method (Bank Transfer, Crypto, UPI)
+            document.getElementById('withdrawRequestUser').textContent = data.user_name || 'Not Available';  // Show the user's name
+            document.getElementById('withdrawPlatform').textContent = data.payment_method || 'Not Available';  // Show the payment method
             document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Show the withdrawal amount
             document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Show the created date
 
             // Show the correct payment detail based on the payment method
-            document.getElementById('withdrawAccountDetail').textContent = data.payment_detail;  // Show account number, crypto wallet, or UPI number
+            document.getElementById('withdrawAccountDetail').textContent = data.payment_detail || 'Not Available';  // Show account number, crypto wallet, or UPI number
+
+            // Show the QR code if available
+            const qrImage = document.getElementById('withdrawQRImage');
+            if (data.upiQRCode) {
+                qrImage.src = data.upiQRCode;  // Show UPI QR code
+            } else if (data.cryptoQRCode) {
+                qrImage.src = data.cryptoQRCode;  // Show Crypto QR code
+            }
+
+            // Conditionally show additional fields based on payment method
+            if (data.payment_method === 'bank-transfer') {
+                // Show Bank Name, Branch Name, and IFC Number if bank transfer is selected
+                if (data.bankName) {
+                    document.getElementById('withdrawBankName').style.display = 'block';
+                    document.getElementById('withdrawBankNameLabel').textContent = data.bankName;
+                } else {
+                    document.getElementById('withdrawBankName').style.display = 'none';
+                }
+
+                if (data.branchName) {
+                    document.getElementById('withdrawBranchName').style.display = 'block';
+                    document.getElementById('withdrawBranchNameLabel').textContent = data.branchName;
+                } else {
+                    document.getElementById('withdrawBranchName').style.display = 'none';
+                }
+
+                if (data.ifcNumber) {
+                    document.getElementById('withdrawIFCNumber').style.display = 'block';
+                    document.getElementById('withdrawIFCNumberLabel').textContent = data.ifcNumber;
+                } else {
+                    document.getElementById('withdrawIFCNumber').style.display = 'none';
+                }
+            } else {
+                // Hide the Bank-related fields if the payment method is not Bank Transfer
+                document.getElementById('withdrawBankName').style.display = 'none';
+                document.getElementById('withdrawBranchName').style.display = 'none';
+                document.getElementById('withdrawIFCNumber').style.display = 'none';
+            }
 
             // Show the modal
             $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
@@ -97,6 +135,9 @@ function viewWithDrawRequest(id) {
             console.error('Error fetching withdrawal data:', error);
         });
 }
+
+
+
 
     let inactivityTimeout;
 let logoutTime; // Timeout duration in milliseconds

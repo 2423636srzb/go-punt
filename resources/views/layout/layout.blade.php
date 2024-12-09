@@ -91,8 +91,10 @@ function viewWithDrawRequest(id) {
             // Show the QR code if available
             const qrImage = document.getElementById('withdrawQRImage');
             if (data.upiQRCode) {
+                console.log(data.upiQRCode);
                 qrImage.src = data.upiQRCode;  // Show UPI QR code
             } else if (data.cryptoQRCode) {
+                console.log(data.cryptoQRCode);
                 qrImage.src = data.cryptoQRCode;  // Show Crypto QR code
             }
 

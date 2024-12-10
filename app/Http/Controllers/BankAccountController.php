@@ -86,11 +86,29 @@ public function edit($id)
         ]);
     
         try {
+
+            $imagePath = null;
+        // Handle the file upload if a file is provided
+        if ($request->hasFile('file')) {
+
+            $destinationPath = public_path('upiQRCode');
+  
+            // Get the original file name
+            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
+        
+            // Move the file to the public/logos directory
+            $request->file('file')->move($destinationPath, $fileName);
+        
+            // Save the file path to the database (relative path for access via `asset()`)
+            $imagePath = 'upiQRCode/' . $fileName;
+
+            // $imagePath = $request->file('file')->store('transactions', 'public');
+        }
             // Handle UPI QR Code file upload if applicable
-            $upiQrCodePath = null;
-            if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
-                $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
-            }
+            // $upiQrCodePath = null;
+            // if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
+            //     $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
+            // }
     
             // Initialize payment data
             $paymentData = [
@@ -110,12 +128,12 @@ public function edit($id)
             } elseif ($validated['payment_method'] === 'upi') {
                 $paymentData = array_merge($paymentData, [
                     'upi_number' => $validated['upi_number'],
-                    'upi_qr_code' => $upiQrCodePath,
+                    'upi_qr_code' => $imagePath,
                 ]);
             } elseif ($validated['payment_method'] === 'crypto') {
                 $paymentData = array_merge($paymentData, [
                     'crypto_wallet' => $validated['crypto_wallet'],
-                    'upi_qr_code' => $upiQrCodePath,
+                    'upi_qr_code' => $imagePath,
 
                 ]);
             }

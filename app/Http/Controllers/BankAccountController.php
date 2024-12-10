@@ -91,7 +91,7 @@ public function edit($id)
         // Handle the file upload if a file is provided
         if ($request->hasFile('file')) {
 
-            $destinationPath = public_path('upiQRCode');
+            $destinationPath = public_path('QRCodes');
   
             // Get the original file name
             $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
@@ -100,7 +100,7 @@ public function edit($id)
             $request->file('file')->move($destinationPath, $fileName);
         
             // Save the file path to the database (relative path for access via `asset()`)
-            $imagePath = 'upiQRCode/' . $fileName;
+            $imagePath = 'QRCodes/' . $fileName;
 
             // $imagePath = $request->file('file')->store('transactions', 'public');
         }

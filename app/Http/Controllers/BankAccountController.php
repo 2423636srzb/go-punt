@@ -89,15 +89,15 @@ public function edit($id)
 
             $imagePath = null;
         // Handle the file upload if a file is provided
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('upi_qr_code')) {
 
             $destinationPath = public_path('QRCodes');
   
             // Get the original file name
-            $fileName = time() . '_' . $request->file('file')->getClientOriginalName();
+            $fileName = time() . '_' . $request->file('upi_qr_code')->getClientOriginalName();
         
             // Move the file to the public/logos directory
-            $request->file('file')->move($destinationPath, $fileName);
+            $request->file('upi_qr_code')->move($destinationPath, $fileName);
         
             // Save the file path to the database (relative path for access via `asset()`)
             $imagePath = 'QRCodes/' . $fileName;

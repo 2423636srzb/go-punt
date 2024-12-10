@@ -87,16 +87,18 @@ function viewWithDrawRequest(id) {
 
             // Show the correct payment detail based on the payment method
             document.getElementById('withdrawAccountDetail').textContent = data.payment_detail || 'Not Available';  // Show account number, crypto wallet, or UPI number
-
+            if (data.QRCode) {
+      $('.requestScreenShot1').html('<img width="500" src="' + '{{ url('/') }}/' + data.QRCode + '" alt="Bank Logo" />');
+  }
             // Show the QR code if available
-            const qrImage = document.getElementById('withdrawQRImage');
-            if (data.upiQRCode) {
-                console.log(data.upiQRCode);
-                qrImage.src = data.upiQRCode;  // Show UPI QR code
-            } else if (data.cryptoQRCode) {
-                console.log(data.cryptoQRCode);
-                qrImage.src = data.cryptoQRCode;  // Show Crypto QR code
-            }
+            // const qrImage = document.getElementById('withdrawQRImage');
+            // if (data.upiQRCode) {
+            //     console.log(data.upiQRCode);
+            //     qrImage.src = data.upiQRCode;  // Show UPI QR code
+            // } else if (data.cryptoQRCode) {
+            //     console.log(data.cryptoQRCode);
+            //     qrImage.src = data.cryptoQRCode;  // Show Crypto QR code
+            // }
 
             // Conditionally show additional fields based on payment method
             if (data.payment_method === 'bank-transfer') {

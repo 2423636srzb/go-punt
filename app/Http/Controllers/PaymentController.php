@@ -186,10 +186,10 @@ class PaymentController extends Controller
                     $ifcNumber = !empty($bank->ifc_number) ? $bank->ifc_number : null;  // Set IFC number if available
                 } elseif ($bank->payment_method == 'crypto') {
                     $paymentDetail = $bank->crypto_wallet;  // Use crypto wallet for crypto payment
-                    $cryptoQRCode = $bank->upi_qr_code ? asset('storage/'.$bank->upi_qr_code) : null; // Set crypto QR code if available
+                  $QRCode = $bank->upi_qr_code ? $bank->upi_qr_code : null; // Set crypto QR code if available
                 } elseif ($bank->payment_method == 'upi') {
                     $paymentDetail = $bank->upi_number;  // Use UPI number for UPI payment
-                    $upiQRCode = $bank->upi_qr_code ? asset('storage/'.$bank->upi_qr_code) : null;
+                    $QRCode = $bank->upi_qr_code ?$bank->upi_qr_code : null;
 
   // Set UPI QR code if available
                 }
@@ -207,8 +207,7 @@ class PaymentController extends Controller
                 'payment_detail' => $paymentDetail,  // Account number, crypto wallet, or UPI number based on payment method
                 'bankName' => $bankName,  // Bank name (or null if not available)
                 'branchName' => $branchName,  // Branch name (or null if not available)
-                'cryptoQRCode' => $cryptoQRCode,  // Crypto QR code (or null if not available)
-                'upiQRCode' => $upiQRCode,  // UPI QR code (or null if not available)
+                'QRCode' => $QRCode,  // UPI QR code (or null if not available)
                 'ifcNumber' => $ifcNumber,  // IFC number (or null if not available)
             ];
     

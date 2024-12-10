@@ -269,7 +269,7 @@
                         <div class="col-md-6 d-flex align-items-center justify-content-center">
                             <div class="requestScreenShot1 upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center">
                                 <!-- QR Code Image will go here -->
-                                <img id="withdrawQRImage" src="" alt="Bank Logo" class="img-fluid" />
+                                
                             </div>
                         </div>
                         <!-- Right Side: Form Fields -->

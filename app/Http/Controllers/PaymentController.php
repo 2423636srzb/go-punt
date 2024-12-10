@@ -174,8 +174,7 @@ class PaymentController extends Controller
             $bankName = '';
             $branchName = '';
             $ifcNumber = '';
-            $cryptoQRCode = '';
-            $upiQRCode = '';
+            $QRCode = '';
     
             // Check if the bank account exists and set the payment details
             if ($bank) {
@@ -207,7 +206,7 @@ class PaymentController extends Controller
                 'payment_detail' => $paymentDetail,  // Account number, crypto wallet, or UPI number based on payment method
                 'bankName' => $bankName,  // Bank name (or null if not available)
                 'branchName' => $branchName,  // Branch name (or null if not available)
-                'QRCode' => $QRCode,  // UPI QR code (or null if not available)
+                'QRCode' => $QRCode?$QRCode:null,  // UPI QR code (or null if not available)
                 'ifcNumber' => $ifcNumber,  // IFC number (or null if not available)
             ];
     

@@ -87,9 +87,14 @@ function viewWithDrawRequest(id) {
 
             // Show the correct payment detail based on the payment method
             document.getElementById('withdrawAccountDetail').textContent = data.payment_detail || 'Not Available';  // Show account number, crypto wallet, or UPI number
-            if (data.QRCode) {
-      $('.requestScreenShot1').html('<img width="500" src="' + '{{ url('/') }}/' + data.QRCode + '" alt="Bank Logo" />');
-  }
+           
+            if (data.QRCode !== null) {
+            $('.requestScreenShot1').html('<img width="500" src="' + '{{ url('/') }}/' + data.QRCode + '" alt="QR Code" />');
+        } else {
+            $('.requestScreenShot1').html('<p>No QR Code available</p>');
+        }
+
+  
             // Show the QR code if available
             // const qrImage = document.getElementById('withdrawQRImage');
             // if (data.upiQRCode) {

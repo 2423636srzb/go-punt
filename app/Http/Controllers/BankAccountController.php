@@ -102,8 +102,8 @@ public function edit($id)
             // Save the file path to the database (relative path for access via `asset()`)
             $imagePath = 'QRCodes/' . $fileName;
 
-            // $imagePath = $request->file('file')->store('transactions', 'public');
         }
+        // $imagePath = $request->file('file')->store('transactions', 'public');
             // Handle UPI QR Code file upload if applicable
             // $upiQrCodePath = null;
             // if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
@@ -156,7 +156,7 @@ public function edit($id)
         }
     }
     
-    public function update(Request $request, $id)
+    public function update(Request $request , $id)
 {
     $validated = $request->validate([
         'payment_method' => 'required|in:bank-transfer,upi,crypto',
@@ -174,15 +174,30 @@ public function edit($id)
         $paymentRecord = BankAccount::findOrFail($id);
 
         // Handle UPI QR Code file upload if applicable
-        $upiQrCodePath = $paymentRecord->upi_qr_code; // Keep existing QR code path
-        if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
-            // Delete the old file if it exists
-            if ($upiQrCodePath) {
-                Storage::delete('public/' . $upiQrCodePath);
-            }
-            $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
-        }
+        // $upiQrCodePath = $paymentRecord->upi_qr_code; // Keep existing QR code path
+        // if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
+        //     // Delete the old file if it exists
+        //     if ($upiQrCodePath) {
+        //         Storage::delete('public/' . $upiQrCodePath);
+        //     }
+        //     $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
+        // }
+        $imagePath = null;
+        // Handle the file upload if a file is provided
+        if ($request->hasFile('upi_qr_code')) {
 
+            $destinationPath = public_path('QRCodes');
+  
+            // Get the original file name
+            $fileName = time() . '_' . $request->file('upi_qr_code')->getClientOriginalName();
+        
+            // Move the file to the public/logos directory
+            $request->file('upi_qr_code')->move($destinationPath, $fileName);
+        
+            // Save the file path to the database (relative path for access via `asset()`)
+            $imagePath = 'QRCodes/' . $fileName;
+
+        }
         // Initialize updated payment data
         $paymentData = [
             'payment_method' => $validated['payment_method'],
@@ -201,12 +216,12 @@ public function edit($id)
         } elseif ($validated['payment_method'] === 'upi') {
             $paymentData = array_merge($paymentData, [
                 'upi_number' => $validated['upi_number'],
-                'upi_qr_code' => $upiQrCodePath,
+                'upi_qr_code' => $imagePath,
             ]);
         } elseif ($validated['payment_method'] === 'crypto') {
             $paymentData = array_merge($paymentData, [
                 'crypto_wallet' => $validated['crypto_wallet'],
-                'upi_qr_code' => $upiQrCodePath,
+                'upi_qr_code' => $imagePath,
 
             ]);
         }

@@ -239,7 +239,7 @@ $script = '
                                     <div class="mb-20">
                                         <label class="form-label fw-semibold text-primary-light text-sm mb-8">Bank Name</label>
                                         <div class="position-relative">
-                                            <input type="text" class="form-control radius-8" name="bank_name" placeholder="Bank Name" value="">
+                                            <input type="text" class="form-control radius-8" name="bank_name" placeholder="Bank Name" id="bank-name-input" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -275,11 +275,14 @@ $script = '
                                             </div>
                                         </div>
                                     </div> --}}
-                                    <div class="col-sm-6" style="display: none;" id="ifc-number">
-                                        <div class="mb-20">
+                                    <div class="col-sm-6" id="ifc-number" style="display: none;">
+                                        <div class="mb-20 position-relative">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">IFSC Number</label>
-                                            <div class="position-relative">
-                                                <input type="text" class="form-control radius-8" name="ifc_number" placeholder="IFC Number" value="">
+                                            <div class="position-relative d-flex">
+                                                <input type="text" class="form-control radius-8" name="ifc_number" id="ifsc-input" placeholder="IFSC Number">
+                                                <button type="button" id="ifsc-search-btn" class="btn btn-primary ms-2" style="display: none;">
+                                                    Search
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -299,7 +302,25 @@ $script = '
                                             </div>
                                         </div>
                                     </div>         
-                            
+                                                                <!-- Container for IFSC details -->
+                                    <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
+                                        <ul class="list-unstyled mb-0">
+                                            <li><strong>Bank:</strong> <span id="details-bank-name"></span></li>
+                                            <li><strong>Branch:</strong> <span id="details-branch-name"></span></li>
+                                            <li><strong>Contact:</strong> <span id="details-contact"></span></li>
+                                            <li><strong>Bank Details:</strong> <span id="details-bank-details"></span></li>
+                                            <li><strong>City:</strong> <span id="details-city"></span></li>
+                                            <li><strong>District:</strong> <span id="details-district"></span></li>
+                                            <li><strong>State:</strong> <span id="details-state"></span></li>
+                                            <li><strong>Country:</strong> <span id="details-country"></span></li>
+                                            <li><strong>Address:</strong> <span id="details-address"></span></li>
+                                        </ul>
+                                          <!-- Confirm IFSC checkbox -->
+                                        <div class="form-check mt-3">
+                                            <input type="checkbox" class="form-check-input" id="confirm-ifsc">
+                                            <label for="confirm-ifsc" class="form-check-label">Confirm IFSC</label>
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12 d-flex justify-content-center mt-3 mb-3">
                                         <!-- Save button centered and small -->
                                         <button type="submit" id="btnBankProfile"
@@ -442,10 +463,101 @@ $script = '
         </div>
     </div>
 </div>
+{{-- <div class="modal fade" id="ifscDetailsModal" tabindex="-1" role="dialog" aria-labelledby="ifscDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ifscDetailsLabel">IFSC Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li><strong>Bank:</strong> <span id="modal-bank-name"></span></li>
+                    <li><strong>Branch:</strong> <span id="modal-branch-name"></span></li>
+                    <li><strong>Contact:</strong> <span id="modal-contact"></span></li>
+                    <li><strong>Bank Details:</strong> <span id="modal-bank-details"></span></li>
+                    <li><strong>City:</strong> <span id="modal-city"></span></li>
+                    <li><strong>District:</strong> <span id="modal-district"></span></li>
+                    <li><strong>State:</strong> <span id="modal-state"></span></li>
+                    <li><strong>Pincode:</strong> <span id="modal-pincode"></span></li> 
+                    <li><strong>Country:</strong> <span id="modal-country"></span></li>
+                    <li><strong>Address:</strong> <span id="modal-address"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
 @endsection
 
 @section('js')
 <script src="{{asset('assets/js/lib/') }}/confirmation-modal.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const ifscInput = $('#ifsc-input');
+        const searchBtn = $('#ifsc-search-btn');
+        const detailsDiv = $('#ifsc-details');
+        const confirmIfscCheckbox = $('#confirm-ifsc');
+        const saveButton = $('#btnBankProfile');
+
+        // Show search button when user starts typing
+        ifscInput.on('input', function () {
+            const ifscCode = $(this).val().trim();
+            if (ifscCode) {
+                searchBtn.show(); // Show the search button
+            } else {
+                searchBtn.hide(); // Hide the search button if input is empty
+                detailsDiv.hide(); // Hide the details div
+                saveButton.prop('disabled', true); // Disable the Save button
+            }
+        });
+
+        // Search button click handler
+        searchBtn.on('click', function () {
+            const ifscCode = ifscInput.val().trim();
+            if (ifscCode) {
+                // Make an AJAX request to fetch IFSC details
+                $.ajax({
+                    url: `https://ifsc.razorpay.com/${ifscCode}`,
+                    method: 'GET',
+                    success: function (response) {
+                        // Populate the details div
+                        $('#details-bank-name').text(response.BANK || 'N/A');
+                        $('#details-branch-name').text(response.BRANCH || 'N/A');
+                        $('#details-contact').text(response.CONTACT || 'N/A');
+                        $('#details-bank-details').text(response.BANK || 'N/A');
+                        $('#details-city').text(response.CITY || 'N/A');
+                        $('#details-district').text(response.DISTRICT || 'N/A');
+                        $('#details-state').text(response.STATE || 'N/A');
+                        $('#details-country').text('India'); // Assuming country is India
+                        $('#details-address').text(response.ADDRESS || 'N/A');
+
+                        // Show the details div
+                        detailsDiv.show();
+                        // Disable the Save button until the user confirms IFSC
+                        saveButton.prop('disabled', true);
+                        confirmIfscCheckbox.prop('checked', false); // Reset checkbox
+                    },
+                    error: function () {
+                        alert('Invalid IFSC Code or unable to fetch details.');
+                        detailsDiv.hide(); // Hide details if error occurs
+                    }
+                });
+            }
+        });
+
+        // Enable Save button only when Confirm IFSC is checked
+        confirmIfscCheckbox.on('change', function () {
+            if ($(this).is(':checked')) {
+                saveButton.prop('disabled', false); // Enable the Save button
+            } else {
+                saveButton.prop('disabled', true); // Disable the Save button
+            }
+        });
+    });
+</script>
+
 
 
 <script>
@@ -517,21 +629,31 @@ $('#verify-otp-btn').click(function () {
 function submitBankAccountForm() {
     const formData = new FormData($('#bank-account-form')[0]);
 
+    // Log FormData for debugging
     for (let [key, value] of formData.entries()) {
-    console.log(key + ": " + value);
-}
-    // If validation passes, submit the form using AJAX
-    const method = formData.get('bank_id') ? 'PUT' : 'POST';
-    const url = formData.get('bank_id') ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id')) : '{{ route("users.bankAccount") }}';
+        console.log(key + ": " + value);
+    }
 
-    // AJAX request to submit the form
+    // Determine method and URL
+    const method = formData.get('bank_id') ? 'PUT' : 'POST';
+    const url = formData.get('bank_id') 
+        ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id')) 
+        : '{{ route("users.bankAccount") }}';
+
+    if (method === 'PUT') {
+        formData.append('_method', 'PUT'); // Add _method for Laravel
+    }
+
+    // AJAX request
     $.ajax({
         url: url,
-        method: method,
-        headers: { "X-CSRF-TOKEN": '{{ csrf_token() }}' },
+        method: 'POST', // Always use POST; Laravel will interpret _method
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
         data: formData,
-        processData: false,
-        contentType: false,
+        processData: false, // Prevent jQuery from automatically processing data
+        contentType: false, // Let the browser set the Content-Type with boundary
         success: function(response) {
             if (response.status === 'success') {
                 showToast(response.message, 'success');
@@ -539,7 +661,7 @@ function submitBankAccountForm() {
             }
         },
         error: function(xhr) {
-            const errors = xhr.responseJSON.errors;
+            const errors = xhr.responseJSON?.errors;
             let errorMessage = '';
 
             if (errors) {
@@ -547,7 +669,7 @@ function submitBankAccountForm() {
                     errorMessage += messages.join(' ') + '<br>';
                 });
             } else {
-                errorMessage = xhr.responseJSON.message || 'An unknown error occurred.';
+                errorMessage = xhr.responseJSON?.message || 'An unknown error occurred.';
             }
 
             showToast(errorMessage, 'error');
@@ -917,8 +1039,9 @@ $(document).on('click', '.edit', function () {
         document.getElementById('UPI-number').style.display = 'none';
         document.getElementById('upi-qr-code').style.display = 'none';
        
-       
-
+        const searchBtn = $('#ifsc-search-btn');
+        const detailsDiv = $('#ifsc-details');
+        const saveButton = $('#btnBankProfile');
         // Show fields based on selection
         if (paymentMethod === 'bank-transfer') {
             document.getElementById('account-title').style.display = 'block';
@@ -926,6 +1049,7 @@ $(document).on('click', '.edit', function () {
         // document.getElementById('IBAN-number').style.display = 'block';
         document.getElementById('bank-name').style.display = 'block';
         document.getElementById('ifc-number').style.display = 'block';
+        saveButton.prop('disabled',true);
         } else if (paymentMethod === 'upi') {
             document.getElementById('account-title').style.display = 'block';
             document.getElementById('UPI-number').style.display = 'block';
@@ -934,6 +1058,9 @@ $(document).on('click', '.edit', function () {
     if (label) {
         label.innerHTML = 'UPI QR Code';  // This will change the label text to "Crypto QR Code"
     }
+    searchBtn.hide(); // Hide the search button if input is empty
+                detailsDiv.hide(); // Hide the details div
+                saveButton.prop('disabled', false);
         } else if (paymentMethod === 'crypto') {
             document.getElementById('account-title').style.display = 'block';
         document.getElementById('crypto-wallet').style.display = 'block';
@@ -942,6 +1069,9 @@ $(document).on('click', '.edit', function () {
     if (label) {
         label.innerHTML = 'Crypto QR Code';  // This will change the label text to "Crypto QR Code"
     }
+    searchBtn.hide(); // Hide the search button if input is empty
+                detailsDiv.hide(); // Hide the details div
+                saveButton.prop('disabled', false);
         }
     }
 </script>

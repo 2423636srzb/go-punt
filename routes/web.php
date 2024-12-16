@@ -55,13 +55,14 @@ Route::get('/users/profile', [UsersController::class, 'profile'])->middleware('a
 Route::post('/users/upload-profile-image', [UsersController::class, 'uploadProfileImage'])->middleware('auth')->name('users.uploadProfileImage');
 Route::post('/users/updateProfile', [UsersController::class, 'updateProfile'])->middleware('auth')->name('users.updateProfile');
 Route::post('/users/updatePassword', [UsersController::class, 'updatePassword'])->middleware('auth')->name('users.password');
+Route::get('/ifsc-details/{ifsc}', [BankAccountController::class, 'getIfscDetails']);
 
 /* Bank account Details */
 Route::post('/user/bank-accounts/otp', [BankAccountController::class, 'sendOtp'])->middleware('auth')->name('send.otp');
 Route::post('/verify-otp', [BankAccountController::class, 'verifyOtp'])->name('verify.otp');
 
 Route::get('/users/bankAccount/{id}', [BankAccountController::class, 'edit'])->name('users.bankAccount.edit');
-Route::put('/user/bank-accounts/{id}', [BankAccountController::class, 'update'])->name('bank_accounts.update');
+Route::any('/user/bank-accounts/{id}', [BankAccountController::class, 'update'])->name('bank_accounts.update');
 Route::post('/user/bank-accounts', [BankAccountController::class, 'store'])->name('users.bankAccount');
 
 Route::delete('/user/bank-accounts/delete/{id}', [BankAccountController::class, 'destroy'])->name('bank_accounts.destroy');

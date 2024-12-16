@@ -51,7 +51,7 @@
                                 $image =
                                     $user->profile_image != ''
                                         ? url($user->profile_image)
-                                        : asset('assets/images/user-list/user-list1.png');
+                                        : asset('assets/images/users/avatar-large-square.jpg');
 
                             @endphp
                             <tr>

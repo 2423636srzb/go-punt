@@ -7,10 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class BankAccountController extends Controller
 {
+
+    public function getIfscDetails($ifsc)
+    {
+        $response = Http::get("https://ifsc.razorpay.com/{$ifsc}");
+        if ($response->successful()) {
+            return response()->json($response->json());
+        }
+        return response()->json(['error' => 'Invalid IFSC code'], 400);
+    }
 
    
     
@@ -68,96 +78,8 @@ public function edit($id)
 
     return response()->json(['status' => 'success', 'data' => $bankAccount]);
 }
-
-
-    public function store(Request $request)
-    {
-
-        // Validate the form input based on the selected payment method
-        $validated = $request->validate([
-            'payment_method' => 'required|in:bank-transfer,upi,crypto',
-            'account_holder_name' => 'required|max:255',
-            'account_number' => 'required_if:payment_method,bank-transfer|max:255',
-            'crypto_wallet' => 'required_if:payment_method,crypto|max:255',
-            'bank_name' => 'required_if:payment_method,bank-transfer|max:255',
-            'ifc_number' => 'required_if:payment_method,bank-transfer|max:255',
-            'upi_number' => 'required_if:payment_method,upi|max:255',
-            'upi_qr_code' => 'nullable|mimes:jpg,png,jpeg|max:2048',
-        ]);
-    
-        try {
-
-            $imagePath = null;
-        // Handle the file upload if a file is provided
-        if ($request->hasFile('upi_qr_code')) {
-
-            $destinationPath = public_path('QRCodes');
-  
-            // Get the original file name
-            $fileName = time() . '_' . $request->file('upi_qr_code')->getClientOriginalName();
-        
-            // Move the file to the public/logos directory
-            $request->file('upi_qr_code')->move($destinationPath, $fileName);
-        
-            // Save the file path to the database (relative path for access via `asset()`)
-            $imagePath = 'QRCodes/' . $fileName;
-
-        }
-        // $imagePath = $request->file('file')->store('transactions', 'public');
-            // Handle UPI QR Code file upload if applicable
-            // $upiQrCodePath = null;
-            // if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
-            //     $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
-            // }
-    
-            // Initialize payment data
-            $paymentData = [
-                'user_id' => Auth::id(),
-                'payment_method' => $validated['payment_method'],
-                'account_holder_name' => $validated['account_holder_name'],
-            ];
-    
-            // Add fields based on payment method
-            if ($validated['payment_method'] === 'bank-transfer') {
-                $paymentData = array_merge($paymentData, [
-                    'account_number' => $validated['account_number'],
-                    // 'iban_number' => $validated['iban_number'] ?? null,
-                    'bank_name' => $validated['bank_name'],
-                    'ifc_number' => $validated['ifc_number'],
-                ]);
-            } elseif ($validated['payment_method'] === 'upi') {
-                $paymentData = array_merge($paymentData, [
-                    'upi_number' => $validated['upi_number'],
-                    'upi_qr_code' => $imagePath,
-                ]);
-            } elseif ($validated['payment_method'] === 'crypto') {
-                $paymentData = array_merge($paymentData, [
-                    'crypto_wallet' => $validated['crypto_wallet'],
-                    'upi_qr_code' => $imagePath,
-
-                ]);
-            }
-    
-            // Save the data in the database
-            $paymentRecord = BankAccount::create($paymentData);
-    
-            // Return success response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Payment method successfully saved.',
-                'data' => $paymentRecord,
-            ]);
-        } catch (\Exception $e) {
-            // Return error response if something goes wrong
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ], 500);
-        }
-    }
-    
-    public function update(Request $request , $id)
-{
+public function update(Request $request , $id)
+{  Log::info($request->all());
     $validated = $request->validate([
         'payment_method' => 'required|in:bank-transfer,upi,crypto',
         'account_holder_name' => 'required|max:255',
@@ -244,6 +166,93 @@ public function edit($id)
     }
 }
 
+    public function store(Request $request)
+    {
+           
+        // Validate the form input based on the selected payment method
+        $validated = $request->validate([
+            'payment_method' => 'required|in:bank-transfer,upi,crypto',
+            'account_holder_name' => 'required|max:255',
+            'account_number' => 'required_if:payment_method,bank-transfer|max:255',
+            'crypto_wallet' => 'required_if:payment_method,crypto|max:255',
+            'bank_name' => 'required_if:payment_method,bank-transfer|max:255',
+            'ifc_number' => 'required_if:payment_method,bank-transfer|max:255',
+            'upi_number' => 'required_if:payment_method,upi|max:255',
+            'upi_qr_code' => 'nullable|mimes:jpg,png,jpeg|max:2048',
+        ]);
+    
+        try {
+
+            $imagePath = null;
+        // Handle the file upload if a file is provided
+        if ($request->hasFile('upi_qr_code')) {
+
+            $destinationPath = public_path('QRCodes');
+  
+            // Get the original file name
+            $fileName = time() . '_' . $request->file('upi_qr_code')->getClientOriginalName();
+        
+            // Move the file to the public/logos directory
+            $request->file('upi_qr_code')->move($destinationPath, $fileName);
+        
+            // Save the file path to the database (relative path for access via `asset()`)
+            $imagePath = 'QRCodes/' . $fileName;
+
+        }
+        // $imagePath = $request->file('file')->store('transactions', 'public');
+            // Handle UPI QR Code file upload if applicable
+            // $upiQrCodePath = null;
+            // if ($request->hasFile('upi_qr_code') && $request->file('upi_qr_code')->isValid()) {
+            //     $upiQrCodePath = $request->file('upi_qr_code')->store('upi_qr_codes', 'public');
+            // }
+    
+            // Initialize payment data
+            $paymentData = [
+                'user_id' => Auth::id(),
+                'payment_method' => $validated['payment_method'],
+                'account_holder_name' => $validated['account_holder_name'],
+            ];
+    
+            // Add fields based on payment method
+            if ($validated['payment_method'] === 'bank-transfer') {
+                $paymentData = array_merge($paymentData, [
+                    'account_number' => $validated['account_number'],
+                    // 'iban_number' => $validated['iban_number'] ?? null,
+                    'bank_name' => $validated['bank_name'],
+                    'ifc_number' => $validated['ifc_number'],
+                ]);
+            } elseif ($validated['payment_method'] === 'upi') {
+                $paymentData = array_merge($paymentData, [
+                    'upi_number' => $validated['upi_number'],
+                    'upi_qr_code' => $imagePath,
+                ]);
+            } elseif ($validated['payment_method'] === 'crypto') {
+                $paymentData = array_merge($paymentData, [
+                    'crypto_wallet' => $validated['crypto_wallet'],
+                    'upi_qr_code' => $imagePath,
+
+                ]);
+            }
+    
+            // Save the data in the database
+            $paymentRecord = BankAccount::create($paymentData);
+    
+            // Return success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Payment method successfully saved.',
+                'data' => $paymentRecord,
+            ]);
+        } catch (\Exception $e) {
+            // Return error response if something goes wrong
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
+  
 
 
     public function destroy(Request $request, $id)

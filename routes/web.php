@@ -43,7 +43,7 @@ Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
 Route::post('/login', [HomeController::class, 'login'])->name('login');
 
 Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
-Route::post('/verify-otp', [HomeController::class, 'verifyOtp']);
+Route::post('/admin-verify-otp', [HomeController::class, 'verifyOtp']);
 Route::middleware(['auth', InactivityTimeout::class])->group(function () {
     
 Route::get('/notifications', [UsersController::class, 'showNotification'])->name('notifications.show');

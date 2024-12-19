@@ -216,7 +216,7 @@ $('#otp-form').on('submit', function (e) {
     const otp = $('input[name="otp"]').val();
 
     $.ajax({
-        url: '/verify-otp', // Update to your OTP verification route
+        url: '/admin-verify-otp', // Update to your OTP verification route
         method: 'POST',
         data: {
             otp: otp,

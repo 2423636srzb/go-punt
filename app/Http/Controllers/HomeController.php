@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Game;
 use App\Models\UserAccount;
 use Illuminate\Support\Facades\Mail;
-
+use App\Models\OTP;
 class HomeController extends Controller
 {
     public function index()
@@ -31,96 +31,140 @@ class HomeController extends Controller
         // Return the login page view
         return view('home/signUp');
     }
-
-    //otp verification
     public function verifyOtp(Request $request)
     {
+        // Validate the OTP input
         $validated = $request->validate([
-            'otp' => 'required|digits:6', // Validate the OTP input
+            'otp' => 'required|digits:6',
         ]);
     
-        $storedOtp = session('otp');
-        $otpExpiresAt = session('otp_expires_at');
+        // Retrieve the stored OTP and credentials from session
+        $storedOtp = OTP::where('user_id', session('otp_user_id'))
+                        ->where('otp', $validated['otp'])
+                        ->first();
     
-        if ($storedOtp && $otpExpiresAt && now()->lessThanOrEqualTo($otpExpiresAt)) {
-            if ($validated['otp'] == $storedOtp) {
-                // OTP is valid, clear it from the session
-                session()->forget(['otp', 'otp_expires_at']);
+        // Check if the OTP is valid and has not expired
+        if ($storedOtp && now()->lessThanOrEqualTo($storedOtp->expires_at)) {
+            // OTP is valid, clear it from the session
     
+            // Authenticate the user using the stored credentials
+            $credentials = [
+                'email' => session('otp_email'),
+                'password' => session('otp_password'),
+            ];
+    
+            // Remove OTP and other session data
+            session()->forget(['otp', 'otp_expires_at', 'otp_email', 'otp_password']);
+    
+            // Delete OTP record from database after successful verification
+            $storedOtp->delete();
+    
+            // Attempt to log the user in
+            if (Auth::attempt($credentials, true)) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'OTP verified successfully. You are now logged in.',
                 ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Authentication failed. Please try again.',
+                ], 401);
             }
+        }
     
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid OTP.',
-            ], 401);
+        // If OTP is invalid or expired, clear session data and delete the record
+        session()->forget(['otp', 'otp_expires_at', 'otp_email', 'otp_password']);
+    
+        // Delete the OTP record from the database if it exists
+        if ($storedOtp) {
+            $storedOtp->delete();
         }
     
         return response()->json([
             'status' => 'error',
-            'message' => 'OTP has expired. Please request a new one.',
+            'message' => 'Invalid or expired OTP.',
         ], 401);
     }
-    // Login function
+    
+    
+    
+    
     public function login(Request $request)
-    {
-        // Validate the request
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ]);
-    
-        // Attempt to log the user in
-        if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], true)) {
-            $user = Auth::user();
-    
-            // Check if the user is an admin
-            if ($user->is_admin) {
-                // Generate OTP and store it in session
-                $otp = rand(100000, 999999); // Generate a random 6-digit OTP
-                $expiresAt = now()->addMinutes(10); // Set OTP expiration time
-    
-                session(['otp' => $otp, 'otp_expires_at' => $expiresAt]);
-    
-                // Send OTP to admin's email
-                try {
-                    Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
-    
-                    return response()->json([
-                        'status' => 'otp_required',
-                        'message' => 'An OTP has been sent to your email for verification.',
-                        'user_id' => $user->id, // Pass user ID for verification
-                    ]);
-                } catch (\Exception $e) {
-                
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Failed to send OTP. Please try again later.',
-                    ], 500);
-                }
-            }
-    
-            // If the user is not an admin, login normally
-            return response()->json([
-                'username' => $user->name,
-                'is_admin' => $user->is_admin,
-                'profile_image' => $user->profile_image == "" 
-                    ? "https://placehold.co/40x40" 
-                    : asset('storage/profile_images/' . $user->profile_image),
-                'status' => 'success',
-                'message' => 'Login successful. Welcome!',
-            ]);
-        } else {
-            // If login fails
+{
+    // Validate the request
+    $validated = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string|min:8',
+    ]);
+
+    // Attempt to find the user by email
+    $user = User::where('email', $validated['email'])->first();
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid email or password.',
+        ], 401);
+    }
+
+    // Check if the user is an admin
+    if ($user->is_admin) {
+        // Verify password
+        if (!Hash::check($validated['password'], $user->password)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid email or password.',
-            ], 401); // 401 Unauthorized error
+            ], 401);
+        }
+
+        // Generate OTP and store it in the database
+        $otp = rand(100000, 999999);
+        $expiresAt = now()->addMinutes(10);
+
+        // Store OTP in the 'otps' table
+        OTP::create([
+            'user_id' => $user->id,
+            'otp' => $otp,
+            'expires_at' => $expiresAt,
+        ]);
+
+        // Store the user credentials (email, password, user_id) in session
+        session([
+            'otp_user_id' => $user->id,
+            'otp_email' => $user->email,
+            'otp_password' => $validated['password'],  // Store password (to authenticate later)
+        ]);
+
+        // Send OTP to admin's email
+        try {
+            Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+
+            return response()->json([
+                'status' => 'otp_required',
+                'message' => 'An OTP has been sent to your email for verification.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to send OTP. Please try again later.',
+            ], 500);
         }
     }
+
+    // Non-admin users login directly
+    if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], true)) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Login successful. Welcome!',
+        ]);
+    } else {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid email or password.',
+        ], 401);
+    }
+}
     
 
     public function forgotPassword()

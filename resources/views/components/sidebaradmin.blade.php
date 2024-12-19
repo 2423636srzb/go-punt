@@ -3,7 +3,7 @@
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
     </button>
     <div>
-        <a href="{{ route('index') }}" class="sidebar-logo">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-logo">
             <?php $setting = DB::table('settings')->first(); ?>
             <img src="{{ asset($setting->logo) }}" alt="site logo" class="light-logo" width="180">
             <img src="{{ asset('assets/images/GP247LogoLite.png') }}" alt="site logo" class="dark-logo" width="180">

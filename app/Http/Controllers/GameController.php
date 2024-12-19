@@ -175,22 +175,23 @@ class GameController extends Controller
         return response()->json($game); // Return the game data as JSON
     }
 
-    // Update a game
-    public function update(Request $request, $id)
-    {
+  // Update a game
+public function update(Request $request, $id)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'login_link' => 'required|url',
+        'status' => 'required|in:active,inactive',
+    ]);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'login_link' => 'required|url',
-            'status' => 'required|in:active,inactive',
-        ]);
+    $updateData = [
+        'name' => $validated['name'],
+        'login_link' => $validated['login_link'],
+        'status' => $validated['status'],
+    ];
 
-        // // Update logo if a new one is uploaded
-        // if ($request->hasFile('logo')) {
-        //     $logoPath = $request->file('logo')->store('logos', 'public');
-        //     // $game->logo = $logoPath;
-        // }
-
+    // Check if the user has uploaded a new file
+    if ($request->hasFile('logo')) {
         // Define the destination path within the public directory
         $destinationPath = public_path('logos');
 
@@ -200,18 +201,19 @@ class GameController extends Controller
         // Move the file to the public/logos directory
         $request->file('logo')->move($destinationPath, $fileName);
 
-        // Save the file path to the database (relative path for access via `asset()`)
+        // Save the file path (relative path for access via `asset()`)
         $logoPath = 'logos/' . $fileName;
 
-        Game::where('id', $id)->update([
-            'logo' => $logoPath,
-            'name' => $validated['name'],
-            'login_link' => $validated['login_link'],
-            'status' => $validated['status'],
-        ]);
-
-        return redirect()->route('games.index')->with('success', 'Game updated successfully.');
+        // Add the logo path to the update data
+        $updateData['logo'] = $logoPath;
     }
+
+    // Update the game in the database
+    Game::where('id', $id)->update($updateData);
+
+    return redirect()->route('games.index')->with('success', 'Game updated successfully.');
+}
+
 
     public function show(Game $game)
     {

@@ -82,19 +82,20 @@ function viewWithDrawRequest(id) {
             // Populate the modal with fetched data
             document.getElementById('withdrawRequestUser').textContent = data.user_name || 'Not Available';  // Show the user's name
             document.getElementById('withdrawPlatform').textContent = data.payment_method || 'Not Available';  // Show the payment method
-            document.getElementById('withdrawAmount').textContent = `$${data.amount}`;  // Show the withdrawal amount
+            document.getElementById('withdrawAmount').textContent = `$${data.amount}`;
+             // Show the withdrawal amount
             document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Show the created date
-
             // Show the correct payment detail based on the payment method
             document.getElementById('withdrawAccountDetail').textContent = data.payment_detail || 'Not Available';  // Show account number, crypto wallet, or UPI number
+           
            
             if (data.QRCode !== null) {
             $('.requestScreenShot1').html('<img width="500" src="' + '{{ url('/') }}/' + data.QRCode + '" alt="QR Code" />');
         } else {
-            $('.requestScreenShot1').html('<p>No QR Code available</p>');
+            $('.requestScreenShot1').html('<p>Bank Transfer</p>');
         }
 
-  
+       
             // Show the QR code if available
             // const qrImage = document.getElementById('withdrawQRImage');
             // if (data.upiQRCode) {
@@ -109,12 +110,14 @@ function viewWithDrawRequest(id) {
             if (data.payment_method === 'bank-transfer') {
                 // Show Bank Name, Branch Name, and IFC Number if bank transfer is selected
                 if (data.bankName) {
+                    console.log("here");
                     document.getElementById('withdrawBankName').style.display = 'block';
+                    
                     document.getElementById('withdrawBankNameLabel').textContent = data.bankName;
                 } else {
                     document.getElementById('withdrawBankName').style.display = 'none';
                 }
-
+               
                 if (data.branchName) {
                     document.getElementById('withdrawBranchName').style.display = 'block';
                     document.getElementById('withdrawBranchNameLabel').textContent = data.branchName;

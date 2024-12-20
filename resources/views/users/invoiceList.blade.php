@@ -281,41 +281,70 @@
 </div>
 <div class="modal fade" id="withdrawRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
 aria-hidden="true">
-<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
             <h6 class="modal-title" id="withdrawModalLabel">WithDrawal Request</h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-       <!-- Modal Body -->
+        <!-- Modal Body -->
         <div class="modal-body">
             <form id="withdrawFormView" enctype="multipart/form-data">
                 <div class="row">
+                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                        <div class="requestScreenShot1 upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center">
+                            <!-- QR Code Image will go here -->
+                            
+                        </div>
+                    </div>
                     <!-- Right Side: Form Fields -->
                     <div class="col-md-6">
-                        <!-- Platform Selection -->
+                        <!-- User Field -->
                         <div class="mb-3">
                             <label for="platform" class="form-label">User: </label>
                             <label id="withdrawRequestUser" class="form-label"></label>
                         </div>
 
+                        <!-- Payment Method Field -->
                         <div class="mb-3">
                             <label for="platform" class="form-label">Selected Platform: </label>
                             <label id="withdrawPlatform" class="form-label"></label>
                         </div>
 
-                        <!-- Amount -->
+                        <!-- Payment Detail Field (Account number, crypto wallet, or UPI number) -->
+                        <div class="mb-3">
+                            <label for="payment_detail" class="form-label">Account Number: </label>
+                            <label id="withdrawAccountDetail" class="form-label"></label>  <!-- Dynamic payment detail -->
+                        </div>
+                           <!-- Additional Fields (These will be shown conditionally) -->
+                        <div class="mb-3" id="withdrawBankName" style="display: none;">
+                            <label for="bank_name" class="form-label">Bank Name: </label>
+                            <label id="withdrawBankNameLabel" class="form-label"></label>
+                        </div>
+
+                        <div class="mb-3" id="withdrawBranchName" style="display: none;">
+                            <label for="branch_name" class="form-label">Branch Name: </label>
+                            <label id="withdrawBranchNameLabel" class="form-label"></label>
+                        </div>
+
+                        <div class="mb-3" id="withdrawIFCNumber" style="display: none;">
+                            <label for="ifc_number" class="form-label">IFC Number: </label>
+                            <label id="withdrawIFCNumberLabel" class="form-label"></label>
+                        </div>
+                        <!-- Amount Field -->
                         <div class="mb-3">
                             <label for="amount" class="form-label">Amount: </label>
                             <label id="withdrawAmount" class="form-label"></label>
                         </div>
 
-                        <!-- Created At -->
+                        <!-- Created At Field -->
                         <div class="mb-3">
                             <label for="amount" class="form-label">Created At: </label>
                             <label id="withdrawRequestCreatedAt" class="form-label"></label>
                         </div>
+
+                      
 
                         {{-- <div class="mt-5">
                             <a class="approve-withdraw_request">
@@ -329,7 +358,6 @@ aria-hidden="true">
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 </div>

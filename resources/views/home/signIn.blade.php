@@ -120,7 +120,7 @@
 
         <div id="otp-verification-popup" style="display: none;">
             <h4>OTP Verification</h4>
-            <p>An OTP has been sent to your email. Please enter it below to continue.</p>
+            <p>An OTP has been sent to your Whatsapp. Please enter it below to continue.</p>
             <form id="otp-form">
                 @csrf
                 <input type="text" name="otp" class="form-control" placeholder="Enter OTP">

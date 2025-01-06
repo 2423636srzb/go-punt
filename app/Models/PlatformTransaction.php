@@ -9,7 +9,7 @@ use app\Models\Account;
 class PlatformTransaction extends Model
 {
     protected $table = 'user_platform_transactions';
-    protected $fillable = ['user_id', 'platform_id', 'amount', 'image', 'status','utr_number', 'approved_at', 'rejected_at'];
+    protected $fillable = ['user_id', 'platform_id', 'admin_bank_account_id', 'amount', 'image', 'status','utr_number', 'approved_at', 'rejected_at'];
 
     public function user()
     {

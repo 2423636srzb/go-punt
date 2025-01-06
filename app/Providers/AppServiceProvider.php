@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AdminBankAccount;
 use App\Models\Announcement;
 use App\Models\WebsiteSetting;
 use Illuminate\Support\ServiceProvider;
@@ -39,14 +40,18 @@ class AppServiceProvider extends ServiceProvider
                     $query->where('user_id', $user->id);
                 })->with('game') // Load the game relationships
                   ->get();
-        
+                  $adminAccounts = AdminBankAccount::all();
+                //   dd($adminAccounts);
                 // Pass the filtered accounts and the authenticated user to the view
                 $view->with('shareaccounts', $accounts);
                 $view->with('user', $user);
+                $view->with('adminAccounts', $adminAccounts);
             } else {
                 // If no user is authenticated, pass empty data or handle accordingly
                 $view->with('shareaccounts', collect()); // Empty collection if no user
                 $view->with('user', null);
+                $view->with('adminAccounts', null);
+
             }
         });
         

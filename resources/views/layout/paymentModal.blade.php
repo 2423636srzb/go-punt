@@ -91,49 +91,62 @@
             <div class="modal-body">
                 <form id="transactionForm" enctype="multipart/form-data">
                     <div class="row">
-                        <!-- Left Side: File Upload Area -->
                         <div class="col-md-6 d-flex align-items-center justify-content-center">
-                            <div id="dropArea"
-                                class="upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center"
-                                style="width: 100%; min-height: 200px; cursor: pointer;">
+                            <div id="dropArea" class="upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center" style="width: 100%; min-height: 200px; cursor: pointer;">
                                 <p class="text-muted">Drag and drop your file here</p>
-                                
-                                <!-- Hidden file input -->
                                 <input type="file" name="file" accept=".jpg, .png, .jpeg" class="d-none" id="fileInput">
-                        
-                                <!-- Image preview (optional) -->
-                                <img id="imagePreview" src="" alt="Image Preview"
-                                    style="max-width: 100%; max-height: 150px; display: none;">
+                                <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 150px; display: none;">
                             </div>
                         </div>
-
-                        <!-- Right Side: Form Fields -->
+                
                         <div class="col-md-6">
-                                @if (count($shareaccounts) > 0)
+                            @if ($adminAccounts !== null)
+                                <div class="mb-3">
+                                    <label for="adminAccount" class="form-label">Select Admin Account</label>
+                                    <select class="form-select" id="adminAccount" name="admin_account_id" required>
+                                        <option selected disabled>Choose Account</option>
+                                        @foreach ($adminAccounts as $adminAccount)
+                                            <option value="{{ $adminAccount->id }}">{{ $adminAccount->payment_method }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                
+                            <div id="accountDetails" style="display: none;" class="mb-3">
+                                <ul id="detailsList"></ul>
+                                <div class="form-check d-flex align-items-center">
+                                    <input type="checkbox" class="form-check-input me-2" id="confirmCheckbox">
+                                    <label class="form-check-label mb-0" for="confirmCheckbox">
+                                        Confirm That I Have Deposited The Amount In Above Account
+                                    </label>
+                                </div>
+                                
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Amount</label>
+                                <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter amount" min="0" step="0.01" required>
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="utrNumber" class="form-label">UTR #</label>
+                                <input type="text" class="form-control" id="utrNumber" name="utr_number" placeholder="Enter UTR Number" required>
+                            </div>
+                            @if (count($shareaccounts) > 0)
                                 <div class="mb-3">
                                     <label for="platform" class="form-label">Select Platform</label>
-                                    <select class="form-select" id="platform" name="platform_id" required>
+                                    <select class="form-select" id="platform" name="platform_id" disabled required>
                                         <option selected disabled>Choose a platform</option>
                                         @foreach ($shareaccounts as $account)
                                             <option value="{{ $account->game->id }}">{{ $account->game->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                        @endif
-                                <div class="mb-3">
-                                    <label for="amount" class="form-label">Amount</label>
-                                    <input type="number" class="form-control" id="amount" name="amount"
-                                        placeholder="Enter amount" min="0" step="0.01" required>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="amount" class="form-label">UTR #</label>
-                                    <input type="text" class="form-control" id="enteredAmount" name="utr_number"
-                                        placeholder="Enter UTR Number" required>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary w-100">Send Request</button>
-                            </div>
+                            @endif
+                
+                         
+                
+                            <button type="submit" class="btn btn-primary w-100">Send Request</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -271,7 +284,74 @@ aria-hidden="true">
 </div>
 </div>  --}}
 
+<script>
 
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('fileInput');
+    const sendRequestButton = document.querySelector('button[type="submit"]');
+
+    // Disable the button initially
+    sendRequestButton.disabled = true;
+
+    // Enable the button when a file is selected
+    fileInput.addEventListener('change', function () {
+        sendRequestButton.disabled = !fileInput.files.length; // Enable only if there's a file
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const adminAccountSelect = document.getElementById('adminAccount');
+    const accountDetailsDiv = document.getElementById('accountDetails');
+    const detailsList = document.getElementById('detailsList');
+    const confirmCheckbox = document.getElementById('confirmCheckbox');
+    const platformSelect = document.getElementById('platform');
+
+    adminAccountSelect.addEventListener('change', function () {
+        const accountId = this.value;
+
+        fetch(`/admin-account-details/${accountId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const account = data.data;
+
+                    // Clear the previous details
+                    detailsList.innerHTML = '';
+
+                    // Determine the fields to display based on payment method
+                    if (account.payment_method === 'bank-transfer') {
+                        detailsList.innerHTML = `
+                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                            <li><strong>Bank Name:</strong> ${account.bank_name || 'N/A'}</li>
+                            <li><strong>Account Number:</strong> ${account.account_number || 'N/A'}</li>
+                            <li><strong>IFSC Number:</strong> ${account.ifc_number || 'N/A'}</li>
+                        `;
+                    } else if (account.payment_method === 'upi') {
+                        detailsList.innerHTML = `
+                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                            <li><strong>UPI Number:</strong> ${account.upi_number || 'N/A'}</li>
+                        `;
+                    } else if (account.payment_method === 'crypto') {
+                        detailsList.innerHTML = `
+                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                            <li><strong>Crypto Wallet:</strong> ${account.crypto_wallet || 'N/A'}</li>
+                        `;
+                    }
+
+                    // Show the details and confirmation checkbox
+                    accountDetailsDiv.style.display = 'block';
+                }
+            })
+            .catch(error => console.error('Error fetching account details:', error));
+    });
+
+    confirmCheckbox.addEventListener('change', function () {
+        platformSelect.disabled = !this.checked;
+    });
+});
+
+</script>
 <script>
     function viewRequest(id) {
          $.ajax({

@@ -12,6 +12,8 @@ use App\Models\Game;
 use App\Models\UserAccount;
 use Illuminate\Support\Facades\Mail;
 use App\Models\OTP;
+use App\Notifications\WhatsAppOTPNotification;
+
 class HomeController extends Controller
 {
     public function index()
@@ -138,16 +140,18 @@ class HomeController extends Controller
 
         // Send OTP to admin's email
         try {
-            Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
-
+            // Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+            
+            $user->notify(new WhatsAppOTPNotification($otp));
             return response()->json([
                 'status' => 'otp_required',
-                'message' => 'An OTP has been sent to your email for verification.',
+                'message' => 'An OTP has been sent to your whatsapp for verification.',
             ]);
         } catch (\Exception $e) {
+           report($e);
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to send OTP. Please try again later.',
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

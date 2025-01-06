@@ -23,16 +23,19 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
+        try {
         // Validate the form input
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone_number' => 'required|integer',
+            'phone_number' => 'required|string|unique:users,phone_number',
             'permissions' => 'nullable|array',
             'permissions.*' => 'string|exists:permissions,name',
         ]);
-        try {
+
+       
+        
             // Create the user
             $user = User::create([
                 'username' => $validated['name'],

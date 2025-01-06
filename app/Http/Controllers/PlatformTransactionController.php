@@ -21,6 +21,7 @@ class PlatformTransactionController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'platform_id' => 'required|exists:games,id', // Corrected to match the foreign key in the games table
+            'admin_account_id' => 'required|exists:admin_bank_accounts,id', // Corrected to match the foreign key in the admin  accounts table
             'amount' => 'required|numeric|min:0',
             'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Ensures only valid image files are uploaded
         ]);
@@ -47,6 +48,7 @@ class PlatformTransactionController extends Controller
         $transaction = PlatformTransaction::create([
             'user_id' => Auth::id(), // Get the currently authenticated user ID
             'platform_id' => $validatedData['platform_id'],
+            'admin_bank_account_id' => $validatedData['admin_account_id'],
             'amount' => $validatedData['amount'],
             'utr_number' => $request->utr_number,
             'image' => $imagePath,

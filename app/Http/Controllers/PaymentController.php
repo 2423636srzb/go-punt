@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminBankAccount;
 use App\Models\BankAccount;
 use App\Models\User;
 use App\Models\Withdrawal;
@@ -49,7 +50,23 @@ class PaymentController extends Controller
             ->first(); 
         return response()->json($paymentRequest);
     }
-    
+    public function getDetails($id)
+{
+    $adminAccount = AdminBankAccount::find($id);
+
+    if ($adminAccount) {
+        return response()->json([
+            'status' => 'success',
+            'data' => $adminAccount
+        ]);
+    }
+
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Admin account not found'
+    ], 404);
+}
+
     public function acceptPaymentRequest($id)
     {
         // Update the transaction status to "approved"

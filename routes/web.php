@@ -63,9 +63,16 @@ Route::post('/verify-otp', [BankAccountController::class, 'verifyOtp'])->name('v
 
 Route::get('/users/bankAccount/{id}', [BankAccountController::class, 'edit'])->name('users.bankAccount.edit');
 Route::any('/user/bank-accounts/{id}', [BankAccountController::class, 'update'])->name('bank_accounts.update');
+
 Route::post('/user/bank-accounts', [BankAccountController::class, 'store'])->name('users.bankAccount');
 
+
 Route::delete('/user/bank-accounts/delete/{id}', [BankAccountController::class, 'destroy'])->name('bank_accounts.destroy');
+
+Route::get('/admin/bankAccount/{id}', [BankAccountController::class, 'adminBankEdit'])->name('admin.bankAccount.edit');
+Route::any('/admin/bank-accounts/{id}', [BankAccountController::class, 'adminBankUpdate'])->middleware('auth')->name('admin.bank_accounts.update');
+Route::post('/admin/bank-accounts', [BankAccountController::class, 'adminBankStore'])->name('admin.bankAccount');
+Route::delete('/admin/bank-accounts/delete/{id}', [BankAccountController::class, 'adminBankDestroy'])->name('admin.bank_accounts.destroy');
 
 
 
@@ -86,6 +93,8 @@ Route::middleware('auth')->prefix('staffSetting')->name('admin.staff.')->group(f
 Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 Route::get('/analytics-data', [AnalyticsController::class, 'fetchData']);
 Route::get('/get-payment-request/{id}', [PaymentController::class, 'getPaymentRequest'])->middleware('auth')->name('payment_request');
+
+Route::get('/admin-account-details/{id}', [PaymentController::class, 'getDetails']);
 
 Route::get('/payment-request-approve/{id}', [PaymentController::class, 'acceptPaymentRequest']);
 Route::get('/payment-request-reject/{id}', [PaymentController::class, 'rejectPaymentRequest']);

@@ -9,6 +9,7 @@ use App\Models\UserGame;
 use Illuminate\Http\Request;
 use App\Exports\UserGamesExport;
 use App\Imports\UserGamesImport;
+use App\Models\AdminBankAccount;
 use App\Models\Announcement;
 use App\Models\UserAccount;
 use App\Services\GoogleAnalyticsService;
@@ -347,6 +348,9 @@ class UsersController extends Controller
             ->select('withdrawals.*')  // Selecting necessary columns
             ->get();
            
+
+            // admin bank accounts
+      
         // Return the view with filtered data
         return view('users/invoiceList', compact('accounts', 'transactions','user','withdawals'));
     }
@@ -413,8 +417,9 @@ class UsersController extends Controller
     }
     public function webSiteSetting()
     {
+        $user = Auth::user();
         $settings = DB::table('settings')->first();
-        return view('settings/website',compact('settings'));
+        return view('settings/website',compact('settings','user'));
     }
     public function webSiteSettingUpdate(Request $request)
     {

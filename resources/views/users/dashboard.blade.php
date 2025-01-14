@@ -300,15 +300,11 @@ $script = '
                                             </div>
                                         </td>
                                         <td>
-                                            <!-- Container for Email and Copy Icon -->
                                             <div class="copy-container">
                                                 <span id="user-email">{{$userAccount->username}}</span>
-                                                <iconify-icon icon="mage:copy" class="icon"
-                                                    onclick="copyToClipboard('user-email')"
-                                                    title="Copy Email"></iconify-icon>
+                                                <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard('user-email')" title="Copy Email"></iconify-icon>
                                             </div>
                                             <br />
-                                            <!-- Container for Password and Copy Icon -->
                                             <div class="copy-container">
                                                 <span class="user-password" data-password="{{$userAccount->password}}" data-row-id="{{$userAccount->id}}">
                                                     ..........
@@ -316,7 +312,6 @@ $script = '
                                                 <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard(this)" title="Copy Password"></iconify-icon>
                                                 <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye" onclick="showPassword(this)" title="Show Password"></iconify-icon>
                                             </div>
-                                            
                                         </td>
                                         <td>{{ $userAccount->transaction_amount ?? 0 }}</td>
                                         <td class="text-center">
@@ -623,20 +618,28 @@ $script = '
 
 @section('js')
 <script>
-    function copyToClipboard(elementId, isPassword = false) {
-        // Get the text content or the actual password from the data attribute
-        const element = document.getElementById(elementId);
-        const text = isPassword ? element.getAttribute('data-password') : element.textContent;
+   function copyToClipboard(element) {
+    let textToCopy;
 
-        // Copy the text to the clipboard
-        navigator.clipboard.writeText(text)
-            .then(() => {
-                alert('Copied to clipboard!');
-            })
-            .catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
+    // Check if `element` is a string (id for email) or an HTML element (password)
+    if (typeof element === "string") {
+        // For email (uses id)
+        const textElement = document.getElementById(element);
+        textToCopy = textElement ? textElement.innerText : '';
+    } else {
+        // For password (uses data attribute)
+        const passwordContainer = element.previousElementSibling;
+        textToCopy = passwordContainer ? passwordContainer.getAttribute('data-password') : '';
     }
+
+    if (textToCopy) {
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => alert('Copied to clipboard!'))
+            .catch(err => console.error('Failed to copy: ', err));
+    } else {
+        alert('Nothing to copy!');
+    }
+}
 
 </script>
 @endsection

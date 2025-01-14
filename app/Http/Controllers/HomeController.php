@@ -13,9 +13,17 @@ use App\Models\UserAccount;
 use Illuminate\Support\Facades\Mail;
 use App\Models\OTP;
 use App\Notifications\WhatsAppOTPNotification;
-
+use App\Services\OtpService;
 class HomeController extends Controller
 {
+
+    protected $otpService;
+
+    public function __construct(OtpService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
+
     public function index()
     {
         $games = Game::where('status','active')->get();
@@ -140,12 +148,16 @@ class HomeController extends Controller
 
         // Send OTP to admin's email
         try {
-            // Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
-            
-            $user->notify(new WhatsAppOTPNotification($otp));
+            Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+            // $this->otpService->sendOtp($user->phone_number, $otp);
+            // $user->notify(new WhatsAppOTPNotification($otp));
+            // $phoneNumber = $user->phone_number;
+            //  $maskedPhone = substr($phoneNumber, 0, 3) . str_repeat('*', strlen($phoneNumber) - 6) . substr($phoneNumber, -3);
+
             return response()->json([
                 'status' => 'otp_required',
-                'message' => 'An OTP has been sent to your whatsapp for verification.',
+                'message' => 'An OTP has been sent to your email for verification.',
+                // 'masked_phone' => $maskedPhone,
             ]);
         } catch (\Exception $e) {
            report($e);

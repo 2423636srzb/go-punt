@@ -382,7 +382,7 @@ class UsersController extends Controller
 
         // Get total users
         $totalUsers = User::count();
-        $propertyId = '468590145'; // Replace with your property ID
+        $propertyId = '472074192'; // Replace with your property ID
         $activeUsers = $this->analytics->getActiveUsers($propertyId);
         $uniqueUsers = $this->analytics->getUniqueUsers($propertyId, '30daysAgo', 'today');
         // $activeUsers = User::where('user_status', 'active')->count();

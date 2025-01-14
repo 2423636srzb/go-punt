@@ -16,7 +16,7 @@ class AnalyticsController extends Controller
     public function index()
     {
         
-        $propertyId = '468590145'; // Replace with your property ID
+        $propertyId = '472074192'; // Replace with your property ID
         $activeUsers = $this->analytics->getActiveUsers($propertyId);
         $uniqueUsers = $this->analytics->getUniqueUsers($propertyId, '30daysAgo', 'today');
         $newUsers = $this->analytics->getNewUsers($propertyId, '30daysAgo', 'today');
@@ -36,7 +36,7 @@ class AnalyticsController extends Controller
 
     public function fetchData()
     {
-    $propertyId = '468590145'; // Replace with your property ID
+    $propertyId = '472074192'; // Replace with your property ID
 
     $activeUsers = $this->analytics->getActiveUsers($propertyId);
     $uniqueUsers = $this->analytics->getUniqueUsers($propertyId, '30daysAgo', 'today');

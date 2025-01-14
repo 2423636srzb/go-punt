@@ -72,8 +72,9 @@ $script = '
                             <label for="name"
                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Logo
                                 <span class="text-danger-600">*</span></label>
-                            <input type="file" name="logo" class="form-control radius-8" id="logo"
-                                placeholder="Enter Username"  readonly>
+                                <input type="file" name="logo" class="form-control radius-8" id="logo" readonly
+                                style="line-height: normal; padding-top: 10px; padding-bottom: 10px;">
+                         
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -237,20 +238,55 @@ $script = '
                         </div>         
                                                     <!-- Container for IFSC details -->
                         <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
-                            <ul class="list-unstyled mb-0">
-                                <li><strong>Bank:</strong> <span id="details-bank-name"></span></li>
-                                <li><strong>Branch:</strong> <span id="details-branch-name"></span></li>
-                                <li><strong>Contact:</strong> <span id="details-contact"></span></li>
-                                <li><strong>Bank Details:</strong> <span id="details-bank-details"></span></li>
-                                <li><strong>City:</strong> <span id="details-city"></span></li>
-                                <li><strong>District:</strong> <span id="details-district"></span></li>
-                                <li><strong>State:</strong> <span id="details-state"></span></li>
-                                <li><strong>Country:</strong> <span id="details-country"></span></li>
-                                <li><strong>Address:</strong> <span id="details-address"></span></li>
-                            </ul>
+                            <table class="table table-bordered mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Bank</strong></td>
+                                        <td id="details-bank-name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Branch</strong></td>
+                                        <td id="details-branch-name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Contact</strong></td>
+                                        <td id="details-contact"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Bank Details</strong></td>
+                                        <td id="details-bank-details"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>City</strong></td>
+                                        <td id="details-city"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>District</strong></td>
+                                        <td id="details-district"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>State</strong></td>
+                                        <td id="details-state"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Country</strong></td>
+                                        <td id="details-country"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Address</strong></td>
+                                        <td id="details-address"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                               <!-- Confirm IFSC checkbox -->
-                            <div class="form-check mt-3">
-                                <input type="checkbox" class="form-check-input" id="confirm-ifsc">
+                              <div class="form-check d-flex align-items-center mt-3">
+                                <input type="checkbox" class="form-check-input me-2" id="confirm-ifsc">
                                 <label for="confirm-ifsc" class="form-check-label">Confirm IFSC</label>
                             </div>
                         </div>

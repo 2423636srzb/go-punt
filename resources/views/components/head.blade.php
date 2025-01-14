@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- Add FontAwesome to your project -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<!-- Google tag (gtag.js) -->
+{{-- <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TKE60S7NYY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -45,6 +45,15 @@
   gtag('js', new Date());
 
   gtag('config', 'G-TKE60S7NYY');
+</script> --}}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KW476DK53K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KW476DK53K');
 </script>
 
 </head>

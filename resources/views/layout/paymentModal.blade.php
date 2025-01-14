@@ -145,7 +145,7 @@
                 
                          
                 
-                            <button type="submit" class="btn btn-primary w-100">Send Request</button>
+                            <button type="submit" id="sendRequest" class="btn btn-primary w-100">Send Request</button>
                         </div>
                     </div>
                 </form>
@@ -288,7 +288,7 @@ aria-hidden="true">
 
 document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById('fileInput');
-    const sendRequestButton = document.querySelector('button[type="submit"]');
+    const sendRequestButton = document.getElementById('sendRequest');
 
     // Disable the button initially
     sendRequestButton.disabled = true;

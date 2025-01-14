@@ -118,16 +118,32 @@
             </div>
         </div>
 
-        <div id="otp-verification-popup" style="display: none;">
-            <h4>OTP Verification</h4>
-            <p>An OTP has been sent to your Whatsapp. Please enter it below to continue.</p>
-            <form id="otp-form">
+        <div id="otp-verification-popup" style="display: none; width: 300px; padding: 30px 15px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+            <!-- Close Button -->
+            <button id="close-popup" style="position: absolute; top: -15px; right: 0px; background: none; border: none; font-size: 30px; font-weight: bold; cursor: pointer; color: #333;">&times;</button>
+            
+            <!-- Title -->
+            <h6 style="font-size: 14px; margin-bottom: 10px; text-align: center;">OTP Verification</h6>
+            
+            <!-- OTP Info in One Line -->
+            <p style="font-size: 14px; margin-bottom: 15px; text-align: center;">
+                An OTP has been sent to your email<span class="fw-bolder" id="masked-phone-number"></span>. Enter it below to continue.
+            </p>
+            
+            <!-- Form -->
+            <form id="otp-form" style="text-align: center;">
                 @csrf
-                <input type="text" name="otp" class="form-control" placeholder="Enter OTP">
-                <button type="submit" class="btn btn-primary mt-3">Verify OTP</button>
+                <input type="text" name="otp" class="form-control" placeholder="Enter OTP" style="font-size: 14px; padding: 5px; height: 30px; margin-bottom: 10px; width: 100%;">
+                <button type="submit" class="btn btn-primary" style="font-size: 14px; padding: 5px 10px; height: 35px;">Verify OTP</button>
             </form>
-            <p class="text-danger mt-2" id="otp-error" style="display: none;"></p>
+            
+            <!-- Error Message -->
+            <p class="text-danger" id="otp-error" style="display: none; font-size: 12px; margin-top: 10px;"></p>
         </div>
+        
+        
+        
+        
 
     </section>
     <div id="toast"
@@ -166,6 +182,13 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
+
+function closePopup() {
+        $('#popup-overlay').hide();
+        $('#otp-verification-popup').hide();
+    }
+        // Close button functionality
+        $('#close-popup').on('click', closePopup);
         // ================== Password Show Hide Js Start ==========
         function initializePasswordToggle(toggleSelector) {
             $(toggleSelector).on('click', function () {
@@ -194,9 +217,9 @@
         data: formData,
         success: function (response) {
             if (response.status === 'otp_required') {
+                // $('#otp-verification-popup').find('#masked-phone-number').text(response.masked_phone); // Show masked phone number
                 $('#otp-verification-popup').show(); // Show OTP modal
             } else if (response.status === 'success') {
-                // alert(response.message);
                 window.location.href = '{{ route('users.dashboard') }}'; // Redirect after successful login
             } else {
                 alert(response.message || 'An unexpected error occurred.');
@@ -207,6 +230,7 @@
         }
     });
 });
+
 
 
 // OTP verification

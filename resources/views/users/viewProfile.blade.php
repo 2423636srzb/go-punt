@@ -204,9 +204,9 @@ $script = '
                                 </div>
 
                             </div>
-                            <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center gap-3 ">
                                 <button type="submit"
-                                    class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
+                                    class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8" >
                                     Save
                                 </button>
                             </div>
@@ -304,19 +304,54 @@ $script = '
                                     </div>         
                                                                 <!-- Container for IFSC details -->
                                     <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
-                                        <ul class="list-unstyled mb-0">
-                                            <li><strong>Bank:</strong> <span id="details-bank-name"></span></li>
-                                            <li><strong>Branch:</strong> <span id="details-branch-name"></span></li>
-                                            <li><strong>Contact:</strong> <span id="details-contact"></span></li>
-                                            <li><strong>Bank Details:</strong> <span id="details-bank-details"></span></li>
-                                            <li><strong>City:</strong> <span id="details-city"></span></li>
-                                            <li><strong>District:</strong> <span id="details-district"></span></li>
-                                            <li><strong>State:</strong> <span id="details-state"></span></li>
-                                            <li><strong>Country:</strong> <span id="details-country"></span></li>
-                                            <li><strong>Address:</strong> <span id="details-address"></span></li>
-                                        </ul>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Detail</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Bank:</strong></td>
+                                                    <td><span id="details-bank-name"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Branch:</strong></td>
+                                                    <td><span id="details-branch-name"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Contact:</strong></td>
+                                                    <td><span id="details-contact"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Bank Details:</strong></td>
+                                                    <td><span id="details-bank-details"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>City:</strong></td>
+                                                    <td><span id="details-city"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>District:</strong></td>
+                                                    <td><span id="details-district"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>State:</strong></td>
+                                                    <td><span id="details-state"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Country:</strong></td>
+                                                    <td><span id="details-country"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Address:</strong></td>
+                                                    <td><span id="details-address"></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                           <!-- Confirm IFSC checkbox -->
-                                        <div class="form-check mt-3">
+                                        <div class="form-check mt-3 d-inline-flex align-items-center">
                                             <input type="checkbox" class="form-check-input" id="confirm-ifsc">
                                             <label for="confirm-ifsc" class="form-check-label">Confirm IFSC</label>
                                         </div>
@@ -499,7 +534,7 @@ $script = '
         const searchBtn = $('#ifsc-search-btn');
         const detailsDiv = $('#ifsc-details');
         const confirmIfscCheckbox = $('#confirm-ifsc');
-        const saveButton = $('#btnBankProfile');
+        const saveBut = $('#btnBankProfile');
 
         // Show search button when user starts typing
         ifscInput.on('input', function () {
@@ -509,7 +544,7 @@ $script = '
             } else {
                 searchBtn.hide(); // Hide the search button if input is empty
                 detailsDiv.hide(); // Hide the details div
-                saveButton.prop('disabled', true); // Disable the Save button
+                saveBut.prop('disabled', true); // Disable the Save button
             }
         });
 
@@ -536,7 +571,7 @@ $script = '
                         // Show the details div
                         detailsDiv.show();
                         // Disable the Save button until the user confirms IFSC
-                        saveButton.prop('disabled', true);
+                        saveBut.prop('disabled', true);
                         confirmIfscCheckbox.prop('checked', false); // Reset checkbox
                     },
                     error: function () {
@@ -550,9 +585,9 @@ $script = '
         // Enable Save button only when Confirm IFSC is checked
         confirmIfscCheckbox.on('change', function () {
             if ($(this).is(':checked')) {
-                saveButton.prop('disabled', false); // Enable the Save button
+                saveBut.prop('disabled', false); // Enable the Save button
             } else {
-                saveButton.prop('disabled', true); // Disable the Save button
+                saveBut.prop('disabled', true); // Disable the Save button
             }
         });
     });
@@ -1041,7 +1076,7 @@ $(document).on('click', '.edit', function () {
        
         const searchBtn = $('#ifsc-search-btn');
         const detailsDiv = $('#ifsc-details');
-        const saveButton = $('#btnBankProfile');
+        const saveBut = $('#btnBankProfile');
         // Show fields based on selection
         if (paymentMethod === 'bank-transfer') {
             document.getElementById('account-title').style.display = 'block';
@@ -1049,7 +1084,7 @@ $(document).on('click', '.edit', function () {
         // document.getElementById('IBAN-number').style.display = 'block';
         document.getElementById('bank-name').style.display = 'block';
         document.getElementById('ifc-number').style.display = 'block';
-        saveButton.prop('disabled',true);
+        saveBut.prop('disabled',true);
         } else if (paymentMethod === 'upi') {
             document.getElementById('account-title').style.display = 'block';
             document.getElementById('UPI-number').style.display = 'block';
@@ -1060,7 +1095,7 @@ $(document).on('click', '.edit', function () {
     }
     searchBtn.hide(); // Hide the search button if input is empty
                 detailsDiv.hide(); // Hide the details div
-                saveButton.prop('disabled', false);
+                saveBut.prop('disabled', false);
         } else if (paymentMethod === 'crypto') {
             document.getElementById('account-title').style.display = 'block';
         document.getElementById('crypto-wallet').style.display = 'block';
@@ -1071,7 +1106,7 @@ $(document).on('click', '.edit', function () {
     }
     searchBtn.hide(); // Hide the search button if input is empty
                 detailsDiv.hide(); // Hide the details div
-                saveButton.prop('disabled', false);
+                saveBut.prop('disabled', false);
         }
     }
 </script>

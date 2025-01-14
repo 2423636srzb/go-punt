@@ -17,6 +17,7 @@ use App\Http\Controllers\AccountManageController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\MatchController;
 use App\Http\Controllers\PlatformTransactionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Middleware\InactivityTimeout;
@@ -38,7 +39,7 @@ Route::controller(HomeController::class)->group(function () {
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
-
+Route::get('/match/', [MatchController::class, 'show'])->name('match.detail');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
 Route::post('/login', [HomeController::class, 'login'])->name('login');
 

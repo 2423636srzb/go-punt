@@ -308,7 +308,7 @@ $(document).ready(function () {
                     },
                     beforeSend: function() {
                         // Optional: Add a loader or disable the submit button
-                        $('#transactionForm button[type="submit"]').prop('disabled', true).text(
+                        $('#sendRequest').prop('disabled', true).text(
                             'Submitting...');
                     },
                     success: function(response) {
@@ -335,7 +335,7 @@ $(document).ready(function () {
                     },
                     complete: function() {
                         // Re-enable the submit button
-                        $('#transactionForm button[type="submit"]').prop('disabled', false)
+                        $('#sendRequest').prop('disabled', false)
                             .text('Send Request');
                     }
                 });

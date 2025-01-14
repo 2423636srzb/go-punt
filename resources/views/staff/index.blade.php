@@ -26,26 +26,22 @@ $subTitle = 'Staff List';
     <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center flex-wrap gap-3 justify-content-between">
         <div class="d-flex align-items-center flex-wrap gap-3">
             <span class="text-md fw-medium text-secondary-light mb-0">Show</span>
-            <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
+            <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px" id="showSelect">
                 <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>50</option>
+                <option>100</option>
+              
             </select>
             <form class="navbar-search">
-                <input type="text" class="bg-base h-40-px w-auto" name="search" placeholder="Search">
+                <input type="text" class="bg-base h-40-px w-auto" name="search" id="searchInput" placeholder="Search">
                 <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
             </form>
-            <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px">
+            <select class="form-select form-select-sm w-auto ps-12 py-6 radius-12 h-40-px" id="statusSelect">
                 <option>Status</option>
-                <option>Active</option>
-                <option>Inactive</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
             </select>
         </div>
         <a href="#" class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addUserModal">
@@ -58,33 +54,17 @@ $subTitle = 'Staff List';
             <table class="table bordered-table sm-table mb-0" id="dataTable">
                 <thead>
                     <tr>
-                        {{-- <th scope="col">
-                            <div class="d-flex align-items-center gap-10">
-                                <div class="form-check style-check d-flex align-items-center">
-                                    <input class="form-check-input radius-4 border input-form-dark" type="checkbox" name="checkbox" id="selectAll">
-                                </div>
-                            </div>
-                        </th> --}}
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone No</th>
                         <th scope="col">Join Date</th>
-                        {{-- <th scope="col">Designation</th> --}}
                         <th scope="col" class="text-center">Status</th>
                         <th scope="col" class="text-center">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     @foreach ($admins as $admin)
-                    <tr>
-                        {{-- <td>
-                            <div class="d-flex align-items-center gap-10">
-                                <div class="form-check style-check d-flex align-items-center">
-                                    <input class="form-check-input radius-4 border border-neutral-400" type="checkbox" name="checkbox" id="SL">
-                                </div>
-                            </div>
-                        </td> --}}
-                       
+                    <tr class="admin-row" data-status="{{ $admin->user_status }}">
                         <td>
                             <div class="d-flex align-items-center">
                                 <img src="{{ asset('assets/images/users/avatar-large-square.jpg') }}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
@@ -96,52 +76,13 @@ $subTitle = 'Staff List';
                         <td><span class="text-md mb-0 fw-normal text-secondary-light">{{$admin->email}}</span></td>
                         <td><span class="text-md mb-0 fw-normal text-secondary-light">{{$admin->phone_number}}</span></td>
                         <td>{{$admin->created_at}}</td>
-                        {{-- <td>Manager</td> --}}
-                        @php
-                        // Dynamically determine the status class and text
-                        if ($admin->user_status == 'active') {
-                            $statusClass = 'bg-success-focus text-success-600 border border-success-main';
-                            $statusText = 'Active';
-                        } else {
-                            $statusClass = 'bg-danger-focus text-danger-600 border border-danger-main';
-                            $statusText = 'Inactive';
-                        }
-                    @endphp
                         <td class="text-center">
-                            <span class="{{ $statusClass }} px-24 py-4 radius-4 fw-medium text-sm">
-                                {{ $statusText }}
+                            <span class="px-24 py-4 radius-4 fw-medium text-sm {{ $admin->user_status == 'active' ? 'bg-success-focus text-success-600' : 'bg-danger-focus text-danger-600' }}">
+                                {{ ucfirst($admin->user_status) }}
                             </span>
                         </td>
                         <td class="text-center">
-                            <div class="d-flex align-items-center gap-10 justify-content-center">
-                                <div class="form-switch switch-success d-flex align-items-center gap-3">
-                                    <input class="form-check-input switch-input" type="checkbox"
-                                           data-id="{{ $admin->id }}" role="switch"
-                                           @if ($admin->user_status == 'active') checked @endif>
-                                </div>
-                                
-                                <button 
-                                type="button" 
-                                class="edit-btn bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#updateUserModal"
-                                data-id="{{ $admin->id }}"
-                                data-name="{{ $admin->username }}"
-                                data-email="{{ $admin->email }}"
-                                data-number="{{ $admin->phone_number }}"
-                                data-permissions="{{ $admin->permissions->map(fn($p) => ['id' => $p->id, 'name' => $p->name])->toJson() }}">
-                                <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
-                            </button>
-                        
-                            <form method="POST" action="{{ route('admin.staff.delete', $admin->id) }}" class="delete-form">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" 
-                                        class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle delete-btn">
-                                    <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
-                                </button>
-                            </form>
-                            </div>
+                            <!-- Add Action Buttons Here -->
                         </td>
                     </tr>
                     @endforeach
@@ -151,11 +92,11 @@ $subTitle = 'Staff List';
 
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
             <span id="entriesInfo"></span>
-            <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center" id="pagination">
-            </ul>
+            <ul class="pagination d-flex flex-wrap align-items-center gap-2 justify-content-center" id="pagination"></ul>
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog model-xl">
@@ -546,5 +487,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const statusSelect = document.getElementById("statusSelect");
+        const showSelect = document.getElementById("showSelect");
+        const tableBody = document.getElementById("tableBody");
+        const rowsPerPageOptions = showSelect.options;
+        let rowsPerPage = parseInt(showSelect.value) || 10;
+
+        // Store all rows initially
+        const allRows = Array.from(tableBody.getElementsByClassName("admin-row"));
+        
+        // Function to filter and render the table
+        function filterTable() {
+            const searchQuery = searchInput.value.toLowerCase();
+            const selectedStatus = statusSelect.value.toLowerCase();
+            let filteredRows = allRows;
+
+            // If search input is not empty, filter rows by search query
+            if (searchQuery !== "") {
+                filteredRows = filteredRows.filter(row => {
+                    const name = row.cells[0].textContent.toLowerCase();
+                    const email = row.cells[1].textContent.toLowerCase();
+                    const phone = row.cells[2].textContent.toLowerCase();
+                    const status = row.getAttribute("data-status");
+
+                    const matchesSearch = name.includes(searchQuery) || email.includes(searchQuery) || phone.includes(searchQuery);
+                    const matchesStatus = selectedStatus === "status" || selectedStatus === status;
+
+                    return matchesSearch && matchesStatus;
+                });
+            }
+
+            // If status is selected, filter rows by status
+            if (selectedStatus !== "status" && selectedStatus !== "") {
+                filteredRows = filteredRows.filter(row => row.getAttribute("data-status") === selectedStatus);
+            }
+
+            // Handle pagination based on rowsPerPage
+            const totalRows = filteredRows.length;
+            const startIndex = 0; // Adjust based on pagination logic
+            const endIndex = startIndex + rowsPerPage;
+
+            // Clear the table and append the filtered rows
+            tableBody.innerHTML = "";
+            filteredRows.slice(startIndex, endIndex).forEach(row => {
+                tableBody.appendChild(row);
+            });
+
+            // Update the entries info (optional)
+            document.getElementById("entriesInfo").textContent = `${filteredRows.length} entries found`;
+        }
+
+        // Event listeners for input changes
+        searchInput.addEventListener("input", filterTable);
+        statusSelect.addEventListener("change", filterTable);
+        showSelect.addEventListener("change", function() {
+            rowsPerPage = parseInt(this.value);
+            filterTable(); // Reapply filters when page size changes
+        });
+
+        // Initial table filter application
+        filterTable();
+    });
+</script>
+
+
 @endsection
 

@@ -31,23 +31,26 @@
             <div class="d-flex flex-wrap align-items-center gap-3">
                 <div class="d-flex align-items-center gap-2">
                     <span>Show</span>
-                    <select class="form-select form-select-sm w-auto">
+                    <select id="showSelect" class="form-select form-select-sm w-auto">
                         <option>10</option>
-                        <option>15</option>
                         <option>20</option>
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
                     </select>
                 </div>
                 <div class="icon-field">
-                    <input type="text" name="#0" class="form-control form-control-sm w-auto" placeholder="Search">
+                    <input id="searchInput" type="text" name="#0" class="form-control form-control-sm w-auto" placeholder="Search">
                     <span class="icon">
                         <iconify-icon icon="ion:search-outline"></iconify-icon>
                     </span>
                 </div>
             </div>
             <div class="d-flex flex-wrap align-items-center gap-3">
-                <select class="form-select form-select-sm w-auto">
-                    <option>Satatus</option>
-                    <option>Paid</option>
+                <select id="statusSelect" class="form-select form-select-sm w-auto">
+                    <option>All</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
                     <option>Pending</option>
                 </select>
 
@@ -335,7 +338,64 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
 
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const statusSelect = document.getElementById('statusSelect');
+    
+    // Function to search and filter table rows
+    function filterTable() {
+        // Get the currently active tab's table
+        const activeTab = document.querySelector('.tab-pane.active');
+        const table = activeTab.querySelector('table');
+        const rows = table.querySelectorAll('tbody tr');
+        
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusFilter = statusSelect.value.toLowerCase();
+        
+        rows.forEach(row => {
+            let textMatch = false;
+            let statusMatch = false;
+            
+            // Check all cells in the row except the last one (actions column)
+            const cells = Array.from(row.cells).slice(0, -1);
+            
+            // Search through all cells
+            textMatch = cells.some(cell => {
+                return cell.textContent.toLowerCase().includes(searchTerm);
+            });
+            
+            // Check status
+            const statusCell = row.querySelector('td span');
+            if (statusCell) {
+                const rowStatus = statusCell.textContent.trim().toLowerCase();
+                statusMatch = statusFilter === 'all' || rowStatus === statusFilter;
+            }
+            
+            // Show/hide row based on both filters
+            row.style.display = (textMatch && statusMatch) ? '' : 'none';
+        });
+    }
+    
+    // Add event listeners
+    searchInput.addEventListener('input', filterTable);
+    statusSelect.addEventListener('change', filterTable);
+    
+    // Add event listeners for tab changes
+    const tabButtons = document.querySelectorAll('[data-bs-toggle="pill"]');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Clear the search input and reset status when changing tabs
+            searchInput.value = '';
+            statusSelect.value = 'All';
+            // Show all rows in the new active table
+            setTimeout(filterTable, 100); // Small delay to ensure tab content is loaded
+        });
+    });
+});
+</script>
 
 @endsection

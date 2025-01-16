@@ -81,9 +81,35 @@ $subTitle = 'Staff List';
                                 {{ ucfirst($admin->user_status) }}
                             </span>
                         </td>
-                        <td class="text-center">
-                            <!-- Add Action Buttons Here -->
-                        </td>
+                        
+                            <td>
+                                <div class="form-switch switch-success d-inline-flex align-items-center">
+                                    <input class="form-check-input switch-input" type="checkbox"
+                                           data-id="{{ $admin->id }}" role="switch"
+                                           @if ($admin->user_status == 'active') checked @endif>
+                                    <label class="form-check-label" for="switch-{{ $admin->id }}"></label>
+                                </div>
+                                <a href="javascript:void(0)" 
+                                class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit-btn"
+                                data-id="{{ $admin->id }}"
+                                data-name="{{ $admin->name }}"
+                                data-email="{{ $admin->email }}"
+                                data-number="{{ $admin->phone_number }}"
+                                data-permissions='{{ json_encode($admin->permissions->pluck("id")->toArray()) }}'> <!-- Pass IDs as an array -->
+                                 <iconify-icon icon="lucide:edit"></iconify-icon>
+                             </a>
+    
+                
+                             <form action="{{ route('admin.staff.delete', $admin->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this admin?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete-btn">
+                                    <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                </button>
+                            </form>
+                                
+                                </td>
+                
                     </tr>
                     @endforeach
                 </tbody>
@@ -226,9 +252,9 @@ $subTitle = 'Staff List';
         var curr_obj = $(this);
         var status = '';
         if ($(this).is(":checked")) {
-            status = 'enable';
-        } else {
             status = 'disable';
+        } else {
+            status = 'enable';
         }
 
         // Confirmation Modal
@@ -418,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = button.getAttribute('data-email');
             const phone_number = button.getAttribute('data-number');
             const permissions = JSON.parse(button.getAttribute('data-permissions'));
-
+            
             // Set modal fields
             document.getElementById('update_name').value = name;
             document.getElementById('update_email').value = email;
@@ -426,17 +452,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Reset all checkboxes
             document.querySelectorAll('#updateUserModal input[name="permissions[]"]').forEach(checkbox => {
-                checkbox.checked = false;
+                checkbox.checked = false; // Uncheck all to start
             });
 
+            console.log("Permissions:", permissions); // Log permissions for debugging
+            
             // Check relevant permissions
-            permissions.forEach(permission => {
-                const checkbox = document.querySelector(`#update_permission_${permission.id}`);
-                if (checkbox) checkbox.checked = true;
+            permissions.forEach(permissionId => {
+                const checkbox = document.querySelector(`#update_permission_${permissionId}`);
+                if (checkbox) {
+                    checkbox.checked = true; // Check the relevant checkbox
+                }
             });
 
             // Update the form action URL
             updateForm.action = `staffSetting/update/${id}`;
+            console.log("Update form action set:", updateForm.action);
+
+            // Show the modal
+            $('#updateUserModal').modal('show');
         });
     });
 });

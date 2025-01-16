@@ -7,7 +7,7 @@
     <title>{{ $websiteSettings->name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
 
     <!-- Style CSS -->
@@ -25,12 +25,10 @@
     />
 
 
-
-    <style>
+<style>
 
 .match-container {
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 3px;
   
   width: 100%;
@@ -63,7 +61,8 @@ hr {
 
 .balls-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  margin-top: 5px;
   gap: 10px;
 }
 
@@ -88,10 +87,13 @@ hr {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 10px
 }
 .circular-button {
-  width: 80px;  /* Button width */
-  height: 50px; /* Button height */
+  width: 50px;  /* Button width */
+  height: 40px; /* Button height */
   /* border-radius: 50%; Makes the button circular */
   /* background-color: #ff002b; Button background color */
   color: white; /* Text color */
@@ -241,6 +243,7 @@ hr {
   transition: background-color 0.3s ease;
   font-weight: bold;
   padding: 10px;
+  margin-left: 6px;
   text-align: center;
   border: solid #0056b3 1px;
 }
@@ -576,33 +579,29 @@ window.onclick = function(event) {
       </div>
     </header>
     <!-- end Header -->
-
-     <!-- Banner Top -->
-     <section class="banner">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-6 col-md-12">
-            <div class="banner__content">
-              <h2 class="title">
-                A trusted and secure cryptocurrency exchange.
-              </h2>
-              <p class="fs-20 desc">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <a href="#" class="btn-action"><span>Trading Now</span></a>
-            </div>
-          </div>
-          <div class="col-xl-6 col-md-12">
-            <div class="banner__image">
-              <img src="assets/images/BD/games.jpg" alt="" />
-            </div>
-          </div>
+ <div class="banner" style="padding:0; margin-bottom: 200px;">
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="10000">
+          <img src="assets/images/BD/banner.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="assets/images/BD/banner1.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/images/BD/banner2.jpg" class="d-block w-100" alt="...">
         </div>
       </div>
-    </section>
-    <!-- End Banner Top -->
-  
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
     <section class="crypto" data-aos="fade-up" data-aos-duration="1000">
       <div class="container mx-auto  mb-4 overflow-hidden relative">
         <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
@@ -664,19 +663,19 @@ window.onclick = function(event) {
       </div>
     
       <!-- Cricket Container (default) -->
-      <div class="container-cricket active">
+      <div class="container-cricket active mt-4">
         <div class="services__main d-flex flex-wrap justify-content-start">
           <!-- Your existing cricket service box code here (the same as your current setup) -->
-          <div class="services-box">
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
             <div class="live-button-container">
-              <a href="{{ route('match.detail') }}">
+              <a href="{{ route('cricket.live') }}">
                 <button class="circular-button">
-                  <img src="assets/images/BD/livestreaming.jpg" alt="Live Stream" class="button-image" />
+                  <img src="assets/images/BD/live-img.jpeg" alt="Live Stream" class="button-image" />
                 </button>
               </a>
             </div>
-            <a href="" class="h6 title mt-5">Pak VS Ind</a>
-            <hr>
+            <a href="" class="text-xl text-black mb-2 w-full block text-start">Pak VS Ind</a>
+            <hr class="mb-1">
             <div class="match-container">
               <!-- Pakistan Team Info -->
               <div class="team-container">
@@ -691,7 +690,7 @@ window.onclick = function(event) {
               <div class="team-container">
                 <div class="team"></div>
                 <div class="stats">
-                  <p><span class="overs">CRR (7.2)</span></p>
+                  <p class="-mt-2"><span class="overs">CRR (7.2)</span></p>
                 </div>
               </div>
               <div class="team-container">
@@ -702,11 +701,11 @@ window.onclick = function(event) {
                   <p><span>38-2</span> <span class="overs">(7.2)</span></p>
                 </div>
               </div>
-              <hr>
-              <div class="team">
+              <hr class="mt-1">
+              <div class="team mt-1">
                 <p class="batting">last 6 ball</p>
               </div>
-              <div class="balls-container mb-2">
+              <div class="balls-container">
                 <div class="ball">1</div>
                 <div class="ball">0</div>
                 <div class="ball">4</div>
@@ -714,7 +713,8 @@ window.onclick = function(event) {
                 <div class="ball">1</div>
                 <div class="ball">0</div>
               </div>
-              <hr>
+              <hr class="my-2.5" />
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Pak needs 45 runs in 18 balls</p>
             </div>
           </div>
           <!-- Repeat for other match boxes if needed -->
@@ -722,70 +722,86 @@ window.onclick = function(event) {
       </div>
     
       <!-- Tennis Container (hidden by default) -->
-      <div class="container-tennis">
-        <div class="services__main d-flex flex-wrap justify-content-between">
-          <div class="services-box">
-            <div class="button-container">
-              <button class="circular-button">Live Stream</button>
+      <div class="container-tennis mt-4">
+        <div class="services__main d-flex flex-wrap justify-content-start">
+          <!-- Your existing cricket service box code here (the same as your current setup) -->
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+            <div class="live-button-container">
+              <a href="{{ route('tennis.live') }}">
+                <button class="circular-button">
+                  <img src="assets/images/BD/live-img.jpeg" alt="Live Stream" class="button-image" />
+                </button>
+              </a>
             </div>
-            <a href="" class="h6 title">Nadal VS Federer</a>
-            <hr>
+            <a href="" class="text-xl text-black mb-2 w-full block text-start">Barce VS Spain</a>
+            <hr class="mb-1">
             <div class="match-container">
+              <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
-                  <p class="batting">Nadal</p>
+                  <p class="batting">Barce <span style="color: #ff002b">*</span></p>
                 </div>
                 <div class="stats">
-                  <p><span class="batting">2-0</span> <span class="overs">(1.5)</span></p>
+                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
                 </div>
               </div>
-              <hr>
+      
+              <div class="team-container">
+                <div class="team"></div>
+              </div>
               <div class="team-container">
                 <div class="team">
-                  <p>Federer</p>
+                  <p>Spain</p>
                 </div>
                 <div class="stats">
-                  <p><span>0-1</span> <span class="overs">(1.2)</span></p>
+                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
                 </div>
               </div>
+              <hr class="my-2.5" />
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Barcelona needs 4 Goals in 30 minutes</p>
             </div>
           </div>
+          <!-- Repeat for other match boxes if needed -->
         </div>
       </div>
     
       <!-- Football Container (hidden by default) -->
-      <div class="container-football">
-        <div class="services__main d-flex flex-wrap justify-content-between">
-          <div class="services-box">
-            <div class="button-container">
-              <a href="{{ route('match.detail') }}">
+      <div class="container-football mt-4">
+        <div class="services__main d-flex flex-wrap justify-content-start">
+          <!-- Your existing cricket service box code here (the same as your current setup) -->
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+            <div class="live-button-container">
+              <a href="{{ route('football.live') }}">
                 <button class="circular-button">
-                  <img src="path/to/your/image.png" alt="Live Stream" class="button-image" />
+                  <img src="assets/images/BD/live-img.jpeg" alt="Live Stream" class="button-image" />
                 </button>
               </a>
             </div>
-            <a href="" class="h6 title">Real Madrid VS Barcelona</a>
-            <hr>
+            <a href="" class="text-xl text-black mb-2 w-full block text-start">Eng VS Ger</a>
+            <hr class="mb-1">
             <div class="match-container">
+              <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
-                  <p class="batting">Real Madrid</p>
+                  <p class="batting">Ger <span style="color: #ff002b">*</span></p>
                 </div>
                 <div class="stats">
-                  <p><span class="batting">1-0</span> <span class="overs">(45+2)</span></p>
+                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
                 </div>
               </div>
-              <hr>
               <div class="team-container">
                 <div class="team">
-                  <p>Barcelona</p>
+                  <p>Eng</p>
                 </div>
                 <div class="stats">
-                  <p><span>0-1</span> <span class="overs">(45+2)</span></p>
+                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
                 </div>
               </div>
+              <hr class="my-2.5" />
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Germany needs 2 goals in 30 minutes</p>
             </div>
           </div>
+          <!-- Repeat for other match boxes if needed -->
         </div>
       </div>
     
@@ -1427,6 +1443,7 @@ window.onclick = function(event) {
         </div>
       </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script src="{{asset('assets/app/js/aos.js')}}"></script>
     <script src="{{asset('assets/app/js/jquery.min.js')}}"></script>

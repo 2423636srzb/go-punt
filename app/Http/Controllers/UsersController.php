@@ -140,7 +140,7 @@ class UsersController extends Controller
 
     public function updateUserStatus($id, $status)
 {
-    if ($status == 'disable') {
+    if ($status == 'enable') {
         $status = 'inactive';
     } else {
         $status = 'active';

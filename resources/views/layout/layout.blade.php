@@ -5,6 +5,7 @@
 <x-head />
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <?php 
         if(Auth::Check())
             if(Auth::user()->is_admin == 1){ ?>

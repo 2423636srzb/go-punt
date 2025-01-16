@@ -39,7 +39,9 @@ Route::controller(HomeController::class)->group(function () {
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
-Route::get('/match/', [MatchController::class, 'show'])->name('match.detail');
+Route::get('/cricket/live', [MatchController::class, 'cricketLive'])->name('cricket.live');
+Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
+Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
 Route::post('/login', [HomeController::class, 'login'])->name('login');
 

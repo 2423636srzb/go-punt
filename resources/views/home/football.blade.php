@@ -36,7 +36,7 @@
           color: #007bff;
           margin-bottom: 20px;
       }
-  
+/*   
       .team-container {
           display: flex;
           justify-content: space-between;
@@ -86,7 +86,7 @@
           font-weight: 600;
           font-size: 1.1rem;
           color: #333;
-      }
+      } */
   
       .video-title {
           font-size: 1.5rem;
@@ -101,7 +101,7 @@
               margin-top: 15px;
           }
   
-          .match-title {
+          /* .match-title {
               font-size: 1.6rem;
           }
   
@@ -118,18 +118,80 @@
               width: 30px;
               height: 30px;
               font-size: 1rem;
-          }
-      }
-  </style>
+          }*/
+      } 
+
+
+.match-container {
+  border-radius: 8px;
+  padding: 3px;
+  
+}
+.team-container {
+    height: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team p {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.stats p {
+  font-size: 16px;
+  color: #555;
+  text-align: right;
+}
+.batting {
+  color: #000000;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #a7a1a1;
+  margin: 20px 0;
+}
+
+.balls-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  gap: 10px;
+}
+
+.ball {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #616366;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.overs {
+  font-size: 10px;
+  font-weight: light;
+}
+</style>
   </head>
   <body class="body header-fixed home-2">
 
 
 
     <div class="container">
-      <div class="row">
+      <div class="flex gap-10">
           <!-- Left Side: Match Details -->
-          <div class="col-md-5 match-details">
+          {{-- <div class="col-md-5 match-details">
               <h3 class="match-title">Pakistan vs India</h3>
   
               <!-- Pakistan Team Info -->
@@ -172,17 +234,58 @@
                       <div class="ball">0</div>
                   </div>
               </div>
+          </div> --}}
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
+          
+            <a href="" class="text-xl text-black mb-2 w-full block text-center">Germany  VS  England</a>
+            <hr class="mb-1">
+            <div class="match-container">
+              <!-- Pakistan Team Info -->
+              <div class="team-container">
+                <div class="team">
+                  <p class="batting">Ger<span style="color: #ff002b">*</span></p>
+                </div>
+                <div class="stats">
+                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
+                </div>
+              </div>
+      
+              <div class="team-container">
+                <div class="team">
+                  <p>Eng</p>
+                </div>
+                <div class="stats">
+                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
+                </div>
+              </div>
+        
+              <hr class="my-2.5" />
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin: 20px; margin-left: 50px;">Ger needs 4 Goals in 30 minutes</p>
+            </div>
           </div>
-  
           <!-- Right Side: Video Player (Live Stream) -->
-          <div class="col-md-7">
-              <h3 class="video-title">Watch Live</h3>
+            <div style="min-height: 350px; width: 100%;">
               <!-- Embed the live stream using iframe -->
-              <iframe width="100%" height="315" src="https://www.youtube.com/embed/mLld0ZvQMsY?si=hsKJX0gs8qQ2ejCW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          </div>
+              <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mLld0ZvQMsY?si=hsKJX0gs8qQ2ejCW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
       </div>
   </div>
-
+  <script src="{{asset('assets/app/js/aos.js')}}"></script>
+    <script src="{{asset('assets/app/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/jquery.easing.js')}}"></script>
+    <script src="{{asset('assets/app/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/app.js')}}"></script>
+    <script src="{{asset('assets/app/js/jquery.peity.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/Chart.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/app/js/apexcharts.js')}}"></script>
+    <script src="{{asset('assets/app/js/switchmode.js')}}"></script>
+    <script src="{{asset('assets/app/js/jquery.magnific-popup.min.js')}}"></script>
+    
+    <script src="{{asset('assets/app/js/chart.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   </body>
   </html>
   

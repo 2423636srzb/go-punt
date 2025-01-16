@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
-    public function show()
+    public function cricketLive()
     {
-        // Retrieve match data from the database
-        // $match = Match::findOrFail($matchId);
-
-        // Pass match data to the view
-        return view('home.match-detail');
+        return view('home.cricket');
+    }
+    public function tennisLive()
+    {
+        return view('home.tennis');
+    }
+    public function footballLive()
+    {
+        return view('home.football');
     }
 }

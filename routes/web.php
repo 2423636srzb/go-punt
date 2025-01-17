@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\PlatformTransactionController;
+use App\Http\Controllers\SportsController;
 use App\Http\Controllers\StaffController;
 use App\Http\Middleware\InactivityTimeout;
 use Illuminate\Support\Facades\Broadcast;
@@ -35,11 +36,11 @@ require base_path('routes/channels.php');
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home');
 });
-
+Route::get('/sports', [SportsController::class, 'index']);
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
-Route::get('/cricket/live', [MatchController::class, 'cricketLive'])->name('cricket.live');
+Route::get('/match/live/{eventId}/{sportId}', [MatchController::class, 'cricketLive'])->name('match.live');
 Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
 Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');

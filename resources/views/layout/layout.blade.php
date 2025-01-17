@@ -28,6 +28,7 @@
             <!-- ..::  header area end ::.. -->
 
             @yield('content')
+        </div>
             @include('layout.paymentModal')
         </div>
         <!-- ..::  footer  start ::.. -->
@@ -77,24 +78,36 @@ function viewWithDrawRequest(id) {
     fetch(`/withdrawal/${id}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data.payment_method);
-            console.log(data.payment_detail);
-            
-            // Populate the modal with fetched data
-            document.getElementById('withdrawRequestUser').textContent = data.user_name || 'Not Available';  // Show the user's name
-            document.getElementById('withdrawPlatform').textContent = data.payment_method || 'Not Available';  // Show the payment method
-            document.getElementById('withdrawAmount').textContent = `$${data.amount}`;
-             // Show the withdrawal amount
-            document.getElementById('withdrawRequestCreatedAt').textContent = data.created_at;  // Show the created date
-            // Show the correct payment detail based on the payment method
-            document.getElementById('withdrawAccountDetail').textContent = data.payment_detail || 'Not Available';  // Show account number, crypto wallet, or UPI number
-           
-           
-            if (data.QRCode !== null) {
-            $('.requestScreenShot1').html('<img width="500" src="' + '{{ url('/') }}/' + data.QRCode + '" alt="QR Code" />');
-        } else {
-            $('.requestScreenShot1').html('<p>Bank Transfer</p>');
-        }
+    // ... other code ...
+    
+    if (data.QRCode !== null) {
+        const captionStyles = {
+            'upi': {
+                text: 'UPI QR CODE',
+                class: 'text-primary'
+            },
+            'crypto': {
+                text: 'CRYPTO QR CODE',
+                class: 'text-success'
+            }
+        };
+
+        const paymentType = data.payment_method.toLowerCase();
+        const caption = captionStyles[paymentType];
+
+        $('.requestScreenShot1').html(`
+            <div class="text-center">
+                <img width="500" src="{{ url('/') }}/${data.QRCode}" alt="QR Code" class="mb-2"/>
+                ${caption ? `
+                    <div class="mt-3 ${caption.class} fw-bold">
+                        ${caption.text}
+                    </div>
+                ` : ''}
+            </div>
+        `);
+    } else {
+        $('.requestScreenShot1').html('<p>Bank Transfer</p>');
+    }
 
        
             // Show the QR code if available

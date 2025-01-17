@@ -88,6 +88,7 @@
                                 <tr>
                                     <th scope="col">Request ID</th>
                                     <th scope="col">Platform Name</th>
+                                    <th scope="col">User Name</th>
                                     <th scope="col">Request Date/Time</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">UTR #</th>
@@ -102,9 +103,10 @@
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <img width="50" src="{{ url($paymentRequest->logo) }}" alt="" class="flex-shrink-0 me-12 radius-8">
-                                                <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $paymentRequest->name }}</h6>
+                                                <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $paymentRequest->game_name }}</h6>
                                             </div>
                                         </td>
+                                        <td>{{ $paymentRequest->user_name }}</td>
                                         <td>{{ $paymentRequest->created_at }}</td>
                                         <td>{{ setCurrency($paymentRequest->amount) }}</td>
                                         <td>{{ $paymentRequest->utr_number }}</td>
@@ -146,6 +148,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Request ID</th>
+                                    <th scope="col">User Name</th>
                                     <th scope="col">Requested On</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
@@ -156,6 +159,7 @@
                                 @foreach ($withdrawalRequests as $withdraw)
                                     <tr>
                                         <td><a href="javascript:void(0)" class="text-primary-600">#{{ $withdraw->id }}</a></td>
+                                        <td>{{ $withdraw->user_name }}</td>
                                         <td>{{ $withdraw->created_at }}</td>
                                         <td>{{ setCurrency($withdraw->amount) }}</td>
                                         <td>

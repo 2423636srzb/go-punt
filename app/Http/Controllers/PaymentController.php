@@ -20,12 +20,14 @@ class PaymentController extends Controller
         // $user = Auth::user();
         $depositRequests = DB::table('user_platform_transactions')
         ->join('games', 'user_platform_transactions.platform_id', '=', 'games.id')  // Joining on platform_id
-        ->select('user_platform_transactions.*', 'games.name as name', 'games.logo')  // Selecting necessary columns
+        ->join('users', 'user_platform_transactions.user_id', '=', 'users.id')   // Joining on user_id
+        ->select('user_platform_transactions.*', 'games.name as game_name', 'games.logo', 'users.username as user_name', 'users.email as user_email')  // Selecting necessary columns
         ->orderBy('user_platform_transactions.created_at', 'desc')  // Ordering by created_at in descending order
         ->get();
     
-    $withdrawalRequests = DB::table('withdrawals')
-        ->select('withdrawals.*')
+        $withdrawalRequests = DB::table('withdrawals')
+        ->join('users', 'withdrawals.user_id', '=', 'users.id')  // Joining on user_id
+        ->select('withdrawals.*', 'users.username as user_name', 'users.email as user_email')  // Selecting necessary columns
         ->orderBy('withdrawals.created_at', 'desc')  // Ordering by created_at in descending order
         ->get();
         return view('payments/paymentRequest',compact('depositRequests','withdrawalRequests'));

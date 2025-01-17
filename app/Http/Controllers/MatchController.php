@@ -6,16 +6,8 @@ use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
-    public function cricketLive()
+    public function cricketLive($eventId, $sportId)
     {
-        return view('home.cricket');
-    }
-    public function tennisLive()
-    {
-        return view('home.tennis');
-    }
-    public function footballLive()
-    {
-        return view('home.football');
+        return view('home.match',compact('eventId','sportId'));
     }
 }

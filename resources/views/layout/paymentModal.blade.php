@@ -93,7 +93,7 @@
                     <div class="row">
                         <div class="col-md-6 d-flex align-items-center justify-content-center">
                             <div id="dropArea" class="upload-area p-4 border border-2 border-dashed rounded text-center h-100 d-flex flex-column justify-content-center align-items-center" style="width: 100%; min-height: 200px; cursor: pointer;">
-                                <p class="text-muted">Drag and drop your file here</p>
+                                <p class="text-muted">Chose your payment reciept</p>
                                 <input type="file" name="file" accept=".jpg, .png, .jpeg" class="d-none" id="fileInput">
                                 <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 150px; display: none;">
                             </div>
@@ -106,14 +106,14 @@
                                     <select class="form-select" id="adminAccount" name="admin_account_id" required>
                                         <option selected disabled>Choose Account</option>
                                         @foreach ($adminAccounts as $adminAccount)
-                                            <option value="{{ $adminAccount->id }}">{{ $adminAccount->payment_method }}</option>
+                                        <option value="{{ $adminAccount->id }}">{{ $adminAccount->payment_method }}{{ $adminAccount->bank_name ? ' ('.$adminAccount->bank_name.')' : '' }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             @endif
                 
                             <div id="accountDetails" style="display: none;" class="mb-3">
-                                <ul id="detailsList"></ul>
+                                <div id="detailsList"></div>
                                 <div class="form-check d-flex align-items-center">
                                     <input type="checkbox" class="form-check-input me-2" id="confirmCheckbox">
                                     <label class="form-check-label mb-0" for="confirmCheckbox">
@@ -318,26 +318,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Clear the previous details
                     detailsList.innerHTML = '';
-
+                    console.log(account.upi_qr_code);
+                    const baseUrl = window.location.origin;
+                    let qrImageUrl='';
+                    if(account.upi_qr_code){ // Gets the base URL of your site
+                        qrImageUrl = account.upi_qr_code.startsWith('/')
+                                ? baseUrl + account.upi_qr_code  // If path starts with /, add base URL
+                                : baseUrl + '/' + account.upi_qr_code;
+                    }
                     // Determine the fields to display based on payment method
                     if (account.payment_method === 'bank-transfer') {
-                        detailsList.innerHTML = `
-                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
-                            <li><strong>Bank Name:</strong> ${account.bank_name || 'N/A'}</li>
-                            <li><strong>Account Number:</strong> ${account.account_number || 'N/A'}</li>
-                            <li><strong>IFSC Number:</strong> ${account.ifc_number || 'N/A'}</li>
-                        `;
-                    } else if (account.payment_method === 'upi') {
-                        detailsList.innerHTML = `
-                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
-                            <li><strong>UPI Number:</strong> ${account.upi_number || 'N/A'}</li>
-                        `;
-                    } else if (account.payment_method === 'crypto') {
-                        detailsList.innerHTML = `
-                            <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
-                            <li><strong>Crypto Wallet:</strong> ${account.crypto_wallet || 'N/A'}</li>
-                        `;
-                    }
+    detailsList.innerHTML = `
+        <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+            <img src="/assets/images/BD/banner.jpg" alt="Bank Transfer" style="width:100px; height:100px; margin-right:10px; border-radius:10px;">
+            <ul style="list-style-type: none; margin: 0; padding: 0;">
+                <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                <li><strong>Bank Name:</strong> ${account.bank_name || 'N/A'}</li>
+                <li><strong>Account Number:</strong> ${account.account_number || 'N/A'}</li>
+                <li><strong>IFSC Number:</strong> ${account.ifc_number || 'N/A'}</li>
+            </ul>
+        </div>
+    `;
+} else if (account.payment_method === 'upi') {
+    detailsList.innerHTML = `
+        <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+            <img src="${qrImageUrl}" alt="UPI QR Code" style="width:100px; height:100px; margin-right:10px; border-radius:10px;">
+            <ul style="list-style-type: none; margin: 0; padding: 0;">
+                <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                <li><strong>UPI Number:</strong> ${account.upi_number || 'N/A'}</li>
+            </ul>
+        </div>
+    `;
+} else if (account.payment_method === 'crypto') {
+    detailsList.innerHTML = `
+        <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+            <img src="${qrImageUrl}" alt="Crypto QR Code" style="width:100px; height:100px; margin-right:10px; border-radius:10px;">
+            <ul style="list-style-type: none; margin: 0; padding: 0;">
+                <li><strong>Account Holder:</strong> ${account.account_holder_name}</li>
+                <li><strong>Crypto Wallet:</strong> ${account.crypto_wallet || 'N/A'}</li>
+            </ul>
+        </div>
+    `;
+}
+
+// Display the checkbox below
+
+// document.getElementById('accountDetails').innerHTML += checkboxHtml;
+
+// Show the details and confirmation checkbox
+accountDetailsDiv.style.display = 'block';
 
                     // Show the details and confirmation checkbox
                     accountDetailsDiv.style.display = 'block';

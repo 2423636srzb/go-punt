@@ -522,7 +522,6 @@ $script = '
         </div>
     </div>
 </div> --}}
-
 @endsection
 
 @section('js')

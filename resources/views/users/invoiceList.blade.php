@@ -137,8 +137,11 @@
                                         <td>{{ setCurrency($transaction->amount) }}</td>
                                         <td>{{ $transaction->utr_number }}</td>
                                         <td>
-                                            <span
-                                                class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">
+                                            <span class="
+                                                {{ $transaction->status == 'approved' ? 'bg-success-focus text-success-main' : '' }}
+                                                {{ $transaction->status == 'rejected' ? 'bg-danger-focus text-danger-main' : '' }}
+                                                {{ $transaction->status == 'pending' ? 'bg-info-focus text-info-main' : '' }}
+                                                px-24 py-4 rounded-pill fw-medium text-sm">
                                                 {{ ucfirst($transaction->status) }}
                                             </span>
                                         </td>
@@ -199,8 +202,13 @@
 
                                     <td>{{$withdraw->created_at}}</td>
                                     <td>{{ setCurrency($withdraw->amount) }}</td>
-                                    <td> <span
-                                            class="bg-warning-focus text-warning-main px-24 py-4 rounded-pill fw-medium text-sm">{{$withdraw->status}}</span>
+                                    <td>  <span class="
+                                        {{ $withdraw->status == 'approved' ? 'bg-success-focus text-success-main' : '' }}
+                                        {{ $withdraw->status == 'rejected' ? 'bg-danger-focus text-danger-main' : '' }}
+                                        {{ $withdraw->status == 'pending' ? 'bg-info-focus text-info-main' : '' }}
+                                        px-24 py-4 rounded-pill fw-medium text-sm">
+                                        {{ ucfirst($withdraw->status) }}
+                                    </span>
                                     </td>
                                     <td>
                                       

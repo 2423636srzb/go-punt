@@ -14,20 +14,47 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\OTP;
 use App\Notifications\WhatsAppOTPNotification;
 use App\Services\OtpService;
+use App\Services\SportsService;
+
 class HomeController extends Controller
 {
 
     protected $otpService;
+    protected $sportsService;
 
-    public function __construct(OtpService $otpService)
+    public function __construct(OtpService $otpService,SportsService $sportsService)
     {
         $this->otpService = $otpService;
+        $this->sportsService = $sportsService;
     }
 
     public function index()
     {
+        $sportsData = $this->sportsService->getAllSportsData();
+
+        $liveFootball = [];
+        $liveCricket = [];
+        $liveTennis = [];
+        
+        // Filter the matches based on type, IsLive, and NowPlaying
+        foreach ($sportsData as $match) {
+            if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
+                switch ($match['Type']) {
+                    case 'FOOTBALL':
+                        $liveFootball[] = $match;
+                        break;
+                    case 'CRICKET':
+                        $liveCricket[] = $match;
+                        break;
+                    case 'TENNIS':
+                        $liveTennis[] = $match;
+                        break;
+                }
+            }
+        }
+        // dd($liveFootball,$liveCricket,$liveTennis);
         $games = Game::where('status','active')->get();
-        return view('home/main',compact('games'));
+        return view('home/main',compact('games','liveFootball','liveCricket','liveTennis'));
     }
 
     public function loginPage()

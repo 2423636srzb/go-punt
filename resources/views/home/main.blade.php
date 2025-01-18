@@ -623,7 +623,7 @@ window.onclick = function(event) {
 
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
             <div class="live-button-container">
-              <a href="{{ route('match.live',['eventId' => $cricket['MatchID'], 'sportId' => 4]) }}">
+              <a href="{{ route('match.live',['eventId' => $cricket['MatchID'], 'sportId' => 4,'Channel' => $cricket['Channel']]) }}">
                 <button class="circular-button">
                   <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
                 </button>

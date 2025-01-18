@@ -40,7 +40,7 @@ Route::get('/sports', [SportsController::class, 'index']);
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
-Route::get('/match/live/{eventId}/{sportId}', [MatchController::class, 'cricketLive'])->name('match.live');
+Route::get('/match/live/{eventId}/{sportId}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');
 Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
 Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');

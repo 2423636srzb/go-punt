@@ -514,20 +514,10 @@ window.onclick = function(event) {
             </div>
           </div>
           <!-- Right Side: Video Player (Live Stream) -->
-          
-          <div style="position: relative; overflow: hidden; padding-top: 56.25%; /* 16:9 Aspect Ratio */">
-            <!-- Embed the live stream using iframe -->
-            <iframe 
-              width="100%" 
-              height="100%" 
-              src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  
-              allowfullscreen
-              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-            ></iframe>
-        </div>
-         
+          <div style="min-height: 350px; width: 100%; height: 100%;">
+              <!-- Embed the live stream using iframe -->
+              <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
+         </div>
       </div>
   </div>
   @endif
@@ -563,18 +553,10 @@ window.onclick = function(event) {
           </div>
         </div>
         <!-- Right Side: Video Player (Live Stream) -->
-        <div style="position: relative; overflow: hidden; padding-top: 56.25%; /* 16:9 Aspect Ratio */">
-          <!-- Embed the live stream using iframe -->
-          <iframe 
-            width="100%" 
-            height="100%" 
-            src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  
-            allowfullscreen
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          ></iframe>
-      </div>
+          <div style="min-height: 350px; width: 100%;">
+            <!-- Embed the live stream using iframe -->
+            <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
     </div>
 </div>
 
@@ -610,17 +592,9 @@ window.onclick = function(event) {
         </div>
       </div>
       <!-- Right Side: Video Player (Live Stream) -->
-      <div style="position: relative; overflow: hidden; padding-top: 56.25%; /* 16:9 Aspect Ratio */">
+      <div style="min-height: 350px; background-color: #007bff; width: 100%;">
           <!-- Embed the live stream using iframe -->
-          <iframe 
-            width="100%" 
-            height="100%" 
-            src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  
-            allowfullscreen
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-          ></iframe>
+          <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
       </div>
   </div>
 </div>

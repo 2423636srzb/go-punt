@@ -15,6 +15,7 @@ use App\Models\OTP;
 use App\Notifications\WhatsAppOTPNotification;
 use App\Services\OtpService;
 use App\Services\SportsService;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -56,6 +57,16 @@ class HomeController extends Controller
         return view('home/main',compact('games','liveFootball','liveCricket','liveTennis'));
     }
 
+
+    public function getLiveData()
+    {
+        // Fetch from the second API
+        $response = Http::get("https://live.oldd247.com/sr.php?eventid=33954131");
+        // dd($response->json());
+        // Return decoded JSON
+        return $response->json();
+
+    }
     public function loginPage()
     {
         // Return the login page view

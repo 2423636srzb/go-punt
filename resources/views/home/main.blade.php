@@ -285,7 +285,12 @@ hr {
 .container-cricket.active, .container-tennis.active, .container-football.active {
   display: block;
 }
-
+html {
+    scroll-behavior: smooth;
+}
+#main-nav .menu-item:hover {
+      background-color:rgb(220 ,38 ,38) ; /* Change the hover color to red */
+  }
     </style>
   </head>
   <body class="body header-fixed home-2">
@@ -309,7 +314,7 @@ hr {
               <div class="header__left">
                 <?php $setting = DB::table('settings')->first(); ?>
                 <div class="logo">
-                  <a class="light" href="index.html">
+                  <a class="light" href="{{url('/')}}">
                     <img
                       id="site-logo"
                       src="{{ asset($setting->logo) }}"
@@ -321,7 +326,7 @@ hr {
                       data-height="32"
                     />
                   </a>
-                  <a class="dark" href="index.html">
+                  <a class="dark" href="{{url('/')}}">
                     <img
                       src="{{ asset($setting->logo) }}"
                       alt=""
@@ -336,21 +341,21 @@ hr {
                 <div class="left__main">
                   <nav id="main-nav" class="main-nav">
                     <ul id="menu-primary-menu" class="menu">
-                      <li class="menu-item">
-                        <a href="markets.html">Home</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">About</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">Games</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">Contacts</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">Live</a>
-                      </li>
+                        <li class="menu-item">
+                            <a href="#" onclick="refreshPage()">Home</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#about">About</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#games">Games</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#markets">Markets</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#live">Live</a>
+                        </li>
                     </ul>
                   </nav>
                   <!-- /#main-nav -->
@@ -555,7 +560,7 @@ window.onclick = function(event) {
       </button>
     </div>
   </div>
-    <section class="crypto" data-aos="fade-up" data-aos-duration="1000">
+    <section class="crypto" data-aos="fade-up" data-aos-duration="1000" id="markets">
       <div class="container mx-auto  mb-4 overflow-hidden relative">
         <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
           <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Featured Games</h1>
@@ -592,7 +597,7 @@ window.onclick = function(event) {
     </section>
     
 
-    <section class="services">
+    <section class="services" id="live">
       <div class="container mx-auto mb-4 overflow-hidden relative">
         <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
           <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Live Matches</h1>
@@ -770,7 +775,7 @@ window.onclick = function(event) {
       </div>
     
     </section>
-    <section class="about-2">
+    <section class="about-2" id="about">
       <div class="container">
         <div class="row">
           <div class="col-xl-6 col-md-12">
@@ -1323,7 +1328,7 @@ window.onclick = function(event) {
             <div class="col-xl-4 col-md-6">
               <div class="info">
                 <a href="index.html" class="logo">
-                  <img src="assets/images/logo/log-footer.png" alt="" />
+                  <img src="{{ asset($setting->logo) }}" alt="" />
                 </a>
                 <h6>Let's talk! 🤙</h6>
                 <ul class="list">
@@ -1522,6 +1527,22 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleGames('cricket', cricketButton);
 });
 
+
+document.querySelectorAll('.menu-item a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+
+
+    function refreshPage() {
+        location.reload(); // This will reload the current page
+    }
     </script>
 
     

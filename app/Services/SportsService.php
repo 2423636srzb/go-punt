@@ -15,13 +15,5 @@ class SportsService
         return $response->json();
     }
 
-    public function getSpecificSportData($eventId)
-    {
-        // Fetch from the second API
-        $response = Http::get("https://live.oldd247.com/sr.php?eventid={$eventId}");
-        // dd($response->json());
-        // Return decoded JSON
-        return $response->json();
-
-    }
+   
 }

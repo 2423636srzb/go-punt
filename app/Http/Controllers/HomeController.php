@@ -31,7 +31,6 @@ class HomeController extends Controller
     public function index()
     {
         $sportsData = $this->sportsService->getAllSportsData();
-
         $liveFootball = [];
         $liveCricket = [];
         $liveTennis = [];

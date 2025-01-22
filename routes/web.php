@@ -38,6 +38,7 @@ Route::controller(HomeController::class)->group(function () {
 });
 Route::get('/sports', [SportsController::class, 'index']);
 Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view');
+Route::get('/score', [HomeController::class, 'score']);
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
 Route::get('/match/live/{eventId}/{sportId}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');

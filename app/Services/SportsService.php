@@ -19,8 +19,12 @@ class SportsService
     {
         // Fetch from the second API
         $response = Http::get("https://live.oldd247.com/sr.php?eventid=33959496");
-        
-        return $response->json();
+        if ($response->ok()) {
+            $data = $response->json();
+            dd($data); // Ensure $data is not null
+        } else {
+            dd('API Error:', $response->status(), $response->body());
+        }
 
     }
 }

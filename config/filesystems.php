@@ -27,7 +27,7 @@ return [
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
-
+     
     'disks' => [
 
         'local' => [
@@ -72,5 +72,12 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
+
+    'public' => [
+    'driver' => 'local',
+    'root' => 'D:/xampp/htdocs/bd_main/public', // Custom path
+    'url' => env('APP_URL') . '/storage',
+    'visibility' => 'public',
+],
 
 ];

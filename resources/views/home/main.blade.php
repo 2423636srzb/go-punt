@@ -775,128 +775,16 @@ window.onclick = function(event) {
       </div>
     
     </section>
-    <section class="about-2" id="about">
+    <section class="about-2 mb-7" id="about">
       <div class="container">
         <div class="row">
           <div class="col-xl-6 col-md-12">
             <div class="about_image">
               <img
                 class="img-main"
-                src="assets/images/layout/Illustration.png"
+                src="/assets/images/BD/bettingillustration.jpg"
                 alt=""
               />
-              <div class="traders-box">
-                <div class="icon">
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M8.82861 17.172L10.8172 10.8177L17.1715 8.8291L15.1829 15.1834L8.82861 17.172Z"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <circle
-                      cx="13"
-                      cy="13"
-                      r="12"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div class="content">
-                  <h6 class="numb">198+</h6>
-                  <p>Countries</p>
-                </div>
-              </div>
-              <div class="traders-box">
-                <div class="icon">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M22.6666 10.6669C22.3406 8.32055 21.2521 6.14647 19.5688 4.47959C17.8856 2.8127 15.701 1.74548 13.3515 1.44233C11.0021 1.13918 8.61814 1.6169 6.56691 2.80192M1.33331 2.66693V8.00026H6.66665"
-                      stroke="#D33535"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M1.33331 13.334C1.65939 15.6804 2.74789 17.8544 4.43113 19.5213C6.11437 21.1882 8.29897 22.2554 10.6484 22.5586C12.9979 22.8617 15.3818 22.384 17.433 21.199M22.6666 21.334V16.0007H17.3333"
-                      stroke="#D33535"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div class="content">
-                  <h6 class="numb">350+</h6>
-                  <p>Trading Pairs</p>
-                </div>
-              </div>
-              <div class="traders-box">
-                <div class="icon">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M9.52364 15.7402C5.03897 15.7402 1.2088 16.4181 1.2088 19.1341C1.2088 21.8489 5.01447 22.5524 9.52364 22.5524C14.0083 22.5524 17.8385 21.8734 17.8385 19.1586C17.8385 16.4437 14.0328 15.7402 9.52364 15.7402Z"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M9.52361 11.8667C12.4823 11.8667 14.8529 9.49484 14.8529 6.53734C14.8529 3.57867 12.4823 1.20801 9.52361 1.20801C6.56611 1.20801 4.19427 3.57867 4.19427 6.53734C4.19427 9.49484 6.56611 11.8667 9.52361 11.8667Z"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M20.4048 8.11328V12.7916"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M22.7917 10.4525H18.02"
-                      stroke="#3772FF"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div class="content">
-                  <h6 class="numb">20 million+</h6>
-                  <p>Trades</p>
-                </div>
-              </div>
             </div>
           </div>
           <div class="col-xl-6 col-md-12">
@@ -1057,277 +945,13 @@ window.onclick = function(event) {
       </div>
     </section>
 
-    <section class="work">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="block-text center">
-              <h3 class="heading">How It Work</h3>
-              <p class="fs-20 desc">
-                Stacks is a production-ready library of stackable content blocks
-                built in React Native.
-              </p>
-            </div>
-
-            <div class="work__main" data-aos="fade-up" data-aos-duration="1000">
-              <div class="work-box">
-                <div class="image">
-                  <img src="assets/images/icon/Cloud.png" alt="" />
-                </div>
-                <div class="content">
-                  <p class="step">Step 1</p>
-                  <a href="#" class="title">Download</a>
-                  <p class="text">
-                    Stacks is a production-ready library of stackable content
-                    blocks built in React Native.
-                  </p>
-                </div>
-                <img
-                  class="line"
-                  src="assets/images/icon/connect-line.png"
-                  alt=""
-                />
-              </div>
-              <div class="work-box">
-                <div class="image">
-                  <img src="assets/images/icon/Wallet.png" alt="" />
-                </div>
-                <div class="content">
-                  <p class="step">Step 2</p>
-                  <a href="#" class="title">Connect wallet</a>
-                  <p class="text">
-                    Stacks is a production-ready library of stackable content
-                    blocks built in React Native.
-                  </p>
-                </div>
-                <img
-                  class="line"
-                  src="assets/images/icon/connect-line.png"
-                  alt=""
-                />
-              </div>
-              <div class="work-box">
-                <div class="image">
-                  <img src="assets/images/icon/Mining.png" alt="" />
-                </div>
-                <div class="content">
-                  <p class="step">Step 3</p>
-                  <a href="#" class="title">Start trading</a>
-                  <p class="text">
-                    Stacks is a production-ready library of stackable content
-                    blocks built in React Native.
-                  </p>
-                </div>
-                <img
-                  class="line"
-                  src="assets/images/icon/connect-line.png"
-                  alt=""
-                />
-              </div>
-              <div class="work-box">
-                <div class="image">
-                  <img src="assets/images/icon/Comparison.png" alt="" />
-                </div>
-                <div class="content">
-                  <p class="step">Step 4</p>
-                  <a href="#" class="title">Earn money</a>
-                  <p class="text">
-                    Stacks is a production-ready library of stackable content
-                    blocks built in React Native.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-{{-- 
-    <section class="blog">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="block-text center">
-              <h3 class="heading">Learn And Earn</h3>
-              <p class="desc">
-                Stacks is a production-ready library of stackable content blocks
-                built in React Native.
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="blog-box">
-              <div class="box-image">
-                <img src="assets/images/blog/blog-01.jpg" alt="" />
-                <div class="wrap-video">
-                  <a
-                    href="https://www.youtube.com/watch?v=i7EMACWuErA"
-                    class="popup-youtube"
-                  >
-                    <svg
-                      width="13"
-                      height="16"
-                      viewBox="0 0 13 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0.466675 2.92407C0.466675 1.35705 2.187 0.398733 3.51938 1.22354L11.7197 6.2999C12.9827 7.0818 12.9827 8.91907 11.7197 9.70096L3.51938 14.7773C2.187 15.6021 0.466675 14.6438 0.466675 13.0768V2.92407Z"
-                        fill="#777E90"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <div class="box-content">
-                <a href="#" class="category btn-action">learn & earn</a>
-                <a href="" class="title"
-                  >Learn about UI8 coin and earn an All-Access Pass</a
-                >
-
-                <div class="meta">
-                  <a href="#" class="name"><span></span>Floyd Buckridge</a>
-                  <a href="#" class="time">Feb 03, 2021</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="blog-box">
-              <div class="box-image">
-                <img src="assets/images/blog/blog-02.jpg" alt="" />
-                <div class="wrap-video">
-                  <a
-                    href="https://www.youtube.com/watch?v=i7EMACWuErA"
-                    class="popup-youtube"
-                  >
-                    <svg
-                      width="13"
-                      height="16"
-                      viewBox="0 0 13 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0.466675 2.92407C0.466675 1.35705 2.187 0.398733 3.51938 1.22354L11.7197 6.2999C12.9827 7.0818 12.9827 8.91907 11.7197 9.70096L3.51938 14.7773C2.187 15.6021 0.466675 14.6438 0.466675 13.0768V2.92407Z"
-                        fill="#777E90"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <div class="box-content">
-                <a href="#" class="category btn-action">learn & earn</a>
-                <a href="" class="title"
-                  >Learn about UI8 coin and earn an All-Access Pass</a
-                >
-
-                <div class="meta">
-                  <a href="#" class="name"><span></span>Floyd Buckridge</a>
-                  <a href="#" class="time">Feb 03, 2021</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="blog-box">
-              <div class="box-image">
-                <img src="assets/images/blog/blog-02.jpg" alt="" />
-                <div class="wrap-video">
-                  <a
-                    href="https://www.youtube.com/watch?v=i7EMACWuErA"
-                    class="popup-youtube"
-                  >
-                    <svg
-                      width="13"
-                      height="16"
-                      viewBox="0 0 13 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0.466675 2.92407C0.466675 1.35705 2.187 0.398733 3.51938 1.22354L11.7197 6.2999C12.9827 7.0818 12.9827 8.91907 11.7197 9.70096L3.51938 14.7773C2.187 15.6021 0.466675 14.6438 0.466675 13.0768V2.92407Z"
-                        fill="#777E90"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <div class="box-content">
-                <a href="#" class="category btn-action">learn & earn</a>
-                <a href="" class="title"
-                  >Learn about UI8 coin and earn an All-Access Pass</a
-                >
-
-                <div class="meta">
-                  <a href="#" class="name"><span></span>Floyd Buckridge</a>
-                  <a href="#" class="time">Feb 03, 2021</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="button-loadmore">
-              <a href="#">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.00001 0.333008C6.63182 0.333008 6.33334 0.631485 6.33334 0.999674V2.99967C6.33334 3.36786 6.63182 3.66634 7.00001 3.66634C7.3682 3.66634 7.66668 3.36786 7.66668 2.99967V0.999674C7.66668 0.631485 7.3682 0.333008 7.00001 0.333008Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M7.00001 10.333C6.63182 10.333 6.33334 10.6315 6.33334 10.9997V12.9997C6.33334 13.3679 6.63182 13.6663 7.00001 13.6663C7.3682 13.6663 7.66668 13.3679 7.66668 12.9997V10.9997C7.66668 10.6315 7.3682 10.333 7.00001 10.333Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M13 6.33301C13.3682 6.33301 13.6667 6.63148 13.6667 6.99967C13.6667 7.36786 13.3682 7.66634 13 7.66634H11C10.6318 7.66634 10.3333 7.36786 10.3333 6.99967C10.3333 6.63148 10.6318 6.33301 11 6.33301H13Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M3.66668 6.99967C3.66668 6.63148 3.3682 6.33301 3.00001 6.33301H1.00001C0.63182 6.33301 0.333344 6.63148 0.333344 6.99967C0.333343 7.36786 0.63182 7.66634 1.00001 7.66634H3.00001C3.3682 7.66634 3.66668 7.36786 3.66668 6.99967Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M10.7713 2.28569C11.0316 2.02535 11.4537 2.02535 11.7141 2.28569C11.9744 2.54604 11.9744 2.96815 11.7141 3.2285L10.2999 4.64272C10.0395 4.90307 9.61742 4.90307 9.35707 4.64272C9.09672 4.38237 9.09672 3.96026 9.35707 3.69991L10.7713 2.28569Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M4.64296 9.35666C4.38262 9.09631 3.9605 9.09631 3.70016 9.35666L2.28594 10.7709C2.02559 11.0312 2.02559 11.4533 2.28594 11.7137C2.54629 11.974 2.9684 11.974 3.22875 11.7137L4.64296 10.2995C4.90331 10.0391 4.90331 9.61701 4.64296 9.35666Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M11.7141 10.7709C11.9744 11.0313 11.9744 11.4534 11.7141 11.7138C11.4537 11.9741 11.0316 11.9741 10.7713 11.7138L9.35705 10.2995C9.0967 10.0392 9.0967 9.61708 9.35705 9.35673C9.6174 9.09638 10.0395 9.09638 10.2999 9.35673L11.7141 10.7709Z"
-                    fill="#23262F"
-                  />
-                  <path
-                    d="M4.64303 4.64263C4.90338 4.38228 4.90338 3.96017 4.64303 3.69982L3.22881 2.28561C2.96846 2.02526 2.54635 2.02526 2.286 2.28561C2.02565 2.54596 2.02565 2.96807 2.286 3.22841L3.70022 4.64263C3.96057 4.90298 4.38268 4.90298 4.64303 4.64263Z"
-                    fill="#23262F"
-                  />
-                </svg>
-                Load more</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> --}}
-
     <footer class="footer style-2">
       <div class="container">
         <div class="footer__main">
           <div class="row">
             <div class="col-xl-4 col-md-6">
               <div class="info">
-                <a href="index.html" class="logo">
+                <a href="#">
                   <img src="{{ asset($setting->logo) }}" alt="" />
                 </a>
                 <h6>Let's talk! 🤙</h6>
@@ -1346,25 +970,25 @@ window.onclick = function(event) {
             <div class="col-xl-4 col-md-6">
               <div class="widget">
                 <div class="widget-link">
-                  <h6 class="title">PRODUCTS</h6>
+                  <h6 class="title">Quick Links</h6>
                   <ul>
-                    <li><a href="spot.html">Spot</a></li>
-                    <li><a href="#">Inverse Perpetual</a></li>
-                    <li><a href="#">USDT Perpetual</a></li>
-                    <li><a href="exchange.html">Exchange</a></li>
-                    <li><a href="#">Launchpad</a></li>
-                    <li><a href="#">Binance Pay</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#markets">Markets</a></li>
+                    <li><a href="#live">Live Matches</a></li>
+                    <li><a href="{{ route('login.view') }}">Login</a></li>
+                    <li><a href="{{ route('signUp.view') }}">Sign Up</a></li>
                   </ul>
                 </div>
                 <div class="widget-link s2">
-                  <h6 class="title">SERVICES</h6>
+                  <h6 class="title">Markets</h6>
                   <ul>
-                    <li><a href="buy-crypto-select.html">Buy Crypto</a></li>
-                    <li><a href="markets.html">Markets</a></li>
-                    <li><a href="#">Tranding Fee</a></li>
-                    <li><a href="#">Affiliate Program</a></li>
-                    <li><a href="#">Referral Program</a></li>
-                    <li><a href="#">API</a></li>
+                    <li><a href="buy-crypto-select.html">ALLPANELEXCHANGE</a></li>
+                    <li><a href="markets.html">MY99EXCH</a></li>
+                    <li><a href="#">LCPLAY247</a></li>
+                    <li><a href="#">BETBHAI9</a></li>
+                    <li><a href="#">DIAMOND EXCH99</a></li>
+                    <li><a href="#">MYLASER247</a></li>
+                    <li><a href="#">MYTIGER247</a></li>
                   </ul>
                 </div>
               </div>

@@ -241,9 +241,9 @@ $script = '
                                 </tbody>
                             </table>
                         </div> -->
-                <div class="row">
+                <div class="row bg-white">
                 @foreach ($userAccounts as $userAccount)
-                  <div class="col-md-3"> <!-- Ensure each game takes up 3 columns (4 games per row) -->
+                  <div class="col-md-3 mt-6"> <!-- Ensure each game takes up 3 columns (4 games per row) -->
                     <div class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
                       <div class="center text-center">
                         <span class="icon-btc">

@@ -78,83 +78,56 @@ function viewWithDrawRequest(id) {
     fetch(`/withdrawal/${id}`)
         .then(response => response.json())
         .then(data => {
-    // ... other code ...
-    
-    if (data.QRCode !== null) {
-        const captionStyles = {
-            'upi': {
-                text: 'UPI QR CODE',
-                class: 'text-primary'
-            },
-            'crypto': {
-                text: 'CRYPTO QR CODE',
-                class: 'text-success'
-            }
-        };
+            console.log(data); // Debugging - Ensure data is received
+            
+            // ✅ Update Labels
+            $('#withdrawRequestUser').text(data.user_name || 'N/A');
+            $('#withdrawPlatform').text(data.payment_method || 'N/A');
+            $('#withdrawAccountDetail').text(data.payment_detail || 'N/A');
+            $('#withdrawAmount').text(data.amount || 'N/A');
+            $('#withdrawRequestCreatedAt').text(data.created_at || 'N/A');
 
-        const paymentType = data.payment_method.toLowerCase();
-        const caption = captionStyles[paymentType];
+            // ✅ Show QR Code If Available
+            if (data.QRCode !== null) {
+                const captionStyles = {
+                    'upi': { text: 'UPI QR CODE', class: 'text-primary' },
+                    'crypto': { text: 'CRYPTO QR CODE', class: 'text-success' }
+                };
 
-        $('.requestScreenShot1').html(`
-            <div class="text-center">
-                <img width="500" src="{{ url('/') }}/${data.QRCode}" alt="QR Code" class="mb-2"/>
-                ${caption ? `
-                    <div class="mt-3 ${caption.class} fw-bold">
-                        ${caption.text}
+                const paymentType = data.payment_method ? data.payment_method.toLowerCase() : '';
+                const caption = captionStyles[paymentType];
+
+                $('.requestScreenShot1').html(`
+                    <div class="text-center">
+                        <img width="300" src="${data.QRCode}" alt="QR Code" class="mb-2"/>
+                        ${caption ? `<div class="mt-3 ${caption.class} fw-bold">${caption.text}</div>` : ''}
                     </div>
-                ` : ''}
-            </div>
-        `);
-    } else {
-        $('.requestScreenShot1').html('<p>Bank Transfer</p>');
-    }
-
-       
-            // Show the QR code if available
-            // const qrImage = document.getElementById('withdrawQRImage');
-            // if (data.upiQRCode) {
-            //     console.log(data.upiQRCode);
-            //     qrImage.src = data.upiQRCode;  // Show UPI QR code
-            // } else if (data.cryptoQRCode) {
-            //     console.log(data.cryptoQRCode);
-            //     qrImage.src = data.cryptoQRCode;  // Show Crypto QR code
-            // }
-
-            // Conditionally show additional fields based on payment method
-            if (data.payment_method === 'bank-transfer') {
-                // Show Bank Name, Branch Name, and IFC Number if bank transfer is selected
-                if (data.bankName) {
-                    console.log("here");
-                    document.getElementById('withdrawBankName').style.display = 'block';
-                    
-                    document.getElementById('withdrawBankNameLabel').textContent = data.bankName;
-                } else {
-                    document.getElementById('withdrawBankName').style.display = 'none';
-                }
-               
-                if (data.branchName) {
-                    document.getElementById('withdrawBranchName').style.display = 'block';
-                    document.getElementById('withdrawBranchNameLabel').textContent = data.branchName;
-                } else {
-                    document.getElementById('withdrawBranchName').style.display = 'none';
-                }
-
-                if (data.ifcNumber) {
-                    document.getElementById('withdrawIFCNumber').style.display = 'block';
-                    document.getElementById('withdrawIFCNumberLabel').textContent = data.ifcNumber;
-                } else {
-                    document.getElementById('withdrawIFCNumber').style.display = 'none';
-                }
+                `);
             } else {
-                // Hide the Bank-related fields if the payment method is not Bank Transfer
-                document.getElementById('withdrawBankName').style.display = 'none';
-                document.getElementById('withdrawBranchName').style.display = 'none';
-                document.getElementById('withdrawIFCNumber').style.display = 'none';
+                $('.requestScreenShot1').html('<p>Bank Transfer</p>');
             }
 
-            // Show the modal
-            $('.approve-withdraw_request').attr('href', '{{ url('withdraw-request-approve') }}' + '/' + data.id);
-            $('.reject-withdraw_request').attr('href', '{{ url('withdraw-request-reject') }}' + '/' + data.id);
+            // ✅ Show Bank Details If Needed
+            if (data.payment_method === 'bank-transfer') {
+                $('#withdrawBankName').show();
+                $('#withdrawBankNameLabel').text(data.bankName || 'N/A');
+
+                $('#withdrawBranchName').show();
+                $('#withdrawBranchNameLabel').text(data.branchName || 'N/A');
+
+                $('#withdrawIFCNumber').show();
+                $('#withdrawIFCNumberLabel').text(data.ifcNumber || 'N/A');
+            } else {
+                $('#withdrawBankName').hide();
+                $('#withdrawBranchName').hide();
+                $('#withdrawIFCNumber').hide();
+            }
+
+            // ✅ Set Approve/Reject Button Links
+            $('.approve-withdraw_request').attr('href', `/withdraw-request-approve/${data.id}`);
+            $('.reject-withdraw_request').attr('href', `/withdraw-request-reject/${data.id}`);
+
+            // ✅ Show Modal
             $('#withdrawRequestViewModal').modal('show');
         })
         .catch(error => {

@@ -700,13 +700,25 @@ window.onclick = function(event) {
           @foreach ($liveTennis as $tennis)
             
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+
             <div class="live-button-container">
-              <a href="{{ route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) }}">
-                <button class="circular-button">
-                  <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                </button>
+              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) : '#' }}" 
+                onclick="checkLogin(event)">
+                  <button class="circular-button">
+                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                  </button>
               </a>
-            </div>
+          </div>
+
+          <script>
+              function checkLogin(event) {
+                  @if(!Auth::check())
+                      event.preventDefault();
+                      alert("You must be logged in to watch the live stream!");
+                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                  @endif
+              }
+          </script>
             <a href="" class="text-xl text-black mb-2 w-full block text-start"style="font-size: 15px; line-height: 20px;">{{$tennis['Name']}}</a>
             <hr class="mb-1">
             <div class="match-container">
@@ -749,12 +761,23 @@ window.onclick = function(event) {
             
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
             <div class="live-button-container">
-              <a href="{{ route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) }}">
-                <button class="circular-button">
-                  <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                </button>
+              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) : '#' }}" 
+                onclick="checkLogin(event)">
+                  <button class="circular-button">
+                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                  </button>
               </a>
-            </div>
+          </div>
+
+          <script>
+              function checkLogin(event) {
+                  @if(!Auth::check())
+                      event.preventDefault();
+                      alert("You must be logged in to watch the live stream!");
+                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                  @endif
+              }
+          </script>
             <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$football['Name']}}</a>
             <hr class="mb-1">
             <div class="match-container">

@@ -260,7 +260,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="withdrawRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
+<div class="modal fade" id="withdrawRequestViewModal" tabindex="-1" aria-labelledby="uploadModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">

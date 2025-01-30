@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Auth\Middleware\Authenticate::class,
              \App\Http\Middleware\InactivityTimeout::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            '/logout' // <-- exclude this route
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

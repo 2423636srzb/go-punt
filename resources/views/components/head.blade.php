@@ -56,4 +56,88 @@
   gtag('config', 'G-KW476DK53K');
 </script>
 
+
+
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="{{asset('assets/app/dist/app.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/app/dist/magnific-popup.css')}}" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <!-- End Style CSS -->
+
+    <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon.png')}}" />
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="{{asset('assets/images/logo/favicon.png')}}"
+    />
+
+    <style>
+          .crypto-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally centers the content */
+    justify-content: center; /* Vertically centers the content */
+    text-align: center; /* Ensures that text like the game name is centered */
+    padding: 20px; /* Add some padding inside the box */
+    background-color:rgba(184, 186, 187, 0.2); /* Background color for the game box */
+    border-radius: 10px; /* Optional, adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional, adds a subtle shadow */
+    width: 100%;
+}
+
+.crypto-box img {
+    max-width: 100%; /* Ensure the image is responsive */
+}
+
+.crypto-box h6 {
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+.crypto-box button {
+    margin-top: 10px;
+}
+
+.live-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: absolute;
+  left: 100px;
+  top: -18px */
+}
+.circular-button {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  width: 100px;  /* Button width */
+   /* Button height */
+  /* border-radius: 50%; Makes the button circular */
+  /* background-color: #ff002b; Button background color */
+  color: white; /* Text color */
+  font-size: 9px; /* Increased text size */
+  font-weight: bold; /* Text weight */
+  border: none; /* Removes default button border */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  cursor: pointer; /* Cursor changes to a pointer on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+}
+
+/* Ensure the image inside the button fits properly */
+.circular-button .button-image {
+  margin-top: 5px;
+  width: 90px; /* Adjust image size */
+ /* Adjust image size */
+  object-fit: contain; /* Ensure the image maintains its aspect ratio */
+  /* border-radius: 50%; Optional: You can add this if you want the image itself to be circular */
+}
+    </style>
 </head>

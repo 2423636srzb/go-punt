@@ -153,90 +153,7 @@ $script = '
     </div>
 </div>
 
-< class="row gy-4 mt-1">
-    <!--
-    <div class="col-xxl-6 col-xl-12">
-        <div class="card h-100">
-            <div class="card-body">
-                <div class="d-flex flex-wrap align-items-center justify-content-between">
-                    <h6 class="text-lg mb-0">Sales Statistic</h6>
-                    <select class="form-select bg-base form-select-sm w-auto">
-                        <option>Yearly</option>
-                        <option>Monthly</option>
-                        <option>Weekly</option>
-                        <option>Today</option>
-                    </select>
-                </div>
-                <div class="d-flex flex-wrap align-items-center gap-2 mt-8">
-                    <h6 class="mb-0">$27,200</h6>
-                    <span
-                        class="text-sm fw-semibold rounded-pill bg-success-focus text-success-main border br-success px-8 py-4 line-height-1 d-flex align-items-center gap-1">
-                        10% <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>
-                    </span>
-                    <span class="text-xs fw-medium">+ $1500 Per Day</span>
-                </div>
-                <div id="chart" class="pt-28 apexcharts-tooltip-style-1"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xxl-3 col-xl-6">
-        <div class="card h-100 radius-8 border">
-            <div class="card-body p-24">
-                <h6 class="mb-12 fw-semibold text-lg mb-16">Total Subscriber</h6>
-                <div class="d-flex align-items-center gap-2 mb-20">
-                    <h6 class="fw-semibold mb-0">5,000</h6>
-                    <p class="text-sm mb-0">
-                        <span
-                            class="bg-danger-focus border br-danger px-8 py-2 rounded-pill fw-semibold text-danger-main text-sm d-inline-flex align-items-center gap-1">
-                            10%
-                            <iconify-icon icon="iconamoon:arrow-down-2-fill" class="icon"></iconify-icon>
-                        </span>
-                        - 20 Per Day
-                    </p>
-                </div>
-
-                <div id="barChart"></div>
-
-            </div>
-        </div>
-    </div>
-    <div class="col-xxl-3 col-xl-6">
-        <div class="card h-100 radius-8 border-0 overflow-hidden">
-            <div class="card-body p-24">
-                <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                    <h6 class="mb-2 fw-bold text-lg">Users Overview</h6>
-                    <div class="">
-                        <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
-                            <option>Today</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                <div id="userOverviewDonutChart"></div>
-
-                <ul class="d-flex flex-wrap align-items-center justify-content-between mt-3 gap-3">
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px radius-2 bg-primary-600"></span>
-                        <span class="text-secondary-light text-sm fw-normal">New:
-                            <span class="text-primary-light fw-semibold">500</span>
-                        </span>
-                    </li>
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px radius-2 bg-yellow"></span>
-                        <span class="text-secondary-light text-sm fw-normal">Subscribed:
-                            <span class="text-primary-light fw-semibold">300</span>
-                        </span>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-    </div>
-    -->
+<div class="row gy-4 mt-1">
     <div class="col-xxl-9 col-xl-12">
         <div class="card h-100">
             <div class="card-body p-24">
@@ -272,7 +189,7 @@ $script = '
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-to-do-list" role="tabpanel"
                         aria-labelledby="pills-to-do-list-tab" tabindex="0">
-                        <div class="table-responsive scroll-sm">
+                        <!-- <div class="table-responsive scroll-sm">
                             <table class="table bordered-table sm-table mb-0">
                                 <thead>
                                     <tr>
@@ -285,7 +202,7 @@ $script = '
                                 <tbody>
                                    @foreach ($userAccounts as $userAccount)
                                        
-                                   {{--  --}}
+                                
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
@@ -323,8 +240,42 @@ $script = '
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div> -->
+                <div class="row">
+                @foreach ($userAccounts as $userAccount)
+                  <div class="col-md-3"> <!-- Ensure each game takes up 3 columns (4 games per row) -->
+                    <div class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
+                      <div class="center text-center">
+                        <span class="icon-btc">
+                          <img src="{{url($userAccount->game_logo)}}" alt="Game 1 Logo" width="125" class="mx-auto mb-2 rounded-lg transition-transform duration-300">
+                        </span>
+                        <h6 class="price">{{$userAccount->game_name}}</h6>
+                        <div class="copy-container">
+                        <span id="user-email">{{$userAccount->username}}</span>
+                        <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard('user-email')" title="Copy Email"></iconify-icon>
+                         </div>
+                        <br />
+                        <div class="copy-container">
+                         <span class="user-password" data-password="{{$userAccount->password}}" data-row-id="{{$userAccount->id}}">
+                          ..........
+                         </span>
+                        <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard(this)" title="Copy Password"></iconify-icon>
+                        <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye" onclick="showPassword(this)" title="Show Password"></iconify-icon>
                         </div>
+                        <div class="live-button-container">
+                            <a href="{{$userAccount->login_link}}">
+                                <button class="circular-button">
+                                <img src="{{asset('assets/images/BD/play-now.jpg')}}" alt="Live Stream" class="button-image" />
+                                </button>
+                            </a>
+                            </div>
+                      </div>
                     </div>
+                  </div>
+                @endforeach
+              </div>
+            </div>
+        </div>
                     <script>
                       function showPassword(iconElement) {
                                 // Get the parent span element that holds the password
@@ -415,203 +366,6 @@ $script = '
             </div>
         </div>
     </div>
-    <!--
-    <div class="col-xxl-6 col-xl-12">
-        <div class="card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between mb-20">
-                    <h6 class="mb-2 fw-bold text-lg mb-0">Top Countries</h6>
-                    <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
-                        <option>Today</option>
-                        <option>Weekly</option>
-                        <option>Monthly</option>
-                        <option>Yearly</option>
-                    </select>
-                </div>
-
-                <div class="row gy-4">
-                    <div class="col-lg-6">
-                        <div id="world-map" class="h-100 border radius-8"></div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="h-100 border p-16 pe-0 radius-8">
-                            <div class="max-h-266-px overflow-y-auto scroll-sm pe-16">
-                                <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag1.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">USA</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-primary-600 rounded-pill"
-                                                    style="width: 80%;"></div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">80%</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag2.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">Japan</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-orange rounded-pill" style="width: 60%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">60%</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag3.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">France</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-yellow rounded-pill" style="width: 49%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">49%</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag4.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">Germany</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-success-main rounded-pill"
-                                                    style="width: 100%;"></div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">100%</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag5.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">South Korea</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-info-main rounded-pill" style="width: 30%;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">30%</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between gap-3">
-                                    <div class="d-flex align-items-center w-100">
-                                        <img src="{{ asset('assets/images/flags/flag1.png') }}" alt=""
-                                            class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                        <div class="flex-grow-1">
-                                            <h6 class="text-sm mb-0">USA</h6>
-                                            <span class="text-xs text-secondary-light fw-medium">1,240 Users</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2 w-100">
-                                        <div class="w-100 max-w-66 ms-auto">
-                                            <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                                <div class="progress-bar bg-primary-600 rounded-pill"
-                                                    style="width: 80%;"></div>
-                                            </div>
-                                        </div>
-                                        <span class="text-secondary-light font-xs fw-semibold">80%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xxl-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                    <h6 class="mb-2 fw-bold text-lg mb-0">Generated Content</h6>
-                    <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
-                        <option>Today</option>
-                        <option>Weekly</option>
-                        <option>Monthly</option>
-                        <option>Yearly</option>
-                    </select>
-                </div>
-
-                <ul class="d-flex flex-wrap align-items-center mt-3 gap-3">
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px rounded-circle bg-primary-600"></span>
-                        <span class="text-secondary-light text-sm fw-semibold">Word:
-                            <span class="text-primary-light fw-bold">500</span>
-                        </span>
-                    </li>
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px rounded-circle bg-yellow"></span>
-                        <span class="text-secondary-light text-sm fw-semibold">Image:
-                            <span class="text-primary-light fw-bold">300</span>
-                        </span>
-                    </li>
-                </ul>
-
-                <div class="mt-40">
-                    <div id="paymentStatusChart" class="margin-16-minus"></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
--->
 </div>
 @endsection
 

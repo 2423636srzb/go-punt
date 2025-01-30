@@ -384,6 +384,18 @@ $(document).ready(function () {
     // Initial load
     refreshAnalytics();
 </script>
+<script>
+    window.addEventListener("beforeunload", function (event) {
+        fetch("{{ route('logout') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin"
+        });
+    });
+</script>
 </body>
 
 </html>

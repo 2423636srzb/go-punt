@@ -48,6 +48,11 @@ Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
 Route::post('/login', [HomeController::class, 'login'])->name('login');
 
 Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
+// Route::post('/system/logout', function () {
+//     Auth::logout();
+//     session()->invalidate(); // Invalidate session
+//     session()->regenerateToken(); // Prevent CSRF reuse
+// })->name('system.logout');
 Route::post('/admin-verify-otp', [HomeController::class, 'verifyOtp']);
 Route::middleware(['auth', InactivityTimeout::class])->group(function () {
     

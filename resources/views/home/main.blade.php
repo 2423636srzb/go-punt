@@ -347,9 +347,9 @@ html {
                         <li class="menu-item">
                             <a href="#about">About</a>
                         </li>
-                        <li class="menu-item">
+                        <!-- <li class="menu-item">
                             <a href="#games">Games</a>
-                        </li>
+                        </li> -->
                         <li class="menu-item">
                             <a href="#markets">Markets</a>
                         </li>
@@ -627,38 +627,49 @@ window.onclick = function(event) {
           @foreach ($liveCricket as $cricket)
 
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
-            <div class="live-button-container">
-              <a href="{{ route('match.live',['eventId' => $cricket['MatchID'], 'sportId' => 4,'channelId' => $cricket['Channel']]) }}">
-                <button class="circular-button">
-                  <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                </button>
+                    <div class="live-button-container">
+              <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}" 
+                onclick="checkLogin(event)">
+                  <button class="circular-button">
+                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                  </button>
               </a>
-            </div>
+          </div>
+
+          <script>
+              function checkLogin(event) {
+                  @if(!Auth::check())
+                      event.preventDefault();
+                      alert("You must be logged in to watch the live stream!");
+                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                  @endif
+              }
+          </script>
             <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
             <hr class="mb-1">
             <div class="match-container">
               <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
-                  <p class="batting">Pak <span style="color: #ff002b">*</span></p>
+                  <p class="batting">__<span style="color: #ff002b"></span></p>
                 </div>
                 <div class="stats">
-                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
+                  <p><span class="batting">0</span> <span class="overs">0</span></p>
                 </div>
               </div>
       
               <div class="team-container">
                 <div class="team"></div>
                 <div class="stats">
-                  <p class="-mt-2"><span class="overs">CRR (7.2)</span></p>
+                  <p class="-mt-2"><span class="overs">0</span></p>
                 </div>
               </div>
               <div class="team-container">
                 <div class="team">
-                  <p>Ind</p>
+                  <p>__</p>
                 </div>
                 <div class="stats">
-                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
+                  <p><span>0</span> <span class="overs">0</span></p>
                 </div>
               </div>
               <hr class="mt-1">
@@ -666,15 +677,15 @@ window.onclick = function(event) {
                 <p class="batting">last 6 ball</p>
               </div>
               <div class="balls-container">
-                <div class="ball">1</div>
                 <div class="ball">0</div>
-                <div class="ball">4</div>
-                <div class="ball">6</div>
-                <div class="ball">1</div>
+                <div class="ball">0</div>
+                <div class="ball">0</div>
+                <div class="ball">0</div>
+                <div class="ball">0</div>
                 <div class="ball">0</div>
               </div>
               <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Pak needs 45 runs in 18 balls</p>
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
             </div>
           </div>
           @endforeach
@@ -702,10 +713,10 @@ window.onclick = function(event) {
               <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
-                  <p class="batting">Barce <span style="color: #ff002b">*</span></p>
+                  <p class="batting">__ <span style="color: #ff002b"></span></p>
                 </div>
                 <div class="stats">
-                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
+                  <p><span class="batting">__</span> <span class="overs">__</span></p>
                 </div>
               </div>
       
@@ -714,14 +725,14 @@ window.onclick = function(event) {
               </div>
               <div class="team-container">
                 <div class="team">
-                  <p>Spain</p>
+                  <p>__</p>
                 </div>
                 <div class="stats">
-                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
+                  <p><span>__</span> <span class="overs">__</span></p>
                 </div>
               </div>
               <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Barcelona needs 4 Goals in 30 minutes</p>
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
             </div>
           </div>
           @endforeach
@@ -750,22 +761,22 @@ window.onclick = function(event) {
               <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
-                  <p class="batting">Ger <span style="color: #ff002b">*</span></p>
+                  <p class="batting">__<span style="color: #ff002b"></span></p>
                 </div>
                 <div class="stats">
-                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
+                  <p><span class="batting">__</span> <span class="overs">__</span></p>
                 </div>
               </div>
               <div class="team-container">
                 <div class="team">
-                  <p>Eng</p>
+                  <p>__</p>
                 </div>
                 <div class="stats">
-                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
+                  <p><span>__</span> <span class="overs">__</span></p>
                 </div>
               </div>
               <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Germany needs 2 goals in 30 minutes</p>
+              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
             </div>
           </div>
 
@@ -775,7 +786,7 @@ window.onclick = function(event) {
       </div>
     
     </section>
-    <section class="about-2 mb-7" id="about">
+    <!-- <section class="about-2 mb-7" id="about">
       <div class="container">
         <div class="row">
           <div class="col-xl-6 col-md-12">
@@ -943,7 +954,7 @@ window.onclick = function(event) {
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <footer class="footer style-2">
       <div class="container">
@@ -1169,7 +1180,18 @@ document.querySelectorAll('.menu-item a').forEach(anchor => {
     }
     </script>
 
-    
+<script>
+    window.addEventListener("beforeunload", function (event) {
+        fetch("{{ route('logout') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin"
+        });
+    });
+</script>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->

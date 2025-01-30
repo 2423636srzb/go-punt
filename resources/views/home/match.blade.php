@@ -275,11 +275,11 @@ hr {
                       <li class="menu-item">
                         <a href="markets.html">About</a>
                       </li>
-                      <li class="menu-item">
+                      <!-- <li class="menu-item">
                         <a href="markets.html">Games</a>
-                      </li>
+                      </li> -->
                       <li class="menu-item">
-                        <a href="markets.html">Contacts</a>
+                        <a href="markets.html">Markets</a>
                       </li>
                       <li class="menu-item">
                         <a href="markets.html">Live</a>
@@ -465,8 +465,9 @@ window.onclick = function(event) {
       </div>
     </header>
     <!-- end Header -->
+     
 @if ($sportId == 4)
-    <div class="container">
+    <div class="container" style="margin-bottom: 50px;">
       <div class="flex gap-10">
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px;">
           
@@ -522,7 +523,7 @@ window.onclick = function(event) {
   </div>
   @endif
 @if ($sportId == 2)
-  <div class="container">
+  <div class="container" style="margin-bottom: 50px;">
     <div class="flex gap-10">
         <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
         
@@ -562,7 +563,7 @@ window.onclick = function(event) {
 
 @endif
 @if ($sportId == 1)
-<div class="container">
+<div class="container" style="margin-bottom: 50px;">
   <div class="flex gap-10">
       
       <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
@@ -599,97 +600,97 @@ window.onclick = function(event) {
   </div>
 </div>
 @endif
-  <footer class="footer style-2">
-    <div class="container">
-      <div class="footer__main">
-        <div class="row">
-          <div class="col-xl-4 col-md-6">
-            <div class="info">
-              <a href="index.html" class="logo">
-                <img src="assets/images/logo/log-footer.png" alt="" />
-              </a>
-              <h6>Let's talk! 🤙</h6>
-              <ul class="list">
-                <li><p>+12 345 678 9101</p></li>
-                <li><p>Info.Avitex@Gmail.Com</p></li>
-                <li>
-                  <p>
-                    Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi
-                    96522
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-xl-4 col-md-6">
-            <div class="widget">
-              <div class="widget-link">
-                <h6 class="title">PRODUCTS</h6>
-                <ul>
-                  <li><a href="spot.html">Spot</a></li>
-                  <li><a href="#">Inverse Perpetual</a></li>
-                  <li><a href="#">USDT Perpetual</a></li>
-                  <li><a href="exchange.html">Exchange</a></li>
-                  <li><a href="#">Launchpad</a></li>
-                  <li><a href="#">Binance Pay</a></li>
-                </ul>
-              </div>
-              <div class="widget-link s2">
-                <h6 class="title">SERVICES</h6>
-                <ul>
-                  <li><a href="buy-crypto-select.html">Buy Crypto</a></li>
-                  <li><a href="markets.html">Markets</a></li>
-                  <li><a href="#">Tranding Fee</a></li>
-                  <li><a href="#">Affiliate Program</a></li>
-                  <li><a href="#">Referral Program</a></li>
-                  <li><a href="#">API</a></li>
+<footer class="footer style-2">
+      <div class="container">
+        <div class="footer__main">
+          <div class="row">
+            <div class="col-xl-4 col-md-6">
+              <div class="info">
+                <a href="#">
+                  <img src="{{ asset($setting->logo) }}" alt="" />
+                </a>
+                <h6>Let's talk! 🤙</h6>
+                <ul class="list">
+                  <li><p>+12 345 678 9101</p></li>
+                  <li><p>Info.Avitex@Gmail.Com</p></li>
+                  <li>
+                    <p>
+                      Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi
+                      96522
+                    </p>
+                  </li>
                 </ul>
               </div>
             </div>
-          </div>
-          <div class="col-xl-4 col-md-12">
-            <div class="footer-contact">
-              <h5>Newletters</h5>
-              <p>
-                Subscribe our newsletter to get more free design course and
-                resource.
-              </p>
-              <form action="#">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  required=""
-                />
-                <button type="submit" class="btn-action">Submit</button>
-              </form>
-              <ul class="list-social">
-                <li>
-                  <a href="#"><span class="icon-facebook-f"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-instagram"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-youtube"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                </li>
-              </ul>
+            <div class="col-xl-4 col-md-6">
+              <div class="widget">
+                <div class="widget-link">
+                  <h6 class="title">Quick Links</h6>
+                  <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#markets">Markets</a></li>
+                    <li><a href="#live">Live Matches</a></li>
+                    <li><a href="{{ route('login.view') }}">Login</a></li>
+                    <li><a href="{{ route('signUp.view') }}">Sign Up</a></li>
+                  </ul>
+                </div>
+                <div class="widget-link s2">
+                  <h6 class="title">Markets</h6>
+                  <ul>
+                    <li><a href="buy-crypto-select.html">ALLPANELEXCHANGE</a></li>
+                    <li><a href="markets.html">MY99EXCH</a></li>
+                    <li><a href="#">LCPLAY247</a></li>
+                    <li><a href="#">BETBHAI9</a></li>
+                    <li><a href="#">DIAMOND EXCH99</a></li>
+                    <li><a href="#">MYLASER247</a></li>
+                    <li><a href="#">MYTIGER247</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-12">
+              <div class="footer-contact">
+                <h5>Newletters</h5>
+                <p>
+                  Subscribe our newsletter to get more free design course and
+                  resource.
+                </p>
+                <form action="#">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    required=""
+                  />
+                  <button type="submit" class="btn-action">Submit</button>
+                </form>
+                <ul class="list-social">
+                  <li>
+                    <a href="#"><span class="icon-facebook-f"></span></a>
+                  </li>
+                  <li>
+                    <a href="#"><span class="icon-instagram"></span></a>
+                  </li>
+                  <li>
+                    <a href="#"><span class="icon-youtube"></span></a>
+                  </li>
+                  <li>
+                    <a href="#"><span class="icon-twitter"></span></a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container-fluid">
-      <div class="footer__bottom">
-        <p>
-          ©2024 {{ $websiteSettings->name }}. All rights reserved. Terms of Service | Privacy
-          Terms
-        </p>
+      <div class="container-fluid">
+        <div class="footer__bottom">
+          <p>
+            ©2024 {{ $websiteSettings->name }}. All rights reserved. Terms of Service | Privacy
+            Terms
+          </p>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
   <script src="{{asset('assets/app/js/aos.js')}}"></script>
     <script src="{{asset('assets/app/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/app/js/jquery.easing.js')}}"></script>

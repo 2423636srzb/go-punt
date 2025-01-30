@@ -336,7 +336,7 @@ $script = '
             </div>
         </div>
     </div>
-    <div class="col-xxl-3 col-xl-12">
+    <!-- <div class="col-xxl-3 col-xl-12">
         <div class="card h-100">
             <div class="card-body">
                 <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
@@ -365,7 +365,7 @@ $script = '
                     @endforeach
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 @endsection
 

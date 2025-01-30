@@ -385,15 +385,38 @@ $(document).ready(function () {
     refreshAnalytics();
 </script>
 <script>
+    let isNavigating = false;
+    let isRefreshing = false;
+
+    // Detect link clicks inside the application
+    document.addEventListener("click", function (event) {
+        let target = event.target.closest("a");
+        if (target && target.href) {
+            isNavigating = true; // User is navigating inside the app
+        }
+    });
+
+    // Detect form submissions inside the application
+    document.addEventListener("submit", function () {
+        isNavigating = true; // User is navigating inside the app
+    });
+
+    // Detect page refresh and set the flag
+    window.onbeforeunload = function () {
+        isRefreshing = true; // Page is refreshing
+    };
+
+    // Detect actual tab close or browser exit
     window.addEventListener("beforeunload", function (event) {
-        fetch("{{ route('logout') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json"
-            },
-            credentials: "same-origin"
-        });
+        if (!isNavigating && !isRefreshing) {
+            navigator.sendBeacon("{{ route('logout') }}");
+        }
+    });
+
+    // Reset flags after navigation or refresh
+    window.addEventListener("load", function () {
+        isNavigating = false;
+        isRefreshing = false;
     });
 </script>
 </body>

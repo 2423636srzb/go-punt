@@ -563,7 +563,7 @@ window.onclick = function(event) {
     <section class="crypto" data-aos="fade-up" data-aos-duration="1000" id="markets">
       <div class="container mx-auto  mb-4 overflow-hidden relative">
         <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
-          <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Featured Games</h1>
+          <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Featured Markets</h1>
         </div>
       </div>
       <div class="container">
@@ -1181,15 +1181,38 @@ document.querySelectorAll('.menu-item a').forEach(anchor => {
     </script>
 
 <script>
+    let isNavigating = false;
+    let isRefreshing = false;
+
+    // Detect link clicks inside the application
+    document.addEventListener("click", function (event) {
+        let target = event.target.closest("a");
+        if (target && target.href) {
+            isNavigating = true; // User is navigating inside the app
+        }
+    });
+
+    // Detect form submissions inside the application
+    document.addEventListener("submit", function () {
+        isNavigating = true; // User is navigating inside the app
+    });
+
+    // Detect page refresh and set the flag
+    window.onbeforeunload = function () {
+        isRefreshing = true; // Page is refreshing
+    };
+
+    // Detect actual tab close or browser exit
     window.addEventListener("beforeunload", function (event) {
-        fetch("{{ route('logout') }}", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                "Content-Type": "application/json"
-            },
-            credentials: "same-origin"
-        });
+        if (!isNavigating && !isRefreshing) {
+            navigator.sendBeacon("{{ route('logout') }}");
+        }
+    });
+
+    // Reset flags after navigation or refresh
+    window.addEventListener("load", function () {
+        isNavigating = false;
+        isRefreshing = false;
     });
 </script>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

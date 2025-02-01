@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Account;
+use App\Models\UserForgotRequest;
 
 class UserAccount extends Model
 {
@@ -34,6 +35,11 @@ class UserAccount extends Model
      */
     public function account()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Account::class, 'account_id', 'id');
+    }
+
+    public function userForgotRequests()
+    {
+        return $this->hasMany(UserForgotRequest::class, 'user_account_id', 'id');
     }
 }

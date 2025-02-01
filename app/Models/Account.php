@@ -20,6 +20,7 @@ class Account extends Model
         'username',
         'password',
         'is_assigned',
+        'status',
     ];
 
     /**
@@ -35,7 +36,7 @@ class Account extends Model
      */
     public function userAccount()
     {
-        return $this->hasOne(UserAccount::class);
+        return $this->hasMany(UserAccount::class, 'account_id', 'id');
     }
     public function user()
     {

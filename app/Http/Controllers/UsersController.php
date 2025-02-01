@@ -12,6 +12,9 @@ use App\Imports\UserGamesImport;
 use App\Models\AdminBankAccount;
 use App\Models\Announcement;
 use App\Models\UserAccount;
+use App\Models\Account;
+use App\Models\Bonus;
+use App\Models\UserForgotRequest;
 use App\Services\GoogleAnalyticsService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\DB;
@@ -38,42 +41,55 @@ class UsersController extends Controller
         ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
         ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
         ->leftJoin('user_platform_transactions', function ($join) use ($user) {
-            $join->on('user_platform_transactions.platform_id', '=', 'games.id') // Match platform_id with game_id
-                 ->where('user_platform_transactions.user_id', '=', $user->id) // Match user_id
-                 ->where('user_platform_transactions.status', '=', 'approved'); // Match status as approved
+            $join->on('user_platform_transactions.platform_id', '=', 'games.id')
+                 ->where('user_platform_transactions.user_id', '=', $user->id)
+                 ->where('user_platform_transactions.status', '=', 'approved');
+        })
+        ->leftJoin('user_forgot_request', function ($join) {
+            $join->on('user_forgot_request.user_account_id', '=', 'user_accounts.id')
+                 ->where('user_forgot_request.status', '=', 'Pending');
         })
         ->select(
+            'user_accounts.id',
             'accounts.id as account_id',
             'accounts.game_id as account_game_id',
-            'accounts.username', // Select username
-            'accounts.password', // Select password
+            'accounts.username',
+            'accounts.password',
             'accounts.status',
             'games.login_link',
             'games.id as game_id',
-            'games.name as game_name', // Correct column for game name
+            'games.name as game_name',
             'games.logo as game_logo',
-            DB::raw('SUM(user_platform_transactions.amount) as transaction_amount') // Sum the amount from transactions
+            DB::raw('SUM(user_platform_transactions.amount) as transaction_amount'),
+            'user_forgot_request.status as forgot_request_status'
         )
         ->groupBy(
+            'user_accounts.id',
             'accounts.id',
             'accounts.game_id',
-            'accounts.username', // Include username in GROUP BY
-            'accounts.password', // Include password in GROUP BY
-            'accounts.status', 
+            'accounts.username',
+            'accounts.password',
+            'accounts.status',
             'games.login_link',
             'games.id',
             'games.name',
-            'games.logo'
+            'games.logo',
+            'user_forgot_request.status'
         )
         ->get();
-    
+
+        $totalBonus = Bonus::where('user_id', $user->id)
+        ->where('redem', 0)
+        ->sum('bonus');
+
+
 
         $userAccountsCount = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
     ->where('accounts.status', 1) // Filter accounts with status = 1
     ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
     ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
     ->count();
-    
+
         $transactions = DB::table('user_platform_transactions')
             ->where('user_platform_transactions.user_id',$user->id)
             ->join('games', 'user_platform_transactions.platform_id', '=', 'games.id')  // Joining on platform_id
@@ -91,9 +107,122 @@ class UsersController extends Controller
         ->where('status', 'approved') // Fix the typo in 'statua' to 'status'
         ->orderBy('created_at', 'desc') // Assuming 'created_at' is the timestamp column
         ->first();
-        return view('users.dashboard', compact('user','userAccounts','userAccountsCount','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
+        return view('users.dashboard', compact( 'totalBonus','user','userAccounts','userAccountsCount','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
     }
 
+    public function bonus(Request $request)
+    {
+        try {
+            $request->validate([
+                'user_id' => 'required|exists:users,id',
+                'amount' => 'required|numeric|min:1',
+            ]);
+
+            // Save bonus in database
+            Bonus::create([
+                'user_id' => $request->user_id,
+                'bonus' => $request->amount,
+                'granted_by' => auth()->id(), // Store admin ID
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Bonus granted successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function assignBonus(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'user_account_id' => 'required|exists:user_accounts,id',
+            'game_name' => 'required|string',
+        ]);
+
+        // Update all bonuses where user_id matches and redem is 0
+        $affectedRows = Bonus::where('user_id', $request->user_id)
+            ->where('redem', 0)
+            ->update([
+                'redem' => 1,
+                'platform_id' => $request->user_account_id, // Assign platform ID
+            ]);
+
+        if ($affectedRows > 0) {
+            return response()->json(['message' => "Bonus successfully assigned to {$request->game_name}!"]);
+        } else {
+            return response()->json(['message' => "No available bonus found to assign."], 400);
+        }
+    }
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'user_account_id' => 'required|exists:user_accounts,id',
+            'game_name' => 'required|string',
+            'account_name' => 'required|string',
+            'password' => 'required|string',
+            'requested_by' => 'required|string',
+        ]);
+
+        // Save the request in the `user_forgot_request` table
+        UserForgotRequest::create([
+            'user_account_id' => $request->user_account_id,
+            'game_name' => $request->game_name,
+            'account_name' => $request->account_name,
+            'password' => $request->password,
+            'requested_by' => $request->requested_by,
+            'status' => 'Pending',
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Password reset request submitted successfully']);
+    }
+
+public function passwordRequestList(){
+    $forgotList = UserForgotRequest::orderBy('created_at', 'desc')->get();
+    return view('forgot_request.forgot_list',compact('forgotList'));
+
+}
+
+public function approvePassword(Request $request)
+{
+    try {
+        $request->validate([
+            'id' => 'required|exists:user_forgot_request,id',
+            'password' => 'required',
+        ]);
+
+        // Find the UserForgotRequest entry
+        $requestEntry = UserForgotRequest::find($request->id);
+        if (!$requestEntry) {
+            return response()->json(['success' => false, 'message' => 'Request not found.'], 404);
+        }
+
+        // Find the associated UserAccount
+        $userAccount = UserAccount::find($requestEntry->user_account_id);
+        if (!$userAccount) {
+            return response()->json(['success' => false, 'message' => 'User account not found.'], 404);
+        }
+
+        // Find the related Account
+        $account = Account::find($userAccount->account_id);
+        if (!$account) {
+            return response()->json(['success' => false, 'message' => 'Account not found.'], 404);
+        }
+
+        // Update the password securely
+        $account->password = $request->password;
+        $account->save();
+
+        // Update the request status
+        $requestEntry->status = 'Approved';
+        $requestEntry->save();
+
+        return response()->json(['success' => true, 'message' => 'Password updated successfully.']);
+
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
+}
     // Example for another method
     public function profile()
     {
@@ -104,7 +233,7 @@ class UsersController extends Controller
 
     public function updateProfile(Request $request)
     {
-        
+
         // Validate the input
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -166,15 +295,15 @@ class UsersController extends Controller
         $user = Auth::user();
 
         if ($request->hasFile('profile_image')) {
-          
+
             $destinationPath = public_path('profile_images');
-  
+
             // Get the original file name
             $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
-        
+
             // Move the file to the public/logos directory
             $request->file('profile_image')->move($destinationPath, $fileName);
-        
+
             // Save the file path to the database (relative path for access via `asset()`)
             $profileImagePath = 'profile_images/' . $fileName;
 
@@ -261,7 +390,7 @@ class UsersController extends Controller
         } else {
             return redirect()->back()->with('success','User does not update');
         }
-       
+
     }
 
 
@@ -347,10 +476,10 @@ class UsersController extends Controller
             ->where('withdrawals.user_id',$user->id)
             ->select('withdrawals.*')  // Selecting necessary columns
             ->get();
-           
+
 
             // admin bank accounts
-      
+
         // Return the view with filtered data
         return view('users/invoiceList', compact('accounts', 'transactions','user','withdawals'));
     }
@@ -427,24 +556,24 @@ class UsersController extends Controller
         $profileImagePath = $settings->logo;
 
         if ($request->hasFile('logo')) {
-          
+
             $destinationPath = public_path('logo');
-  
+
             // Get the original file name
             $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
-        
+
             // Move the file to the public/logos directory
             $request->file('logo')->move($destinationPath, $fileName);
-        
+
             // Save the file path to the database (relative path for access via `asset()`)
             $profileImagePath = 'logo/' . $fileName;
         }
-       
+
             DB::table('settings')->update(['logo'=>$profileImagePath,'name'=>$request->name,'currency'=>$request->currency,'language'=>$request->language]);
 
         return redirect()->back()->with('success', 'Settings Updated Successfully');
-          
-        
+
+
     }
     public function webSiteAnnounceUpdate(Request $request)
     {
@@ -452,22 +581,22 @@ class UsersController extends Controller
         $request->validate([
             'announce' => 'required|string|max:500', // Adjust validation rules as needed
         ]);
-    
+
         // Attempt to find the first announcement
         $announce = Announcement::first();
-    
+
         if ($announce) {
             // Update the existing announcement
             $announce->announcetext = $request->input('announce'); // Replace 'text' with the actual column name
             $announce->save();
             return redirect()->back()->with('success', 'Announcememnt Updated Successfully');
-          
+
         } else {
             // Create a new announcement
             Announcement::create([
                 'announcetext' => $request->input('announce'), // Replace 'text' with the actual column name
             ]);
-    
+
             return redirect()->back()->with('success', 'Announcememnt Created Successfully');
         }
     }
@@ -475,8 +604,8 @@ class UsersController extends Controller
     public function fetchNotifications()
     {
         return Auth::user()->notifications; // or ->unreadNotifications
-    }  
-    
+    }
+
     public function markAsRead($notificationId)
     {
         Auth::user()->notifications()->find($notificationId)->markAsRead();
@@ -489,5 +618,5 @@ class UsersController extends Controller
 
         return view('users.notifications', compact('notifications'));
     }
-    
+
 }

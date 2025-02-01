@@ -118,5 +118,22 @@
   object-fit: contain; /* Ensure the image maintains its aspect ratio */
   /* border-radius: 50%; Optional: You can add this if you want the image itself to be circular */
 }
+
+
+#messageContainer {
+    margin-top: 10px;
+}
+.alert-info {
+    background-color: #d9edf7;
+    color: #31708f;
+}
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
     </style>
 </head>

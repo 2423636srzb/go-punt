@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{asset('assets/app/dist/app.css')}}" />
@@ -30,7 +30,7 @@
 .match-container {
   border-radius: 8px;
   padding: 3px;
-  
+
   width: 100%;
 }
 
@@ -363,7 +363,7 @@ html {
               </div>
 
               <div class="header__right">
-             
+
                 <div class="mode-switcher">
                   <a class="sun" href="#" onclick="switchTheme()">
                     <svg
@@ -465,7 +465,7 @@ if (Auth::check() && Auth::user()->profile_image) {
 }
 @endphp
 
-<img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full" id="user-logo">
+<img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full mx-4" id="user-logo">
                 <span id="user-name" class="text-gray-700"></span>
                 <div class="relative">
                     <button class="text-gray-700">
@@ -579,7 +579,7 @@ window.onclick = function(event) {
                           <img src="{{ url($game->logo) }}" alt="Game 1 Logo" width="125" class="mx-auto mb-2 rounded-lg transition-transform duration-300">
                         </span>
                         <h6 class="price">{{ $game->name }}</h6>
-    
+
                         @if (!Auth::check())
                           <button onclick="window.location.href='{{route('login.view')}}'" class="mt-2 bg-red-500 text-white px-4 py-2 rounded-full block mx-auto transition-all duration-300">
                             View Login
@@ -595,7 +595,7 @@ window.onclick = function(event) {
         </div>
       </div>
     </section>
-    
+
 
     <section class="services" id="live">
       <div class="container mx-auto mb-4 overflow-hidden relative">
@@ -603,7 +603,7 @@ window.onclick = function(event) {
           <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Live Matches</h1>
         </div>
       </div>
-      
+
       <!-- Buttons for Cricket, Tennis, and Football -->
       <div class="button-container">
         <button class="game-button active" data-game="cricket" onclick="toggleGames('cricket', this)">
@@ -619,7 +619,7 @@ window.onclick = function(event) {
           <span class="game-text">Football</span>
         </button>
       </div>
-    
+
       <!-- Cricket Container (default) -->
       <div class="container-cricket active mt-4">
         <div class="services__main d-flex flex-wrap justify-content-start">
@@ -628,7 +628,7 @@ window.onclick = function(event) {
 
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
                     <div class="live-button-container">
-              <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}" 
+              <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
                 onclick="checkLogin(event)">
                   <button class="circular-button">
                       <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
@@ -657,7 +657,7 @@ window.onclick = function(event) {
                   <p><span class="batting">0</span> <span class="overs">0</span></p>
                 </div>
               </div>
-      
+
               <div class="team-container">
                 <div class="team"></div>
                 <div class="stats">
@@ -692,17 +692,17 @@ window.onclick = function(event) {
           <!-- Repeat for other match boxes if needed -->
         </div>
       </div>
-    
+
       <!-- Tennis Container (hidden by default) -->
       <div class="container-tennis mt-4">
         <div class="services__main d-flex flex-wrap justify-content-start">
           <!-- Your existing cricket service box code here (the same as your current setup) -->
           @foreach ($liveTennis as $tennis)
-            
+
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
 
             <div class="live-button-container">
-              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) : '#' }}" 
+              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) : '#' }}"
                 onclick="checkLogin(event)">
                   <button class="circular-button">
                       <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
@@ -731,7 +731,7 @@ window.onclick = function(event) {
                   <p><span class="batting">__</span> <span class="overs">__</span></p>
                 </div>
               </div>
-      
+
               <div class="team-container">
                 <div class="team"></div>
               </div>
@@ -752,16 +752,16 @@ window.onclick = function(event) {
           <!-- Repeat for other match boxes if needed -->
         </div>
       </div>
-    
+
       <!-- Football Container (hidden by default) -->
       <div class="container-football mt-4">
         <div class="services__main d-flex flex-wrap justify-content-start">
           <!-- Your existing cricket service box code here (the same as your current setup) -->
           @foreach ($liveFootball as $football )
-            
+
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
             <div class="live-button-container">
-              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) : '#' }}" 
+              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) : '#' }}"
                 onclick="checkLogin(event)">
                   <button class="circular-button">
                       <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
@@ -807,7 +807,7 @@ window.onclick = function(event) {
           <!-- Repeat for other match boxes if needed -->
         </div>
       </div>
-    
+
     </section>
     <!-- <section class="about-2 mb-7" id="about">
       <div class="container">
@@ -1083,12 +1083,12 @@ window.onclick = function(event) {
     <script src="{{asset('assets/app/js/apexcharts.js')}}"></script>
     <script src="{{asset('assets/app/js/switchmode.js')}}"></script>
     <script src="{{asset('assets/app/js/jquery.magnific-popup.min.js')}}"></script>
-    
+
     <script src="{{asset('assets/app/js/chart.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    
+
 
     <script>
       $(document).ready(function () {
@@ -1116,12 +1116,12 @@ window.onclick = function(event) {
       });
       var swiper2 = new Swiper(".mySwiper2", {
         spaceBetween: 10,
-    
+
         thumbs: {
           swiper: swiper,
         },
       });
-    
+
       var swiper3 = new Swiper(".swiper-partner", {
         breakpoints: {
           0: {

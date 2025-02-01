@@ -61,7 +61,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAccount::class);
     }
-
+    public function bonuses()
+    {
+        return $this->hasMany(Bonus::class);
+    }
     // Define the relationship with the bank accounts table
     public function bankAccounts()
     {

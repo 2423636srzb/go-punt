@@ -41,6 +41,8 @@ Route::get('/loginPage', [HomeController::class, 'loginPage'])->name('login.view
 Route::get('/score', [HomeController::class, 'score']);
 Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.view');
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
+Route::post('/approvePassword', [UsersController::class, 'approvePassword'])->name('approve.password');
+
 Route::get('/match/live/{eventId}/{sportId}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');
 Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
 Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
@@ -55,12 +57,12 @@ Route::post('/logout', [HomeController::class, 'logout'])->name('logout');
 // })->name('system.logout');
 Route::post('/admin-verify-otp', [HomeController::class, 'verifyOtp']);
 Route::middleware(['auth', InactivityTimeout::class])->group(function () {
-    
+
 Route::get('/notifications', [UsersController::class, 'showNotification'])->name('notifications.show');
 Route::get('/notifications/{id}/read', [UsersController::class, 'markAsRead'])->name('notifications.read');
 Route::post('games/uploadAccountMultiplee', [GameController::class, 'uploadAccountsMultiple']);
 Route::get('/users/dashboard', [UsersController::class, 'dashboard'])->middleware('auth')->name('users.dashboard');
-
+Route::get('/forgot-password', [UsersController::class, 'forgotPassword'])->name('forgot.password');
 Route::get('/users/profile', [UsersController::class, 'profile'])->middleware('auth')->name('users.user_profile');
 Route::post('/users/upload-profile-image', [UsersController::class, 'uploadProfileImage'])->middleware('auth')->name('users.uploadProfileImage');
 Route::post('/users/updateProfile', [UsersController::class, 'updateProfile'])->middleware('auth')->name('users.updateProfile');
@@ -90,6 +92,7 @@ Route::delete('/admin/bank-accounts/delete/{id}', [BankAccountController::class,
 /* Payment Request */
 
 Route::get('/payment/request', [UsersController::class, 'paymentRequest'])->middleware('auth')->name('users.payment_request');
+Route::get('/password/request', [UsersController::class, 'passwordRequestList'])->middleware('auth')->name('admin.user_password_request');
 Route::get('/requestPayment', [PaymentController::class, 'requestPayment'])->middleware('auth')->name('admin.payment_request');
 Route::middleware('auth')->prefix('staffSetting')->name('admin.staff.')->group(function () {
     Route::get('/', [StaffController::class, 'index'])->name('setting');
@@ -127,6 +130,10 @@ Route::post('/admin/website-announcement-update', [UsersController::class, 'webS
 
 
 Route::get('/admin/users', [UsersController::class, 'usersList'])->middleware('auth')->name('admin.users');
+
+Route::post('/give-bonus', [UsersController::class, 'bonus'])->middleware('auth')->name('admin.give.bonus');
+Route::post('/assign-bonus', [UsersController::class, 'assignBonus'])->middleware('auth')->name('admin.assign.bonus');
+
 Route::get('/admin/users/userDetail/{id}', [UsersController::class, 'userDetail'])->middleware('auth')->name('admin.user.view');
 
 Route::PATCH('/admin/users/updateUserStatus/{id}/{status}', [UsersController::class, 'updateUserStatus'])->middleware('auth')->name('admin.user.status');

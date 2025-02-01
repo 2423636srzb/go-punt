@@ -34,6 +34,12 @@
                 </a>
             </li>
             @endcan
+            <li>
+                <a href="{{ route('admin.user_password_request') }}">
+                    <iconify-icon icon="mage:dollar" class="menu-icon"></iconify-icon>
+                    <span>User Request</span>
+                </a>
+            </li>
           @can('Users Account')
             <li>
                 <a href="{{ route('admin.users') }}">
@@ -49,21 +55,21 @@
                     <span>Account Management</span>
                 </a>
 
-            </li>                     
+            </li>
           @endcan
           @can('Staff Management')
-              
+
           <li>
               <a href="{{route('admin.staff.setting')}}">
                 <iconify-icon icon="tdesign:user-setting"  class="menu-icon"></iconify-icon>
                 <span>Staff Management</span>
             </a>
-            
+
         </li>
         @endcan
-          
-               
-           
+
+
+
             @if(Auth::user()->is_admin)
             @can('Setting Management')
             <li>
@@ -87,10 +93,10 @@
                     <iconify-icon icon="carbon:analytics"  class="menu-icon"></iconify-icon>
                     <span>Analytics</span>
                 </a>
-                
+
             </li>
             @endcan
-                
+
         </ul>
     </div>
 </aside>

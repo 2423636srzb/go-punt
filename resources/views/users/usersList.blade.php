@@ -39,8 +39,7 @@
                             <th scope="col">Join Date</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone Number</th>
-                            <th scope="col">Balance</th>
-                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center">Bonus</th>
                             <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -69,10 +68,10 @@
                                 <td>{{ $user->created_at->format('M d, Y') }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone_number }}</td>
-                                <td>-</td>
-                                <td><span id="user-status-{{ $user->id }}"
-                                        class="@if ($user->user_status == 'active') bg-success-focus text-success-main @else bg-danger-focus text-danger-main @endif  px-24 py-4 rounded-pill fw-medium text-sm">
-                                        {{ ucfirst($user->user_status) }}</span>
+                                <td>
+                                    <button class="btn btn-primary btn-sm ms-2" onclick="openBonusModal({{ $user->id }})">
+                                        Bonus
+                                    </button>
                                 </td>
 
                                 <td class="text-center">
@@ -100,7 +99,7 @@
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                                     <iconify-icon icon="lucide:file" class="menu-icon"></iconify-icon>
                                 </button>
-                                
+
                                 <button type="button" data-id="{{ $user->id }}"
                                     class="remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                                     <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
@@ -118,7 +117,26 @@
 
     </div>
     </div>
-
+<!-- Bonus Modal -->
+<div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bonusModalLabel">Grant Bonus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="bonusUserId">
+                <label for="bonusAmount" class="form-label">Enter Bonus Amount</label>
+                <input type="number" id="bonusAmount" class="form-control" placeholder="Enter amount" min="1">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="submitBonus()">Give Bonus</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -171,13 +189,13 @@
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
                             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
                         </div> --}}
-                    
+
 
 
                         <div class="col-12">
-                            
+
                         </div>
-                    
+
                 </div>
                 <div class="modal-footer justify-content-center gap-3">
                     {{-- <button type="button"
@@ -195,7 +213,7 @@
 
     <script>
         function editUser(id) {
-          
+
             // Make an AJAX request to fetch the game data by ID
             $.ajax({
                 url: "{{ url('admin/user/edit/') }}/" + id,
@@ -269,6 +287,52 @@
     <script src="{{ asset('assets/js/lib/') }}/confirmation-modal.min.js"></script>
 
     <script>
+
+function openBonusModal(userId) {
+    document.getElementById("bonusUserId").value = userId; // Store user ID
+    document.getElementById("bonusAmount").value = ""; // Reset input field
+
+    let modal = new bootstrap.Modal(document.getElementById("bonusModal"));
+    modal.show();
+}
+
+function submitBonus() {
+    let userId = document.getElementById("bonusUserId").value;
+    let amount = document.getElementById("bonusAmount").value;
+
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid bonus amount.");
+        return;
+    }
+
+    fetch("{{ route('admin.give.bonus') }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ user_id: userId, amount: amount })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
+        modal.hide();
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred: " + error.message);
+    });
+}
+
+
+
+
         $(document).ready(function() {
             // Disable user
             $('.switch-input').on('click', function() {

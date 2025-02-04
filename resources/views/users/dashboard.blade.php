@@ -34,7 +34,8 @@
             /* Darken color on hover for a subtle effect */
         }
     </style>
-    <div class="row row-cols-xxxl-3 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4">
+    {{-- new card --}}
+    <div class="row row-cols-xxxl-4 row-cols-lg-4  row-cols-sm-2 row-cols-1 gy-4">
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-1 h-100">
                 <div class="card-body p-20">
@@ -43,82 +44,35 @@
                             <p class="fw-medium text-primary-light mb-1">TOTAL BALANCE</p>
                             <h6 class="mb-0">{{ $depositeSum }}</h6>
                         </div>
-
-                        <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
+                        <div
+                            class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
                             <iconify-icon icon="hugeicons:money-send-square" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
                     <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
                         <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <!-- <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> -->
                             {{ isset($lastApprovedRequest->amount) ? $lastApprovedRequest->amount : 0 }}
-
                         </span>
                         Last Transaction
                     </p>
                 </div>
             </div><!-- card end -->
         </div>
-        <!--
-            <div class="col">
-                <div class="card shadow-none border bg-gradient-start-2 h-100">
-                    <div class="card-body p-20">
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div>
-                                <p class="fw-medium text-primary-light mb-1">Total Subscription</p>
-                                <h6 class="mb-0">15,000</h6>
-                            </div>
-                            <div class="w-50-px h-50-px bg-purple rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="fa-solid:award" class="text-white text-2xl mb-0"></iconify-icon>
-                            </div>
-                        </div>
-                        <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                            <span class="d-inline-flex align-items-center gap-1 text-danger-main">
-                                <iconify-icon icon="bxs:down-arrow" class="text-xs"></iconify-icon> -800
-                            </span>
-                            Last 30 days subscription
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card shadow-none border bg-gradient-start-3 h-100">
-                    <div class="card-body p-20">
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div>
-                                <p class="fw-medium text-primary-light mb-1">Total Free Users</p>
-                                <h6 class="mb-0">5,000</h6>
-                            </div>
-                            <div class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="fluent:people-20-filled" class="text-white text-2xl mb-0"></iconify-icon>
-                            </div>
-                        </div>
-                        <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                            <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                                <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> +200
-                            </span>
-                            Last 30 days users
-                        </p>
-                    </div>
-                </div>
-            </div>
-        -->
         <div class="col">
-            <div class="card shadow-none border bg-gradient-start-4 h-100">
+            <div class="card shadow-none border bg-gradient-start-5 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
                             <p class="fw-medium text-primary-light mb-1">TOTAL DEPOSIT</p>
                             <h6 class="mb-0">{{ $depositeSum }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0"></iconify-icon>
+                        <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="fa6-solid:file-invoice-dollar"
+                            class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
                     <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <!--<iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>-->
+                        <span class="d-inline-flex align-items-center gap-1 text-danger-main">
                             {{ $depositePendingRequest }}
                         </span>
                         Last Deposit
@@ -126,23 +80,21 @@
                 </div>
             </div><!-- card end -->
         </div>
-
         <div class="col">
-            <div class="card shadow-none border bg-gradient-start-5 h-100">
+            <div class="card shadow-none border bg-gradient-start-3 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">TOTAL WITHDRAWAL</p>
+                            <p class="fw-medium text-primary-light mb-1">Total  Withdrawal</p>
                             <h6 class="mb-0">{{ $withDrawSum }}</h6>
                         </div>
-                        <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fa6-solid:file-invoice-dollar"
-                                class="text-white text-2xl mb-0"></iconify-icon>
+                        <div
+                            class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
                     <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-danger-main">
-                            <!--<iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>-->
+                        <span class="d-inline-flex align-items-center gap-1 text-info-main">
                             {{ $withDrawSumPendingRequest }}
                         </span>
                         Last Withdrawal
@@ -150,22 +102,21 @@
                 </div>
             </div><!-- card end -->
         </div>
-
         <div class="col">
-            <div class="card shadow-none border bg-gradient-start-5 h-100">
+            <div class="card shadow-none border bg-gradient-start-4 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
                             <p class="fw-medium text-primary-light mb-1">Bonus</p>
                             <h6 class="mb-0">{{ $totalBonus }}</h6>
                         </div>
-                        <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
+                        <div
+                            class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
                             <iconify-icon icon="mdi:gift" class="text-white text-2xl"></iconify-icon>
                         </div>
                     </div>
                     <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-danger-main">
-                            <!--<iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>-->
+                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
 
                         </span>
                         <h3 class="text-lg font-semibold cursor-pointer text-blue-500 hover:underline" onclick="openBonusModal()">
@@ -176,7 +127,6 @@
             </div><!-- card end -->
         </div>
     </div>
-
 
     <div class="row gy-4 mt-1">
         <div class="col-xxl-12 col-xl-12">
@@ -412,52 +362,65 @@
             </div>
         </div>
     </div>
-    </div>
 
-{{-- <!-- Bonus Redemption Modal -->
-<div id="bonusModal" class="hidden fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96 relative z-50">
-        <h2 class="text-xl font-semibold mb-4">Redeem Your Bonus</h2>
+    <!-- Success/Error Message -->
+<div id="bonusMessage" class="alert d-none text-center mx-auto w-50"></div>
 
-        <!-- Display Total Bonus -->
-        <p class="text-gray-700 mb-2">Total Bonus: <span id="bonusAmount">{{ $totalBonus }}</span></p>
+    <!-- Bonus Modal -->
+<div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="bonusModalLabel">Redeem Your Bonus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-        <!-- Game Platform Dropdown -->
-        <label for="gamePlatform" class="block text-gray-600">Select Platform:</label>
-        <select id="gamePlatform" class="w-full border border-gray-300 rounded p-2 mt-1">
-            <option value="">-- Select Platform --</option>
-            @foreach ($userAccounts as $userAccount)
-                <option value="{{ $userAccount->id }}" data-user-name="{{ $userAccount->game_name }}">
-                    {{ $userAccount->game_name }}
-                </option>
-            @endforeach
-        </select>
+            <!-- Modal Body -->
+            <div class="modal-body">
 
-        <!-- Buttons -->
-        <div class="mt-4 flex justify-end space-x-2">
-            <button onclick="closeBonusModal()" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-            <button onclick="assignBonus()" class="bg-blue-500 text-white px-4 py-2 rounded">Redeem</button>
-            <button onclick="saveBonus()" class="bg-green-500 text-white px-4 py-2 rounded">Save</button>
+                <!-- Display Total Bonus -->
+                <p class="text-gray-700 text-center mb-3">Total Bonus:
+                    <span class="font-semibold text-primary" id="bonusAmount">{{ $totalBonus }}</span>
+                </p>
+
+                <!-- Game Platform Dropdown -->
+                <label for="gamePlatform" class="form-label">Select Platform:</label>
+                <select id="gamePlatform" class="form-select">
+                    <option value="">Select Platform</option>
+                    @foreach ($userAccounts as $userAccount)
+                        <option value="{{ $userAccount->id }}" data-user-name="{{ $userAccount->game_name }}">
+                            {{ $userAccount->game_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="assignBonus()">Redeem</button>
+                <button type="button" class="btn btn-success" onclick="saveBonus()">Save</button>
+            </div>
         </div>
     </div>
-</div> --}}
+</div>
+
+    </div>
+
 
 @endsection
 
 @section('js')
-    <script>
 
-// Open Modal Function
+<script>
+   // Open Modal Function (Bootstrap automatically handles this)
 function openBonusModal() {
-    document.getElementById("bonusModal").classList.remove("hidden");
+    let bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"));
+    bonusModal.show();
 }
 
-// Close Modal Function
-function closeBonusModal() {
-    document.getElementById("bonusModal").classList.add("hidden");
-}
-
-// Assign Bonus to Platform
+// Assign Bonus Function
 function assignBonus() {
     let gamePlatformDropdown = document.getElementById("gamePlatform");
     let userAccountId = gamePlatformDropdown.value;
@@ -475,28 +438,50 @@ function assignBonus() {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         body: JSON.stringify({
-            user_id: "{{ auth()->id() }}", // Current logged-in user
-            user_account_id: userAccountId, // Selected game platform ID
+            user_id: "{{ auth()->id() }}",
+            user_account_id: userAccountId,
             game_name: gamePlatformName,
             totalBonus: "{{ $totalBonus }}"
         })
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
-        closeBonusModal();
-        location.reload(); // Refresh to update the UI
+        // Hide modal first
+        let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
+        modal.hide();
+
+        // Show message after modal closes
+        setTimeout(() => {
+            showMessage(data.message, "success");
+        }, 500); // Slight delay for smooth UX
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        showMessage("Something went wrong! Please try again.", "danger");
+        console.error('Error:', error);
+    });
 }
 
-// Save Bonus (Example function, you can modify it)
+// Save Bonus (Example function)
 function saveBonus() {
-    alert("Bonus saved successfully!");
-    closeBonusModal();
+    let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
+    modal.hide();
+
+    setTimeout(() => {
+        showMessage("Bonus saved successfully!", "success");
+    }, 500);
 }
 
+function showMessage(message, type = "success") {
+    let messageDiv = document.getElementById("bonusMessage");
+    messageDiv.textContent = message;
+    messageDiv.classList.remove("d-none", "alert-success", "alert-danger");
+    messageDiv.classList.add("alert", type === "success" ? "alert-success" : "alert-danger");
 
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        messageDiv.classList.add("d-none");
+    }, 3000);
+}
 
 
         document.addEventListener("DOMContentLoaded", function() {

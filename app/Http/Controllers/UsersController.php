@@ -145,7 +145,7 @@ class UsersController extends Controller
             ->where('redem', 0)
             ->update([
                 'redem' => 1,
-                'platform_id' => $request->user_account_id, // Assign platform ID
+                'plateform_id' => $request->user_account_id, // Assign platform ID
             ]);
 
         if ($affectedRows > 0) {

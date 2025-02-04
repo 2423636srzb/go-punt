@@ -363,8 +363,6 @@
         </div>
     </div>
 
-    <!-- Success/Error Message -->
-<div id="bonusMessage" class="alert d-none text-center mx-auto w-50"></div>
 
     <!-- Bonus Modal -->
 <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
@@ -378,7 +376,6 @@
 
             <!-- Modal Body -->
             <div class="modal-body">
-
                 <!-- Display Total Bonus -->
                 <p class="text-gray-700 text-center mb-3">Total Bonus:
                     <span class="font-semibold text-primary" id="bonusAmount">{{ $totalBonus }}</span>
@@ -387,7 +384,7 @@
                 <!-- Game Platform Dropdown -->
                 <label for="gamePlatform" class="form-label">Select Platform:</label>
                 <select id="gamePlatform" class="form-select">
-                    <option value="">Select Platform</option>
+                    <option value="">-- Select Platform --</option>
                     @foreach ($userAccounts as $userAccount)
                         <option value="{{ $userAccount->id }}" data-user-name="{{ $userAccount->game_name }}">
                             {{ $userAccount->game_name }}
@@ -446,41 +443,19 @@ function assignBonus() {
     })
     .then(response => response.json())
     .then(data => {
-        // Hide modal first
+        alert(data.message);
         let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
-        modal.hide();
-
-        // Show message after modal closes
-        setTimeout(() => {
-            showMessage(data.message, "success");
-        }, 500); // Slight delay for smooth UX
+        modal.hide(); // Close modal after success
+        location.reload();
     })
-    .catch(error => {
-        showMessage("Something went wrong! Please try again.", "danger");
-        console.error('Error:', error);
-    });
+    .catch(error => console.error('Error:', error));
 }
 
 // Save Bonus (Example function)
 function saveBonus() {
+    alert("Bonus saved successfully!");
     let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
-    modal.hide();
-
-    setTimeout(() => {
-        showMessage("Bonus saved successfully!", "success");
-    }, 500);
-}
-
-function showMessage(message, type = "success") {
-    let messageDiv = document.getElementById("bonusMessage");
-    messageDiv.textContent = message;
-    messageDiv.classList.remove("d-none", "alert-success", "alert-danger");
-    messageDiv.classList.add("alert", type === "success" ? "alert-success" : "alert-danger");
-
-    // Hide message after 3 seconds
-    setTimeout(() => {
-        messageDiv.classList.add("d-none");
-    }, 3000);
+    modal.hide(); // Close modal after saving
 }
 
 

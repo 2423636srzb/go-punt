@@ -135,5 +135,29 @@
     background-color: #f8d7da;
     color: #721c24;
 }
+
+
+.live-stream-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0077ff; /* Change color as needed */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.live-stream-btn:hover {
+    background-color: #000fe6; /* Darker shade on hover */
+    color: rgb(255, 255, 255);
+}
+
     </style>
 </head>

@@ -5,7 +5,7 @@
     <div>
         <a href="{{ route('users.dashboard') }}" class="sidebar-logo">
             <?php $setting = DB::table('settings')->first(); ?>
-            <img src="{{ asset($setting->logo) }}"alt="site logo" class="light-logo" width="180">
+            <img src="{{ asset($setting->logo) }}" alt="site logo" class="light-logo" width="180">
             <img src="{{ asset('assets/images/GP247LogoLite.png') }}" alt="site logo" class="dark-logo" width="180">
             <img src="{{ asset('assets/images/GP247LogoDark.png') }}" width="43" alt="site logo" class="logo-icon">
         </a>
@@ -34,4 +34,9 @@
             </li>
         </ul>
     </div>
+
+    <!-- Floating Live Stream Button -->
+    <a href="{{route('home')}}" class="live-stream-btn">
+        Live Stream
+    </a>
 </aside>

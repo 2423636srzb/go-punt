@@ -36,7 +36,7 @@
                         <tr>
                             <th scope="col">Username</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Join Date</th>
+                            {{-- <th scope="col">Join Date</th> --}}
                             <th scope="col">Email</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col" class="text-center">Bonus</th>
@@ -65,12 +65,12 @@
                                     </div>
                                 </td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->created_at->format('M d, Y') }}</td>
+                                {{-- <td>{{ $user->created_at->format('M d, Y') }}</td> --}}
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone_number }}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm ms-2" onclick="openBonusModal({{ $user->id }})">
-                                        Bonus
+                                    <button class="btn btn-primary btn-xs ms-2" style="font-size: 12px; padding: 5px 10px;" onclick="openBonusModal({{ $user->id }})">
+                                        Give Bonus
                                     </button>
                                 </td>
 

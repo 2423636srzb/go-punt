@@ -103,7 +103,7 @@ $script = '
 
 
 <div class="row gy-4 mt-1">
-    <!-- 
+    <!--
     <div class="col-xxl-6 col-xl-12">
         <div class="card h-100">
             <div class="card-body">
@@ -249,19 +249,19 @@ $script = '
                             <img src="{{ asset($transaction->image) }}" alt=""
                                 class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                             <div class="flex-grow-1">
-                                <h6 class="text-md mb-0 fw-medium">{{ $transaction->name }}</h6>
+                                <h6 class="mb-0 fw-medium" style="font-size: 14px !important;">{{ $transaction->name }}</h6>
                                 <span class="text-secondary-light fw-medium d-block" style="font-size: 0.8rem; margin-bottom: -0.3rem !important;">Deposit Request</span>
-                                <span class="text-secondary-light fw-medium" style="font-size: 0.6rem;">Status: 
+                                <span class="text-secondary-light fw-medium" style="font-size: 0.6rem;">Status:
                                     <span class="@if($transaction->status == 'approved') text-success @endif @if($transaction->status == 'rejected') text-danger @endif @if($transaction->status == 'pending') text-info @endif" style="font-size: 0.6rem;">
                                         {{ $transaction->status }}
                                     </span>
                                 </span>
-                                
-                                
+
+
                             </div>
                         </div>
                         <span class="text-primary-light text-md fw-medium">{{setCurrency($transaction->amount)}}</span>
-                    </div> 
+                    </div>
                     @endforeach
 
             </div>

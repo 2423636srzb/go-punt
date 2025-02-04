@@ -26,6 +26,12 @@
                 </a>
             </li>
             @endcan
+            <li>
+                <a href="{{ route('admin.user_password_request') }}">
+                    <iconify-icon icon="mage:lock" class="menu-icon"></iconify-icon>
+                    <span>Password Request</span>
+                </a>
+            </li>
             @can('Payment Request')
             <li>
                 <a href="{{ route('admin.payment_request') }}">
@@ -34,12 +40,6 @@
                 </a>
             </li>
             @endcan
-            <li>
-                <a href="{{ route('admin.user_password_request') }}">
-                    <iconify-icon icon="mage:dollar" class="menu-icon"></iconify-icon>
-                    <span>User Request</span>
-                </a>
-            </li>
           @can('Users Account')
             <li>
                 <a href="{{ route('admin.users') }}">

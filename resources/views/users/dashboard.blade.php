@@ -276,7 +276,7 @@
                                                     width="125"
                                                     class="mx-auto mb-2 rounded-lg transition-transform duration-300">
                                             </span>
-                                            <h6 class="price" data-game-name="{{ $userAccount->game_name }}">
+                                            <h6 class="price" style="font-size: 18px !important;" data-game-name="{{ $userAccount->game_name }}">
                                                 {{ $userAccount->game_name }}
                                             </h6>
                                             <div class="copy-container">
@@ -320,10 +320,11 @@
 
                                             <div class="live-button-container">
                                                 <a href="{{ $userAccount->login_link }}">
-                                                    <button class="circular-button">
+                                                    {{-- <button class="circular-button">
                                                         <img src="{{ asset('assets/images/BD/play-now.jpg') }}"
                                                             alt="Live Stream" class="button-image" />
-                                                    </button>
+                                                    </button> --}}
+                                                        <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Live Match</button>
                                                 </a>
                                             </div>
                                         </div>

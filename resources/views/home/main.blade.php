@@ -24,13 +24,10 @@
       href="{{asset('assets/images/logo/favicon.png')}}"
     />
 
-
 <style>
-
-.match-container {
+  .match-container {
   border-radius: 8px;
   padding: 3px;
-
   width: 100%;
 }
 
@@ -50,9 +47,11 @@
   color: #555;
   text-align: right;
 }
+
 .batting {
   color: #000000;
 }
+
 hr {
   border: 0;
   border-top: 1px solid #a7a1a1;
@@ -78,77 +77,65 @@ hr {
   font-weight: bold;
   font-size: 12px;
 }
+
 .button-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .live-button-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: absolute;
-  left: 100px;
-  top: -18px */
 }
+
 .circular-button {
   margin-top: -10px;
   margin-bottom: 10px;
-  width: 100px;  /* Button width */
-   /* Button height */
-  /* border-radius: 50%; Makes the button circular */
-  /* background-color: #ff002b; Button background color */
-  color: white; /* Text color */
-  font-size: 9px; /* Increased text size */
-  font-weight: bold; /* Text weight */
-  border: none; /* Removes default button border */
+  width: 100px;
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
+  border: none;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-  cursor: pointer; /* Cursor changes to a pointer on hover */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth color transition */
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Ensure the image inside the button fits properly */
+.btn-live{
+padding: 5px 20px;
+margin-bottom: 10px;
+margin-top: -10px;
+}
 .circular-button .button-image {
   margin-top: 5px;
-  width: 90px; /* Adjust image size */
- /* Adjust image size */
-  object-fit: contain; /* Ensure the image maintains its aspect ratio */
-  /* border-radius: 50%; Optional: You can add this if you want the image itself to be circular */
+  width: 90px;
+  object-fit: contain;
 }
 
-/* Pulse effect */
-/* .circular-button:hover { */
-  /* background-color: #d10025; Darker red on hover */
-  /* transform: scale(1.1); Slightly increase button size on hover */
-/* } */
-
-/* Adding a smooth pulse effect when the button is in idle state */
 .circular-button {
-  animation: pulse 2s infinite; /* Animation duration and looping */
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
   0% {
-    transform: scale(1); /* Normal size */
+    transform: scale(1);
   }
   50% {
-    transform: scale(1.1); /* Slightly enlarged */
+    transform: scale(1.1);
   }
   100% {
-    transform: scale(1); /* Back to normal size */
+    transform: scale(1);
   }
 }
-
-/* Hover state styling */
-
 
 .overs {
   font-size: 10px;
   font-weight: light;
 }
-
 
 @keyframes rotateText {
   0% {
@@ -171,74 +158,64 @@ hr {
 .rotating-text {
   display: inline-block;
   animation: rotateText 30s infinite linear;
-  white-space: nowrap; /* Prevents text wrapping */
+  white-space: nowrap;
 }
 
-        .game-item:hover img {
-            transform: scale(1.05);
-        }
+.game-item:hover img {
+  transform: scale(1.05);
+}
 
-        .game-item:hover button::after {
-            content: "Check it Out!";
-        }
+.game-item:hover button::after {
+  content: "Check it Out!";
+}
 
-        .toast {
-            transition: opacity 0.5s ease-in-out;
-            visibility: hidden;
-            opacity: 0;
-        }
+.toast {
+  transition: opacity 0.5s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
 
-        .toast.show {
-            visibility: visible;
-            opacity: 1;
-        }
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+}
 
-        /* Set a high z-index to the dropdown */
-        #user-dropdown {
-            z-index: 1050;
-        }
+#user-dropdown {
+  z-index: 1050;
+}
 
-        .crypto-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Horizontally centers the content */
-    justify-content: center; /* Vertically centers the content */
-    text-align: center; /* Ensures that text like the game name is centered */
-    padding: 20px; /* Add some padding inside the box */
-    background-color: #1e4871; /* Background color for the game box */
-    border-radius: 10px; /* Optional, adds rounded corners */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional, adds a subtle shadow */
+.crypto-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #1e4871;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .crypto-box img {
-    max-width: 100%; /* Ensure the image is responsive */
+  max-width: 100%;
 }
 
 .crypto-box h6 {
-    margin-top: 10px;
-    font-size: 1.1rem;
+  margin-top: 10px;
+  font-size: 1.1rem;
 }
 
 .crypto-box button {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-
-/* .button-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
-} */
-
-/* Styling the rectangular buttons */
 .game-button {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 180px; /* Button width */
-  height: 110px; /* Button height */
+  width: 180px;
+  height: 110px;
   color: rgb(72, 93, 213);
   border-radius: 10px;
   cursor: pointer;
@@ -250,32 +227,27 @@ hr {
   border: #616366 1px solid;
 }
 
-/* Hover effect */
 .game-button:hover {
   border: #96f55fe1 1px solid;
 }
 
-/* Active button styling */
 .game-button.active {
   border: #f10d0d98 1px solid;
 }
 
-/* Icon inside button */
 .game-button .icon {
-  width: 40px;  /* Adjust size of icon */
+  width: 40px;
   height: 40px;
   margin-bottom: 10px;
-  object-fit: contain; /* Ensures the icon fits within the defined size */
+  object-fit: contain;
 }
 
-/* Text inside button */
 .game-button .game-text {
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-/* Game containers */
 .container-cricket, .container-tennis, .container-football {
   margin-left: 50px;
   margin-right: 50px;
@@ -285,13 +257,135 @@ hr {
 .container-cricket.active, .container-tennis.active, .container-football.active {
   display: block;
 }
+
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
+
 #main-nav .menu-item:hover {
-      background-color:rgb(220 ,38 ,38) ; /* Change the hover color to red */
+  background-color: rgb(220, 38, 38);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container-cricket, .container-tennis, .container-football {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
   }
-    </style>
+
+  .services__main {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .services-box {
+    width: 100% !important; /* Force it to take full width */
+    margin-bottom: 15px;
+    box-sizing: border-box; /* Ensure padding and margin don't affect width */
+  }
+
+  .team-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .team-container .team p, .stats p {
+    font-size: 12px;
+  }
+
+  .balls-container {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+
+  .ball {
+    width: 25px;
+    height: 25px;
+    font-size: 10px;
+  }
+
+  .circular-button {
+    width: 80px;
+    font-size: 8px;
+  }
+
+  .circular-button .button-image {
+    width: 70px;
+  }
+
+  .match-container {
+    padding: 10px;
+  }
+
+  .rotating-text {
+    font-size: 12px;
+  }
+
+  .team-container .team p {
+    font-size: 12px;
+  }
+
+  .stats p {
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .balls-container {
+    margin-top: 10px;
+  }
+
+  .ball {
+    width: 25px;
+    height: 25px;
+    font-size: 10px;
+  }
+}
+
+
+
+/* General styles for services-box */
+.services .services__main .services-box {
+    flex: 1 1 calc(25% - 20px); /* Default for desktop and larger devices */
+    height: auto;
+    max-width: 90%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    background: var(--surface);
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+/* Adjustments for medium screens (max-width 1200px) */
+@media only screen and (max-width: 1200px) {
+    .services .services__main .services-box {
+        width: 100% ;
+    }
+}
+
+/* Adjustments for small screens (max-width 767px) */
+@media only screen and (max-width: 767px) {
+    .services .services__main .services-box {
+        width: 100% !important; /* Force 100% width */
+        margin-bottom: 15px !important; /* Adjust margin for mobile */
+        box-sizing: border-box;
+    }
+}
+
+/* Padding classes */
+.p-3 {
+    padding: 1rem !important; /* Padding for different sections */
+}
+
+/* Border styles */
+.border {
+    border: 1px solid #dee2e6 !important; /* Apply consistent border */
+}
+</style>
   </head>
   <body class="body header-fixed home-2">
     @php
@@ -364,7 +458,7 @@ html {
 
               <div class="header__right">
 
-                <div class="mode-switcher">
+                {{-- <div class="mode-switcher">
                   <a class="sun" href="#" onclick="switchTheme()">
                     <svg
                       width="16"
@@ -455,7 +549,7 @@ html {
                       />
                     </svg>
                   </a>
-                </div>
+                </div> --}}
                 <div id="user-profile" class="hidden flex items-center space-x-4" style="cursor: pointer;"
                 onclick="toggleDropdown()">
                 @php
@@ -630,9 +724,10 @@ window.onclick = function(event) {
                     <div class="live-button-container">
               <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
                 onclick="checkLogin(event)">
-                  <button class="circular-button">
+                  {{-- <button class="circular-button">
                       <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                  </button>
+                  </button> --}}
+                  <button type="submit" class="btn-action btn-live">Live Match</button>
               </a>
           </div>
 

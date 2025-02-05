@@ -131,7 +131,29 @@ class UsersController extends Controller
         }
     }
 
+public function bonusList(){
 
+    $bonuses = DB::table('bonuses')
+    ->join('users as u1', 'bonuses.user_id', '=', 'u1.id') // User who received bonus
+    ->join('users as u2', 'bonuses.granted_by', '=', 'u2.id') // Admin who granted the bonus
+    ->leftJoin('user_accounts', 'bonuses.plateform_id', '=', 'user_accounts.id') // Allow NULL platform
+    ->leftJoin('accounts', 'user_accounts.account_id', '=', 'accounts.id')
+    ->leftJoin('games', 'accounts.game_id', '=', 'games.id')
+    ->select(
+        'bonuses.id',
+        'u1.name as user_name',
+        'bonuses.bonus',
+        'bonuses.created_at as granted_date',
+        'u2.name as granted_by',
+        DB::raw('COALESCE(games.name, "None") as platform_name'), // If NULL, return "None"
+        'bonuses.redem'
+    )
+    ->get();
+
+
+
+return view('bonus.index',compact('bonuses'));
+}
     public function assignBonus(Request $request)
     {
         $request->validate([

@@ -32,6 +32,13 @@
                     <span>Password Request</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('admin.bonus.list') }}">
+                    <iconify-icon icon="mdi:gift-outline" class="menu-icon"></iconify-icon>
+                    <span>User Bonus List</span>
+                </a>
+            </li>
             @can('Payment Request')
             <li>
                 <a href="{{ route('admin.payment_request') }}">

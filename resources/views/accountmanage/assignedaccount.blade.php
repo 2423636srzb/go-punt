@@ -50,7 +50,11 @@
                                     <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $account->game->name }}</h6>
                                 </div>
                             </td>
-                            <td>{{$account->userAccount->user->username}}</td>
+                            <td> @if ($account->userAccount->isNotEmpty())
+                                {{ optional($account->userAccount->first()->user)->username ?? 'N/A' }}
+                            @else
+                                N/A
+                            @endif</td>
                             <td>{{ $account->username }}</td>
                             <td>{{ $account->password }}</td>
                             <td>
@@ -96,7 +100,7 @@
                            Account Password
                         </div>
                     </div>
-                  
+
                     <div class="col-md-6">
                         <label class="form-label">Status</label>
                         <select name="status" id="status" class="form-control" required>
@@ -120,14 +124,14 @@
                         data-bs-dismiss="modal">
                         Cancel
                     </button>
-    
+
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function editAccunt(accountId) {
+        function editAccount(accountId) {
             $('#accountModal').modal('show');
             $.ajax({
                         url: `{{ url('account/') }}` + "/" + accountId,
@@ -142,7 +146,7 @@
                         }
                     });
             // Make an AJAX request to fetch the game data by ID
-            
+
         }
     </script>
 

@@ -350,7 +350,7 @@ html {
 .services .services__main .services-box {
     flex: 1 1 calc(25% - 20px); /* Default for desktop and larger devices */
     height: auto;
-    max-width: 90%;
+    max-width:300;
     box-sizing: border-box;
     border-radius: 12px;
     backdrop-filter: blur(4px);
@@ -573,15 +573,18 @@ if (Auth::check() && Auth::user()->profile_image) {
                 </div>
             </div>
 
-<!-- SignIn and SignUp buttons (Visible only if the user is not logged in) -->
-<div id="guest-buttons" @guest class="md:flex" @else class="hidden" @endguest>
-<div class="wallet">
-    <a href="{{ route('signUp.view') }}">SignUp</a>
-</div>
-<div class="wallet">
-    <a href="{{ route('login.view') }}">SignIn</a>
-</div>
-</div>
+            <div id="guest-buttons"
+            @guest class="md:flex md:space-x-4 space-y-2 md:space-y-0 justify-center "
+            @else class="hidden" @endguest>
+           <div class="wallet">
+               <a href="{{ route('signUp.view') }}" class="block w-full text-center">SignUp</a>
+           </div>
+           <div class="wallet">
+               <a href="{{ route('login.view') }}" class="block w-full text-center">SignIn</a>
+           </div>
+       </div>
+
+
 
 <script>
 
@@ -631,7 +634,7 @@ window.onclick = function(event) {
       </div>
     </header>
     <!-- end Header -->
- <div class="banner" style="padding:0; margin-bottom: 200px;">
+ <div class="banner" style="padding:0;">
     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="10000">
@@ -654,7 +657,224 @@ window.onclick = function(event) {
       </button>
     </div>
   </div>
-    <section class="crypto" data-aos="fade-up" data-aos-duration="1000" id="markets">
+
+  <section class="services" id="live">
+    <div class="container mx-auto mb-4 overflow-hidden relative">
+      <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
+        <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Live Matches</h1>
+      </div>
+    </div>
+
+    <!-- Buttons for Cricket, Tennis, and Football -->
+    <div class="button-container">
+      <button class="game-button active" data-game="cricket" onclick="toggleGames('cricket', this)">
+        <img src="assets/images/BD/icons/cricket.gif" alt="Cricket Icon" class="icon" />
+        <span class="game-text">Cricket</span>
+      </button>
+      <button class="game-button" data-game="tennis" onclick="toggleGames('tennis', this)">
+        <img src="assets/images/BD/icons/tennis.gif" alt="Tennis Icon" class="icon" />
+        <span class="game-text">Tennis</span>
+      </button>
+      <button class="game-button" data-game="football" onclick="toggleGames('football', this)">
+        <img src="assets/images/BD/icons/football.gif" alt="Football Icon" class="icon" />
+        <span class="game-text">Football</span>
+      </button>
+    </div>
+
+    <!-- Cricket Container (default) -->
+    <div class="container-cricket active mt-4">
+      <div class="services__main d-flex flex-wrap justify-content-start">
+        <!-- Your existing cricket service box code here (the same as your current setup) -->
+        @foreach ($liveCricket as $cricket)
+
+        <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+                  <div class="live-button-container">
+            <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
+              onclick="checkLogin(event)">
+                {{-- <button class="circular-button">
+                    <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                </button> --}}
+                <button type="submit" class="btn-action btn-live">Live Match</button>
+            </a>
+        </div>
+
+        <script>
+            function checkLogin(event) {
+                @if(!Auth::check())
+                    event.preventDefault();
+                    alert("You must be logged in to watch the live stream!");
+                    // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                @endif
+            }
+        </script>
+          <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
+          <hr class="mb-1">
+          <div class="match-container">
+            <!-- Pakistan Team Info -->
+            <div class="team-container">
+              <div class="team">
+                <p class="batting">__<span style="color: #ff002b"></span></p>
+              </div>
+              <div class="stats">
+                <p><span class="batting">0</span> <span class="overs">0</span></p>
+              </div>
+            </div>
+
+            <div class="team-container">
+              <div class="team"></div>
+              <div class="stats">
+                <p class="-mt-2"><span class="overs">0</span></p>
+              </div>
+            </div>
+            <div class="team-container">
+              <div class="team">
+                <p>__</p>
+              </div>
+              <div class="stats">
+                <p><span>0</span> <span class="overs">0</span></p>
+              </div>
+            </div>
+            <hr class="mt-1">
+            <div class="team mt-1">
+              <p class="batting">last 6 ball</p>
+            </div>
+            <div class="balls-container">
+              <div class="ball">0</div>
+              <div class="ball">0</div>
+              <div class="ball">0</div>
+              <div class="ball">0</div>
+              <div class="ball">0</div>
+              <div class="ball">0</div>
+            </div>
+            <hr class="my-2.5" />
+            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
+          </div>
+        </div>
+        @endforeach
+        <!-- Repeat for other match boxes if needed -->
+      </div>
+    </div>
+
+    <!-- Tennis Container (hidden by default) -->
+    <div class="container-tennis mt-4">
+      <div class="services__main d-flex flex-wrap justify-content-start">
+        <!-- Your existing cricket service box code here (the same as your current setup) -->
+        @foreach ($liveTennis as $tennis)
+
+        <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+
+          <div class="live-button-container">
+            <a href="{{ Auth::check() ?  route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) : '#' }}"
+              onclick="checkLogin(event)">
+                {{-- <button class="circular-button">
+                    <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                </button> --}}
+                <button type="submit" class="btn-action btn-live">Live Match</button>
+            </a>
+        </div>
+
+        <script>
+            function checkLogin(event) {
+                @if(!Auth::check())
+                    event.preventDefault();
+                    alert("You must be logged in to watch the live stream!");
+                    // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                @endif
+            }
+        </script>
+          <a href="" class="text-xl text-black mb-2 w-full block text-start"style="font-size: 15px; line-height: 20px;">{{$tennis['Name']}}</a>
+          <hr class="mb-1">
+          <div class="match-container">
+            <!-- Pakistan Team Info -->
+            <div class="team-container">
+              <div class="team">
+                <p class="batting">__ <span style="color: #ff002b"></span></p>
+              </div>
+              <div class="stats">
+                <p><span class="batting">__</span> <span class="overs">__</span></p>
+              </div>
+            </div>
+
+            <div class="team-container">
+              <div class="team"></div>
+            </div>
+            <div class="team-container">
+              <div class="team">
+                <p>__</p>
+              </div>
+              <div class="stats">
+                <p><span>__</span> <span class="overs">__</span></p>
+              </div>
+            </div>
+            <hr class="my-2.5" />
+            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
+          </div>
+        </div>
+        @endforeach
+
+        <!-- Repeat for other match boxes if needed -->
+      </div>
+    </div>
+
+    <!-- Football Container (hidden by default) -->
+    <div class="container-football mt-4">
+      <div class="services__main d-flex flex-wrap justify-content-start">
+        <!-- Your existing cricket service box code here (the same as your current setup) -->
+        @foreach ($liveFootball as $football )
+
+        <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
+          <div class="live-button-container">
+            <a href="{{ Auth::check() ?  route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) : '#' }}"
+              onclick="checkLogin(event)">
+                {{-- <button class="circular-button">
+                    <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
+                </button> --}}
+                <button type="submit" class="btn-action btn-live">Live Match</button>
+            </a>
+        </div>
+
+        <script>
+            function checkLogin(event) {
+                @if(!Auth::check())
+                    event.preventDefault();
+                    alert("You must be logged in to watch the live stream!");
+                    // window.location.href = "{{ route('login') }}"; // Redirect to login page
+                @endif
+            }
+        </script>
+          <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$football['Name']}}</a>
+          <hr class="mb-1">
+          <div class="match-container">
+            <!-- Pakistan Team Info -->
+            <div class="team-container">
+              <div class="team">
+                <p class="batting">__<span style="color: #ff002b"></span></p>
+              </div>
+              <div class="stats">
+                <p><span class="batting">__</span> <span class="overs">__</span></p>
+              </div>
+            </div>
+            <div class="team-container">
+              <div class="team">
+                <p>__</p>
+              </div>
+              <div class="stats">
+                <p><span>__</span> <span class="overs">__</span></p>
+              </div>
+            </div>
+            <hr class="my-2.5" />
+            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
+          </div>
+        </div>
+
+        @endforeach
+        <!-- Repeat for other match boxes if needed -->
+      </div>
+    </div>
+
+  </section>
+
+    <section class="crypto" data-aos="fade-up" data-aos-duration="1000" id="markets" style="margin-top: 5px;">
       <div class="container mx-auto  mb-4 overflow-hidden relative">
         <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
           <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Featured Markets</h1>
@@ -688,221 +908,6 @@ window.onclick = function(event) {
           </div>
         </div>
       </div>
-    </section>
-
-
-    <section class="services" id="live">
-      <div class="container mx-auto mb-4 overflow-hidden relative">
-        <div class="flex justify-center items-center transition-transform duration-500 ease-in-out">
-          <h1 class="text-lg font-semibold text-black" style="font-size:30px; text-align:center;">Our Live Matches</h1>
-        </div>
-      </div>
-
-      <!-- Buttons for Cricket, Tennis, and Football -->
-      <div class="button-container">
-        <button class="game-button active" data-game="cricket" onclick="toggleGames('cricket', this)">
-          <img src="assets/images/BD/icons/cricket.gif" alt="Cricket Icon" class="icon" />
-          <span class="game-text">Cricket</span>
-        </button>
-        <button class="game-button" data-game="tennis" onclick="toggleGames('tennis', this)">
-          <img src="assets/images/BD/icons/tennis.gif" alt="Tennis Icon" class="icon" />
-          <span class="game-text">Tennis</span>
-        </button>
-        <button class="game-button" data-game="football" onclick="toggleGames('football', this)">
-          <img src="assets/images/BD/icons/football.gif" alt="Football Icon" class="icon" />
-          <span class="game-text">Football</span>
-        </button>
-      </div>
-
-      <!-- Cricket Container (default) -->
-      <div class="container-cricket active mt-4">
-        <div class="services__main d-flex flex-wrap justify-content-start">
-          <!-- Your existing cricket service box code here (the same as your current setup) -->
-          @foreach ($liveCricket as $cricket)
-
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
-                    <div class="live-button-container">
-              <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
-                onclick="checkLogin(event)">
-                  {{-- <button class="circular-button">
-                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                  </button> --}}
-                  <button type="submit" class="btn-action btn-live">Live Match</button>
-              </a>
-          </div>
-
-          <script>
-              function checkLogin(event) {
-                  @if(!Auth::check())
-                      event.preventDefault();
-                      alert("You must be logged in to watch the live stream!");
-                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
-                  @endif
-              }
-          </script>
-            <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
-            <hr class="mb-1">
-            <div class="match-container">
-              <!-- Pakistan Team Info -->
-              <div class="team-container">
-                <div class="team">
-                  <p class="batting">__<span style="color: #ff002b"></span></p>
-                </div>
-                <div class="stats">
-                  <p><span class="batting">0</span> <span class="overs">0</span></p>
-                </div>
-              </div>
-
-              <div class="team-container">
-                <div class="team"></div>
-                <div class="stats">
-                  <p class="-mt-2"><span class="overs">0</span></p>
-                </div>
-              </div>
-              <div class="team-container">
-                <div class="team">
-                  <p>__</p>
-                </div>
-                <div class="stats">
-                  <p><span>0</span> <span class="overs">0</span></p>
-                </div>
-              </div>
-              <hr class="mt-1">
-              <div class="team mt-1">
-                <p class="batting">last 6 ball</p>
-              </div>
-              <div class="balls-container">
-                <div class="ball">0</div>
-                <div class="ball">0</div>
-                <div class="ball">0</div>
-                <div class="ball">0</div>
-                <div class="ball">0</div>
-                <div class="ball">0</div>
-              </div>
-              <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
-            </div>
-          </div>
-          @endforeach
-          <!-- Repeat for other match boxes if needed -->
-        </div>
-      </div>
-
-      <!-- Tennis Container (hidden by default) -->
-      <div class="container-tennis mt-4">
-        <div class="services__main d-flex flex-wrap justify-content-start">
-          <!-- Your existing cricket service box code here (the same as your current setup) -->
-          @foreach ($liveTennis as $tennis)
-
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
-
-            <div class="live-button-container">
-              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $tennis['MatchID'], 'sportId' => 2,'channelId'=>$tennis['Channel']]) : '#' }}"
-                onclick="checkLogin(event)">
-                  <button class="circular-button">
-                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                  </button>
-              </a>
-          </div>
-
-          <script>
-              function checkLogin(event) {
-                  @if(!Auth::check())
-                      event.preventDefault();
-                      alert("You must be logged in to watch the live stream!");
-                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
-                  @endif
-              }
-          </script>
-            <a href="" class="text-xl text-black mb-2 w-full block text-start"style="font-size: 15px; line-height: 20px;">{{$tennis['Name']}}</a>
-            <hr class="mb-1">
-            <div class="match-container">
-              <!-- Pakistan Team Info -->
-              <div class="team-container">
-                <div class="team">
-                  <p class="batting">__ <span style="color: #ff002b"></span></p>
-                </div>
-                <div class="stats">
-                  <p><span class="batting">__</span> <span class="overs">__</span></p>
-                </div>
-              </div>
-
-              <div class="team-container">
-                <div class="team"></div>
-              </div>
-              <div class="team-container">
-                <div class="team">
-                  <p>__</p>
-                </div>
-                <div class="stats">
-                  <p><span>__</span> <span class="overs">__</span></p>
-                </div>
-              </div>
-              <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
-            </div>
-          </div>
-          @endforeach
-
-          <!-- Repeat for other match boxes if needed -->
-        </div>
-      </div>
-
-      <!-- Football Container (hidden by default) -->
-      <div class="container-football mt-4">
-        <div class="services__main d-flex flex-wrap justify-content-start">
-          <!-- Your existing cricket service box code here (the same as your current setup) -->
-          @foreach ($liveFootball as $football )
-
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
-            <div class="live-button-container">
-              <a href="{{ Auth::check() ?  route('match.live',['eventId' => $football['MatchID'], 'sportId' => 1,'channelId' => $football['Channel']]) : '#' }}"
-                onclick="checkLogin(event)">
-                  <button class="circular-button">
-                      <img src="assets/images/BD/watch-now.png" alt="Live Stream" class="button-image" />
-                  </button>
-              </a>
-          </div>
-
-          <script>
-              function checkLogin(event) {
-                  @if(!Auth::check())
-                      event.preventDefault();
-                      alert("You must be logged in to watch the live stream!");
-                      // window.location.href = "{{ route('login') }}"; // Redirect to login page
-                  @endif
-              }
-          </script>
-            <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$football['Name']}}</a>
-            <hr class="mb-1">
-            <div class="match-container">
-              <!-- Pakistan Team Info -->
-              <div class="team-container">
-                <div class="team">
-                  <p class="batting">__<span style="color: #ff002b"></span></p>
-                </div>
-                <div class="stats">
-                  <p><span class="batting">__</span> <span class="overs">__</span></p>
-                </div>
-              </div>
-              <div class="team-container">
-                <div class="team">
-                  <p>__</p>
-                </div>
-                <div class="stats">
-                  <p><span>__</span> <span class="overs">__</span></p>
-                </div>
-              </div>
-              <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
-            </div>
-          </div>
-
-          @endforeach
-          <!-- Repeat for other match boxes if needed -->
-        </div>
-      </div>
-
     </section>
     <!-- <section class="about-2 mb-7" id="about">
       <div class="container">
@@ -1111,13 +1116,13 @@ window.onclick = function(event) {
                 <div class="widget-link s2">
                   <h6 class="title">Markets</h6>
                   <ul>
-                    <li><a href="buy-crypto-select.html">ALLPANELEXCHANGE</a></li>
-                    <li><a href="markets.html">MY99EXCH</a></li>
-                    <li><a href="#">LCPLAY247</a></li>
-                    <li><a href="#">BETBHAI9</a></li>
-                    <li><a href="#">DIAMOND EXCH99</a></li>
-                    <li><a href="#">MYLASER247</a></li>
-                    <li><a href="#">MYTIGER247</a></li>
+                    <li><a href="https://allpanelexch.com/">ALLPANELEXCHANGE</a></li>
+                    <li><a href="https://my99exch.com/login">MY99EXCH</a></li>
+                    <li><a href="https://www.lcplay247.win/login">LCPLAY247</a></li>
+                    <li><a href="https://betbhai9.red/login">BETBHAI9</a></li>
+                    <li><a href="https://diamondexch99.com/">DIAMOND EXCH99</a></li>
+                    <li><a href="https://mylaser247.com/#/home">MYLASER247</a></li>
+                    <li><a href="https://mytiger247.win/home">MYTIGER247</a></li>
                   </ul>
                 </div>
               </div>

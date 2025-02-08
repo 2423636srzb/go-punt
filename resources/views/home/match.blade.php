@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    
+
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{asset('assets/app/dist/app.css')}}" />
@@ -29,47 +29,47 @@
       .container {
           margin-top: 30px;
       }
-  
+
       .match-title {
           font-size: 2rem;
           font-weight: bold;
           color: #007bff;
           margin-bottom: 20px;
       }
-/*   
+/*
       .team-container {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 15px;
       }
-  
+
       .team {
           font-size: 1.25rem;
           font-weight: 500;
       }
-  
+
       .team-name {
           font-size: 1.3rem;
           font-weight: bold;
       }
-  
+
       .batting-indicator {
           color: #ff002b;
           font-size: 1.2rem;
       }
-  
+
       .stats p {
           font-size: 1.1rem;
           color: #333;
       }
-  
+
       .balls-container {
           display: flex;
           gap: 10px;
           margin-top: 10px;
       }
-  
+
       .ball {
           width: 35px;
           height: 35px;
@@ -81,54 +81,53 @@
           border-radius: 50%;
           font-size: 1.1rem;
       }
-  
+
       .last-6-balls .title {
           font-weight: 600;
           font-size: 1.1rem;
           color: #333;
       } */
-  
+
       .video-title {
           font-size: 1.5rem;
           font-weight: bold;
           margin-bottom: 15px;
           color: #007bff;
       }
-  
+
       /* Responsive design */
       @media (max-width: 768px) {
           .container {
               margin-top: 15px;
           }
-  
+
           /* .match-title {
               font-size: 1.6rem;
           }
-  
+
           .team-container {
               flex-direction: column;
               align-items: flex-start;
           }
-  
+
           .balls-container {
               justify-content: center;
           }
-  
+
           .ball {
               width: 30px;
               height: 30px;
               font-size: 1rem;
           }*/
-      } 
+      }
 
 
 .match-container {
   border-radius: 8px;
   padding: 3px;
-  
 }
 .team-container {
-    height: 35px;
+  height: 35px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -218,6 +217,65 @@ hr {
   animation: rotateText 30s infinite linear;
   white-space: nowrap; /* Prevents text wrapping */
 }
+
+/* TV Container */
+.tv-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 5px auto;
+    max-width: 100%;
+    padding: 10px;
+}
+
+/* TV Title */
+.tv-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #050505;
+    text-align: center;
+    margin-bottom: 10px;
+    /* background: #007bff; */
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* TV Frame - Aspect Ratio 16:9 */
+.tv-frame {
+    width: 50vw; /* Use viewport width */
+    max-width: 900px; /* Increase for desktops */
+    aspect-ratio: 16 / 9; /* Maintain proportion */
+    background: #222;
+    border-radius: 20px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: 8px solid #444;
+    overflow: hidden;
+}
+
+/* TV Screen (Iframe) */
+.tv-frame iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tv-frame {
+        width: 90vw; /* Smaller width for mobile */
+        max-width: 100%;
+    }
+}
+
+.services-box {
+  margin-top: 90px !important;
+  width: 100% !important;
+}
 </style>
   </head>
   <body class="body header-fixed home-2">
@@ -291,8 +349,8 @@ hr {
               </div>
 
               <div class="header__right">
-             
-                <div class="mode-switcher">
+
+                {{-- <div class="mode-switcher">
                   <a class="sun" href="#" onclick="switchTheme()">
                     <svg
                       width="16"
@@ -383,17 +441,17 @@ hr {
                       />
                     </svg>
                   </a>
-                </div>
+                </div> --}}
                 <div id="user-profile" class="hidden flex items-center space-x-4" style="cursor: pointer;"
                 onclick="toggleDropdown()">
                 @php
-$image = asset('assets/images/users/avatar-large-square.jpg');
-if (Auth::check() && Auth::user()->profile_image) {
-    $image = url(Auth::user()->profile_image);
-}
-@endphp
+                $image = asset('assets/images/users/avatar-large-square.jpg');
+                if (Auth::check() && Auth::user()->profile_image) {
+                    $image = url(Auth::user()->profile_image);
+                }
+                @endphp
 
-<img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full" id="user-logo">
+                <img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full" id="user-logo">
                 <span id="user-name" class="text-gray-700"></span>
                 <div class="relative">
                     <button class="text-gray-700">
@@ -465,12 +523,12 @@ window.onclick = function(event) {
       </div>
     </header>
     <!-- end Header -->
-     
+
 @if ($sportId == 4)
     <div class="container" style="margin-bottom: 50px;">
       <div class="flex gap-10">
           <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px;">
-          
+
             <a href="" class="text-xl text-black mb-2 w-full block text-center">Pak VS Ind</a>
             <hr class="mb-1">
             <div class="match-container">
@@ -483,7 +541,7 @@ window.onclick = function(event) {
                   <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
                 </div>
               </div>
-      
+
               <div class="team-container">
                 <div class="team"></div>
                 <div class="stats">
@@ -511,13 +569,20 @@ window.onclick = function(event) {
                 <div class="ball">0</div>
               </div>
               <hr class="my-2.5" />
-              <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin: 20px; margin-left: 50px;">Pak needs 45 runs in 18 balls</p>
+              <p style="font-size: 17px; font-weight: 700; color:#0056b3; margin: 20px auto; margin-left: 100px;">Pak needs 45 runs in 18 balls</p>
             </div>
           </div>
           <!-- Right Side: Video Player (Live Stream) -->
-          <div style="min-height: 350px; background-color: #007bff; width: 100%;">
-            <!-- Embed the live stream using iframe -->
-            <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
+          <div class="tv-container">
+            <h2 class="tv-title">Live TV Streaming</h2>
+            <div class="tv-frame">
+                <iframe
+                    src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
       </div>
   </div>
@@ -526,7 +591,7 @@ window.onclick = function(event) {
   <div class="container" style="margin-bottom: 50px;">
     <div class="flex gap-10">
         <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
-        
+
           <a href="" class="text-xl text-black mb-2 w-full block text-center">Germany  VS  England</a>
           <hr class="mb-1">
           <div class="match-container">
@@ -539,7 +604,7 @@ window.onclick = function(event) {
                 <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
               </div>
             </div>
-    
+
             <div class="team-container">
               <div class="team">
                 <p>Eng</p>
@@ -548,16 +613,23 @@ window.onclick = function(event) {
                 <p><span>38-2</span> <span class="overs">(7.2)</span></p>
               </div>
             </div>
-      
-            <hr class="my-2.5" />
-            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin: 20px; margin-left: 50px;">Ger needs 4 Goals in 30 minutes</p>
+
+            <hr class="my-3.5" />
+            <p style="font-size: 17px; font-weight: 700; color:#0056b3; margin: 20px; margin-left: 100px;">Ger needs 4 Goals in 30 minutes</p>
           </div>
         </div>
         <!-- Right Side: Video Player (Live Stream) -->
-        <div style="min-height: 350px; background-color: #007bff; width: 100%;">
-          <!-- Embed the live stream using iframe -->
-          <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
-      </div>
+      <div class="tv-container">
+        <h2 class="tv-title">Live TV Streaming</h2>
+        <div class="tv-frame">
+            <iframe
+                src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -565,7 +637,7 @@ window.onclick = function(event) {
 @if ($sportId == 1)
 <div class="container" style="margin-bottom: 50px;">
   <div class="flex gap-10">
-      
+
       <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
         <a href="" class="text-xl text-black mb-2 w-full block text-center">Barcelona VS Spain</a>
         <hr class="mb-1">
@@ -579,7 +651,7 @@ window.onclick = function(event) {
               <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
             </div>
           </div>
-  
+
           <div class="team-container">
             <div class="team">
               <p>Spain</p>
@@ -589,14 +661,21 @@ window.onclick = function(event) {
             </div>
           </div>
           <hr class="my-2.5" />
-          <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin: 20px; margin-left: 50px;">Pak needs 45 runs in 18 balls</p>
+          <p style="font-size: 18px; font-weight: 700; color:#0056b3; margin: 20px; margin-left: 50px;">Pak needs 45 runs in 18 balls</p>
         </div>
       </div>
       <!-- Right Side: Video Player (Live Stream) -->
-      <div style="min-height: 350px; background-color: #007bff; width: 100%;">
-          <!-- Embed the live stream using iframe -->
-          <iframe width="100%" height="100%" src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen></iframe>
-      </div>
+      <div class="tv-container">
+        <h2 class="tv-title">Live TV Streaming</h2>
+        <div class="tv-frame">
+            <iframe
+                src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
   </div>
 </div>
 @endif
@@ -702,11 +781,10 @@ window.onclick = function(event) {
     <script src="{{asset('assets/app/js/apexcharts.js')}}"></script>
     <script src="{{asset('assets/app/js/switchmode.js')}}"></script>
     <script src="{{asset('assets/app/js/jquery.magnific-popup.min.js')}}"></script>
-    
+
     <script src="{{asset('assets/app/js/chart.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   </body>
   </html>
-  

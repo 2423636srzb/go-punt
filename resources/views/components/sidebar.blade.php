@@ -6,8 +6,8 @@
         <a href="{{ route('users.dashboard') }}" class="sidebar-logo">
             <?php $setting = DB::table('settings')->first(); ?>
             <img src="{{ asset($setting->logo) }}" alt="site logo" class="light-logo" width="180">
-            <img src="{{ asset('assets/images/GP247LogoLite.png') }}" alt="site logo" class="dark-logo" width="180">
-            <img src="{{ asset('assets/images/GP247LogoDark.png') }}" width="43" alt="site logo" class="logo-icon">
+            <img src="{{ asset('assets/images/BD/All-Panel-Pro-Light-Logo.png') }}" alt="site logo" class="dark-logo" width="180">
+            <img src="{{ asset('assets/images/BD/All-Panel-Pro-Dark-Logo.png') }}" width="43" alt="site logo" class="logo-icon">
         </a>
     </div>
     <div class="sidebar-menu-area">

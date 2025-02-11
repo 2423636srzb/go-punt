@@ -314,7 +314,7 @@ hr {
                   </a>
                   <a class="dark" href="index.html">
                     <img
-                      src="{{ asset($setting->logo) }}"
+                      src="{{asset('assets/images/BD/All-Panel-Pro-Light-Logo.png')}}"
                       alt=""
                       width="118"
                       height="32"

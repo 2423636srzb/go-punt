@@ -18,10 +18,10 @@
       href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <!-- End Style CSS -->
 
-    <link rel="shortcut icon" href="{{asset('assets/images/logo/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('assets/images/BD/All-Panel-Pro-Logo-Favicon.png')}}" />
     <link
       rel="apple-touch-icon-precomposed"
-      href="{{asset('assets/images/logo/favicon.png')}}"
+      href="{{asset('assets/images/BD/All-Panel-Pro-Logo-Favicon.png')}}"
     />
 
 <style>
@@ -638,14 +638,17 @@ window.onclick = function(event) {
     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="10000">
-          <img src="assets/images/BD/banner.jpg" class="d-block w-100" alt="...">
+          <img src="assets/images/BD/All-Panel-Pro-1.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item" data-bs-interval="2000">
-          <img src="assets/images/BD/banner1.jpg" class="d-block w-100" alt="...">
+          <img src="assets/images/BD/All-Panel-Pro-2.jpg" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="assets/images/BD/banner2.jpg" class="d-block w-100" alt="...">
+          <img src="assets/images/BD/All-Panel-Pro-3.jpg" class="d-block w-100" alt="...">
         </div>
+        <div class="carousel-item">
+            <img src="assets/images/BD/All-Panel-Pro-4.jpg" class="d-block w-100" alt="...">
+          </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -1079,7 +1082,7 @@ window.onclick = function(event) {
       </div>
     </section> -->
 
-    <footer class="footer style-2">
+    <footer class="footer style-2 mt-10">
       <div class="container">
         <div class="footer__main">
           <div class="row">

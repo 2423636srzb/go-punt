@@ -31,10 +31,11 @@ class HomeController extends Controller
     public function index()
     {
         $sportsData = $this->sportsService->getAllSportsData();
+        // dd($sportsData);
         $liveFootball = [];
         $liveCricket = [];
         $liveTennis = [];
-        
+
         // Filter the matches based on type, IsLive, and NowPlaying
         foreach ($sportsData as $match) {
             if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
@@ -56,7 +57,7 @@ class HomeController extends Controller
         return view('home/main',compact('games','liveFootball','liveCricket','liveTennis'));
     }
     public function score(){
-        
+
         $sportsData = $this->sportsService->getSpecificSportData();
         dd($sportsData);
     }
@@ -77,28 +78,28 @@ class HomeController extends Controller
         $validated = $request->validate([
             'otp' => 'required|digits:6',
         ]);
-    
+
         // Retrieve the stored OTP and credentials from session
         $storedOtp = OTP::where('user_id', session('otp_user_id'))
                         ->where('otp', $validated['otp'])
                         ->first();
-    
+
         // Check if the OTP is valid and has not expired
         if ($storedOtp && now()->lessThanOrEqualTo($storedOtp->expires_at)) {
             // OTP is valid, clear it from the session
-    
+
             // Authenticate the user using the stored credentials
             $credentials = [
                 'email' => session('otp_email'),
                 'password' => session('otp_password'),
             ];
-    
+
             // Remove OTP and other session data
             session()->forget(['otp', 'otp_expires_at', 'otp_email', 'otp_password']);
-    
+
             // Delete OTP record from database after successful verification
             $storedOtp->delete();
-    
+
             // Attempt to log the user in
             if (Auth::attempt($credentials, true)) {
                 return response()->json([
@@ -112,24 +113,24 @@ class HomeController extends Controller
                 ], 401);
             }
         }
-    
+
         // If OTP is invalid or expired, clear session data and delete the record
         session()->forget(['otp', 'otp_expires_at', 'otp_email', 'otp_password']);
-    
+
         // Delete the OTP record from the database if it exists
         if ($storedOtp) {
             $storedOtp->delete();
         }
-    
+
         return response()->json([
             'status' => 'error',
             'message' => 'Invalid or expired OTP.',
         ], 401);
     }
-    
-    
-    
-    
+
+
+
+
     public function login(Request $request)
 {
     // Validate the request
@@ -211,7 +212,7 @@ class HomeController extends Controller
         ], 401);
     }
 }
-    
+
 
     public function forgotPassword()
     {
@@ -246,7 +247,7 @@ class HomeController extends Controller
                     'account_id' => $account->id,
                     'assigned_at' => now(),
                 ]);
-    
+
                 // Mark the account as assigned
                 $account->update(['is_assigned' => 1]);
             }

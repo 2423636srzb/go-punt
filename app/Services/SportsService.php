@@ -10,15 +10,14 @@ class SportsService
     {
         // Fetch from first API
         $response = Http::get('http://172.105.54.97:8085/api/new/tveventlist');
-        
         // Return decoded JSON
         return $response->json();
     }
 
-    public function getSpecificSportData()
+    public function getSpecificSportData($chanelId)
     {
         // Fetch from the second API
-        $response = Http::get("https://live.oldd247.com/sr.php?eventid=33961636");
+        $response = Http::get("https://live.oldd247.com/sr.php?eventid=$chanelId");
         if ($response->ok()) {
             $data = $response->json();
             dd($data); // Ensure $data is not null

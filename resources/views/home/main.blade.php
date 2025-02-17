@@ -350,8 +350,8 @@ html {
 .services .services__main .services-box {
     flex: 1 1 calc(25% - 20px); /* Default for desktop and larger devices */
     height: auto;
-    /* max-width:300; */
-    max-width: calc(100% - 20px) !important;
+    max-width:300px !important;
+    /* max-width: calc(100% - 20px) !important; */
     box-sizing: border-box;
     border-radius: 12px;
     backdrop-filter: blur(4px);

@@ -350,7 +350,8 @@ html {
 .services .services__main .services-box {
     flex: 1 1 calc(25% - 20px); /* Default for desktop and larger devices */
     height: auto;
-    max-width:300;
+    /* max-width:300; */
+    max-width: calc(100% - 20px) !important;
     box-sizing: border-box;
     border-radius: 12px;
     backdrop-filter: blur(4px);
@@ -363,7 +364,7 @@ html {
 /* Adjustments for medium screens (max-width 1200px) */
 @media only screen and (max-width: 1200px) {
     .services .services__main .services-box {
-        width: 100% ;
+        width: 100% !important;
     }
 }
 

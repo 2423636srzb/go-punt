@@ -22,7 +22,7 @@ class SportsService
             $data = $response->json();
             dd($data); // Ensure $data is not null
         } else {
-            dd('API Error:', $response->status(), $response->body());
+            dd('API Error:', $response->status(), $response);
         }
 
     }

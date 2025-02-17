@@ -14,7 +14,7 @@ class MatchController extends Controller
     }
     public function cricketLive($eventId, $sportId,$channelId)
     {
-        $sportsData = $this->sportsService->getSpecificSportData($channelId);
+        $sportsData = $this->sportsService->getSpecificSportData($eventId);
         return view('home.match',compact('eventId','sportId','channelId'));
     }
 }

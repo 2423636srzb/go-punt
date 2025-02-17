@@ -29,16 +29,22 @@ class HomeController extends Controller
     }
 
     public function index()
-    {
-        $sportsData = $this->sportsService->getAllSportsData();
-        // dd($sportsData);
-        $liveFootball = [];
-        $liveCricket = [];
-        $liveTennis = [];
+{
+    $sportsData = $this->sportsService->getAllSportsData();
 
-        // Filter the matches based on type, IsLive, and NowPlaying
-        foreach ($sportsData as $match) {
-            if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
+    $liveFootball = [];
+    $liveCricket = [];
+    $liveTennis = [];
+    $matchKey = []; // Store MatchIDs to check for duplicates
+
+    // Filter unique matches based on type, IsLive, NowPlaying
+    foreach ($sportsData as $match) {
+        if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
+            $matchID = $match['MatchID'] ?? $match['id']; // Get MatchID or id
+
+            if (!in_array($matchID, $matchKey)) { // Check if MatchID exists
+                $matchKey[] = $matchID; // Store MatchID to prevent duplicates
+
                 switch ($match['Type']) {
                     case 'FOOTBALL':
                         $liveFootball[] = $match;
@@ -52,10 +58,13 @@ class HomeController extends Controller
                 }
             }
         }
-        // dd($liveFootball,$liveCricket,$liveTennis);
-        $games = Game::where('status','active')->get();
-        return view('home/main',compact('games','liveFootball','liveCricket','liveTennis'));
     }
+//   dd($liveCricket,$liveFootball,$liveTennis);
+    $games = Game::where('status', 'active')->get();
+
+    return view('home/main', compact('games', 'liveFootball', 'liveCricket', 'liveTennis'));
+}
+
     public function score(){
 
         $sportsData = $this->sportsService->getSpecificSportData();

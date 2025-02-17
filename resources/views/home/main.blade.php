@@ -25,6 +25,7 @@
     />
 
 <style>
+
   .match-container {
   border-radius: 8px;
   padding: 3px;
@@ -76,12 +77,6 @@ hr {
   color: white;
   font-weight: bold;
   font-size: 12px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .live-button-container {
@@ -246,6 +241,51 @@ margin-top: -10px;
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Reduce margin and padding on smaller screens */
+@media (max-width: 768px) {
+  .game-button {
+    width: 120px; /* Reduce button width */
+    height: 80px; /* Reduce button height */
+    padding: 3px; /* Reduce padding */
+    margin-right: 3px; /* Reduce margin */
+  }
+
+  .game-button .icon {
+    width: 25px; /* Reduce icon size */
+    height: 25px;
+    margin-bottom: 5px;
+  }
+
+  .game-button .game-text {
+    font-size: 10px; /* Reduce text size */
+  }
+}
+
+@media (max-width: 480px) {
+  .game-button {
+    width: 100px;
+    height: 75px;
+    padding: 2px;
+    margin-right: 2px;
+  }
+
+  .game-button .icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+  }
+
+  .game-button .game-text {
+    font-size: 9px;
+  }
 }
 
 .container-cricket, .container-tennis, .container-football {
@@ -575,15 +615,24 @@ if (Auth::check() && Auth::user()->profile_image) {
             </div>
 
             <div id="guest-buttons"
-            @guest class="md:flex md:space-x-4 space-y-2 md:space-y-0 justify-center "
-            @else class="hidden" @endguest>
-           <div class="wallet">
-               <a href="{{ route('signUp.view') }}" class="block w-full text-center">SignUp</a>
-           </div>
-           <div class="wallet">
-               <a href="{{ route('login.view') }}" class="block w-full text-center">SignIn</a>
-           </div>
-       </div>
+            @guest class="flex flex-row justify-center space-x-2 w-full"
+            @else class="hidden"
+            @endguest>
+
+            <div class="wallet">
+                <a href="{{ route('signUp.view') }}"
+                   class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignUp</a>
+            </div>
+
+            <div class="wallet">
+                <a href="{{ route('login.view') }}"
+                   class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignIn</a>
+            </div>
+
+        </div>
+
+
+
 
 
 
@@ -635,32 +684,39 @@ window.onclick = function(event) {
       </div>
     </header>
     <!-- end Header -->
- <div class="banner" style="padding:0;">
-    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active" data-bs-interval="10000">
-          <img src="assets/images/BD/All-Panel-Pro-1.jpg" class="d-block w-100" alt="...">
+    <div class="banner" style="padding:0;">
+        <div id="carouselExampleInterval" class="carousel slide position-relative" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="10000">
+                    <img src="assets/images/BD/All-Panel-Pro-1.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="assets/images/BD/All-Panel-Pro-2.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/BD/All-Panel-Pro-3.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/BD/All-Panel-Pro-4.jpg" class="d-block w-100" alt="...">
+                </div>
+            </div>
+
+            <!-- Previous Button (Left Side) -->
+            <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y"
+                    type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev" style="width: 5%;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <!-- Next Button (Right Side) -->
+            <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y"
+                    type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next" style="width: 5%;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="carousel-item" data-bs-interval="2000">
-          <img src="assets/images/BD/All-Panel-Pro-2.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="assets/images/BD/All-Panel-Pro-3.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="assets/images/BD/All-Panel-Pro-4.jpg" class="d-block w-100" alt="...">
-          </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-  </div>
+
 
   <section class="services" id="live">
     <div class="container mx-auto mb-4 overflow-hidden relative">

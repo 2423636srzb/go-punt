@@ -533,8 +533,6 @@ window.onclick = function(event) {
             <hr class="mb-1">
             <iframe
             src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
-            width="255"
-            height="200"
             style="border: 1px solid #ccc;"
             allowfullscreen>
         </iframe>

@@ -531,7 +531,14 @@ window.onclick = function(event) {
 
             <a href="" class="text-xl text-black mb-2 w-full block text-center">Pak VS Ind</a>
             <hr class="mb-1">
-            <div class="match-container">
+            <iframe
+            src="https://live.oldd247.com/sr.php?eventid={{$cricket['MatchID']}}"
+            width="255"
+            height="200"
+            style="border: 1px solid #ccc;"
+            allowfullscreen>
+        </iframe>
+            {{-- <div class="match-container">
               <!-- Pakistan Team Info -->
               <div class="team-container">
                 <div class="team">
@@ -570,7 +577,7 @@ window.onclick = function(event) {
               </div>
               <hr class="my-2.5" />
               <p style="font-size: 17px; font-weight: 700; color:#0056b3; margin: 20px auto; margin-left: 100px;">Pak needs 45 runs in 18 balls</p>
-            </div>
+            </div> --}}
           </div>
           <!-- Right Side: Video Player (Live Stream) -->
           <div class="tv-container">

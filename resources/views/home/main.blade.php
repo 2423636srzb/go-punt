@@ -773,7 +773,7 @@ window.onclick = function(event) {
 
             {{-- <iframe src="{{ url('https://live.oldd247.com/sr.php?eventid=' . $cricket['MatchID']) }}" frameborder="1"></iframe> --}}
             <iframe
-            src="https://live.oldd247.com/sr.php?eventid={{ $cricket['MatchID'] }}"
+            src="https://live.oldd247.com/sr.php?eventid={{$cricket['MatchID']}}"
             width="255"
             height="200"
             style="border: 1px solid #ccc;"

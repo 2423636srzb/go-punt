@@ -527,15 +527,13 @@ window.onclick = function(event) {
 @if ($sportId == 4)
     <div class="container" style="margin-bottom: 50px;">
       <div class="flex gap-10">
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px;">
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px; background-color:#081c31;">
 
-            <a href="" class="text-xl text-black mb-2 w-full block text-center">Pak VS Ind</a>
-            <hr class="mb-1">
-            <iframe
-            src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
-            style="border: 1px solid #ccc;"
-            allowfullscreen>
-        </iframe>
+           <iframe
+    src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
+    style="width: 100%; height: 100%; border: 1px solid #ccc;"
+    allowfullscreen>
+</iframe>
             {{-- <div class="match-container">
               <!-- Pakistan Team Info -->
               <div class="team-container">

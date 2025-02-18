@@ -770,7 +770,16 @@ window.onclick = function(event) {
           <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
           <hr class="mb-1">
           <div class="match-container">
-            <!-- Pakistan Team Info -->
+
+            {{-- <iframe src="{{ url('https://live.oldd247.com/sr.php?eventid=' . $cricket['MatchID']) }}" frameborder="1"></iframe> --}}
+            <iframe
+            src="https://live.oldd247.com/sr.php?eventid={{ $cricket['MatchID'] }}"
+            width="255"
+            height="200"
+            style="border: 1px solid #ccc;"
+            allowfullscreen>
+        </iframe>
+            {{-- <!-- Pakistan Team Info -->
             <div class="team-container">
               <div class="team">
                 <p class="batting">__<span style="color: #ff002b"></span></p>
@@ -807,7 +816,7 @@ window.onclick = function(event) {
               <div class="ball">0</div>
             </div>
             <hr class="my-2.5" />
-            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p>
+            <p style="font-size: 14px; font-weight: 600; color:#0056b3; margin-bottom: -5px">Result Note</p> --}}
           </div>
         </div>
         @endforeach

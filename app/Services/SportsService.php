@@ -16,27 +16,14 @@ class SportsService
 
     public function getSpecificSportData($eventId)
     {
-        if (empty($eventId)) {
-            dd("event id is missing");
-            return response()->json(['error' => 'Event ID is required'], 400);
-        }
-
-        // Fetch from the API
-        $response = Http::get("https://live.oldd247.com/sr.php", [
-            'eventid' => $eventId
-        ]);
-
-        if ($response->successful()) {
-            dd("success");
-            return response()->json($response->json());
+        // Fetch from the second API
+        $response = Http::get("https://live.oldd247.com/sr.php?eventid=$eventId");
+        if ($response->ok()) {
+            $data = $response->json();
+            dd($data); // Ensure $data is not null
         } else {
-            dd($response);
-            return response()->json([
-                'error' => 'API request failed',
-                'status' => $response->status(),
-                'details' => $response->body()
-            ], $response->status());
+            dd('API Error:', $response->status(), $response);
         }
-    }
 
+    }
 }

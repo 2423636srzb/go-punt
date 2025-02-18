@@ -30,11 +30,7 @@ class SportsService
             dd("success");
             return response()->json($response->json());
         } else {
-            dd( response()->json([
-                'error' => 'API request failed',
-                'status' => $response->status(),
-                'details' => $response->body()
-            ], $response->status()));
+            dd($response);
             return response()->json([
                 'error' => 'API request failed',
                 'status' => $response->status(),

@@ -99,11 +99,28 @@ hr {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
+@keyframes pulseGlow {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+    }
+}
 .btn-live{
 padding: 5px 20px;
 margin-bottom: 10px;
 margin-top: -10px;
+background-color: #ff002b;
+
+transition: all 0.3s ease-in-out;
+animation: pulseGlow 1.5s infinite;
 }
 .circular-button .button-image {
   margin-top: 5px;
@@ -211,7 +228,7 @@ margin-top: -10px;
   justify-content: center;
   width: 180px;
   height: 110px;
-  color: rgb(72, 93, 213);
+  color: rgb(89, 116, 206);
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;

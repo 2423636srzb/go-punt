@@ -80,6 +80,7 @@ hr {
 }
 
 .live-button-container {
+    margin-top: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -765,7 +766,20 @@ window.onclick = function(event) {
         @foreach ($liveCricket as $cricket)
 
         <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px;">
-                  <div class="live-button-container">
+
+          <a href="" class="text-xl text-black mb-2 w-full block text-center" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
+          <hr class="mb-1">
+          <div class="match-container">
+
+            {{-- <iframe src="{{ url('https://live.oldd247.com/sr.php?eventid=' . $cricket['MatchID']) }}" frameborder="1"></iframe> --}}
+            <iframe
+            src="https://live.oldd247.com/sr.php?eventid={{$cricket['MatchID']}}"
+            width="255"
+            height="200"
+            style="border: 1px solid #ccc;"
+            allowfullscreen>
+        </iframe>
+        <div class="live-button-container">
             <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
               onclick="checkLogin(event)">
                 {{-- <button class="circular-button">
@@ -784,18 +798,6 @@ window.onclick = function(event) {
                 @endif
             }
         </script>
-          <a href="" class="text-xl text-black mb-2 w-full block text-start" style="font-size: 15px; line-height: 20px;">{{$cricket['Name']}}</a>
-          <hr class="mb-1">
-          <div class="match-container">
-
-            {{-- <iframe src="{{ url('https://live.oldd247.com/sr.php?eventid=' . $cricket['MatchID']) }}" frameborder="1"></iframe> --}}
-            <iframe
-            src="https://live.oldd247.com/sr.php?eventid={{$cricket['MatchID']}}"
-            width="255"
-            height="200"
-            style="border: 1px solid #ccc;"
-            allowfullscreen>
-        </iframe>
             {{-- <!-- Pakistan Team Info -->
             <div class="team-container">
               <div class="team">

@@ -532,7 +532,7 @@ window.onclick = function(event) {
             <a href="" class="text-xl text-black mb-2 w-full block text-center">Pak VS Ind</a>
             <hr class="mb-1">
             <iframe
-            src="https://live.oldd247.com/sr.php?eventid={{$cricket['MatchID']}}"
+            src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
             width="255"
             height="200"
             style="border: 1px solid #ccc;"

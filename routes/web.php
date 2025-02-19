@@ -44,8 +44,8 @@ Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('
 Route::post('/approvePassword', [UsersController::class, 'approvePassword'])->name('approve.password');
 
 Route::get('/match/live/{eventId}/{sportId}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');
-Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
-Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
+// Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
+// Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');
 Route::post('/login', [HomeController::class, 'login'])->name('login');
 
@@ -91,6 +91,8 @@ Route::delete('/admin/bank-accounts/delete/{id}', [BankAccountController::class,
 
 /* Payment Request */
 
+Route::get('/live/matches', [UsersController::class, 'liveMatches'])->middleware('auth')->name('live.matches');
+Route::get('/live/stream/{eventId}/{sportId}/{channelId}', [UsersController::class, 'liveStream'])->middleware('auth')->name('live.stream');
 Route::get('/payment/request', [UsersController::class, 'paymentRequest'])->middleware('auth')->name('users.payment_request');
 Route::get('/password/request', [UsersController::class, 'passwordRequestList'])->middleware('auth')->name('admin.user_password_request');
 Route::get('/requestPayment', [PaymentController::class, 'requestPayment'])->middleware('auth')->name('admin.payment_request');

@@ -22,14 +22,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use App\Services\SportsService;
 
 class UsersController extends Controller
 {
     protected $analytics;
+    protected $sportsService;
 
-    public function __construct(GoogleAnalyticsService $analytics)
+    public function __construct(GoogleAnalyticsService $analytics,SportsService $sportsService )
     {
         $this->analytics = $analytics;
+        $this->sportsService = $sportsService;
     }
 
     public function dashboard()
@@ -505,7 +508,42 @@ public function approvePassword(Request $request)
         // Return the view with filtered data
         return view('users/invoiceList', compact('accounts', 'transactions','user','withdawals'));
     }
+    public function liveMatches(){
+        $sportsData = $this->sportsService->getAllSportsData();
 
+    $liveFootball = [];
+    $liveCricket = [];
+    $liveTennis = [];
+    $matchKey = []; // Store MatchIDs to check for duplicates
+
+    // Filter unique matches based on type, IsLive, NowPlaying
+    foreach ($sportsData as $match) {
+        if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
+            $matchID = $match['MatchID'] ?? $match['id']; // Get MatchID or id
+
+            if (!in_array($matchID, $matchKey)) { // Check if MatchID exists
+                $matchKey[] = $matchID; // Store MatchID to prevent duplicates
+
+                switch ($match['Type']) {
+                    case 'FOOTBALL':
+                        $liveFootball[] = $match;
+                        break;
+                    case 'CRICKET':
+                        $liveCricket[] = $match;
+                        break;
+                    case 'TENNIS':
+                        $liveTennis[] = $match;
+                        break;
+                }
+            }
+        }
+    }
+        return view('users.live_matches',compact('liveFootball', 'liveCricket', 'liveTennis'));
+    }
+
+    public function liveStream($eventId,$sportId,$channelId){
+        return view('users.live_stream',compact('eventId','sportId','channelId'));
+    }
     public function exportUserGames($userId)
     {
         return Excel::download(new UserGamesExport($userId), 'user_games.xlsx');

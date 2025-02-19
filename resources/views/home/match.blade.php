@@ -291,249 +291,258 @@ hr {
             </div>
         </div>
     </div>
-    <!-- Header -->
     <header id="header_main" class="header">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="header__body d-flex justify-content-between">
-              <div class="header__left">
-                <?php $setting = DB::table('settings')->first(); ?>
-                <div class="logo">
-                  <a class="light" href="index.html">
-                    <img
-                      id="site-logo"
-                      src="{{ asset($setting->logo) }}"
-                      alt=""
-                      width="118"
-                      height="32"
-                      data-retina="assets/images/logo/logo@2x.png"
-                      data-width="118"
-                      data-height="32"
-                    />
-                  </a>
-                  <a class="dark" href="index.html">
-                    <img
-                      src="{{asset('assets/images/BD/All-Panel-Pro-Light-Logo.png')}}"
-                      alt=""
-                      width="118"
-                      height="32"
-                      data-retina="assets/images/logo/logo-dark@2x.png"
-                      data-width="118"
-                      data-height="32"
-                    />
-                  </a>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="header__body d-flex justify-content-between">
+                <div class="header__left">
+                  <?php $setting = DB::table('settings')->first(); ?>
+                  <div class="logo">
+                    <a class="light" href="{{url('/')}}">
+                      <img
+                        id="site-logo"
+                        src="{{ asset($setting->logo) }}"
+                        alt=""
+                        width="118"
+                        height="32"
+                        data-retina="assets/images/logo/logo@2x.png"
+                        data-width="118"
+                        data-height="32"
+                      />
+                    </a>
+                    <a class="dark" href="{{url('/')}}">
+                      <img
+                        src="{{ asset($setting->logo) }}"
+                        alt=""
+                        width="118"
+                        height="32"
+                        data-retina="assets/images/logo/logo-dark@2x.png"
+                        data-width="118"
+                        data-height="32"
+                      />
+                    </a>
+                  </div>
+                  <div class="left__main">
+                    <nav id="main-nav" class="main-nav">
+                      <ul id="menu-primary-menu" class="menu">
+                          <li class="menu-item">
+                              <a href="#" onclick="refreshPage()">Home</a>
+                          </li>
+                          <li class="menu-item">
+                              <a href="#about">About</a>
+                          </li>
+                          <!-- <li class="menu-item">
+                              <a href="#games">Games</a>
+                          </li> -->
+                          <li class="menu-item">
+                              <a href="#markets">Markets</a>
+                          </li>
+                          <li class="menu-item">
+                              <a href="#live">Live</a>
+                          </li>
+                      </ul>
+                    </nav>
+                    <!-- /#main-nav -->
+                  </div>
                 </div>
-                <div class="left__main">
-                  <nav id="main-nav" class="main-nav">
-                    <ul id="menu-primary-menu" class="menu">
-                      <li class="menu-item">
-                        <a href="markets.html">Home</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">About</a>
-                      </li>
-                      <!-- <li class="menu-item">
-                        <a href="markets.html">Games</a>
-                      </li> -->
-                      <li class="menu-item">
-                        <a href="markets.html">Markets</a>
-                      </li>
-                      <li class="menu-item">
-                        <a href="markets.html">Live</a>
-                      </li>
-                    </ul>
-                  </nav>
-                  <!-- /#main-nav -->
-                </div>
+
+                <div class="header__right">
+
+                  {{-- <div class="mode-switcher">
+                    <a class="sun" href="#" onclick="switchTheme()">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M7.99993 11.182C9.7572 11.182 11.1818 9.75745 11.1818 8.00018C11.1818 6.24291 9.7572 4.81836 7.99993 4.81836C6.24266 4.81836 4.81812 6.24291 4.81812 8.00018C4.81812 9.75745 6.24266 11.182 7.99993 11.182Z"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M8 1V2.27273"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M8 13.7271V14.9998"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M3.04956 3.04932L3.9532 3.95295"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M12.0469 12.0469L12.9505 12.9505"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M1 8H2.27273"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M13.7273 8H15"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M3.04956 12.9505L3.9532 12.0469"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M12.0469 3.95295L12.9505 3.04932"
+                          stroke="#23262F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </a>
+                    <a href="#" class="moon" onclick="switchTheme()">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.0089 8.97241C12.7855 9.64616 12.4491 10.2807 12.0107 10.8477C11.277 11.7966 10.2883 12.5169 9.1602 12.9244C8.03209 13.3319 6.81126 13.4097 5.64056 13.1486C4.46987 12.8876 3.39772 12.2986 2.54959 11.4504C1.70145 10.6023 1.1124 9.53013 0.851363 8.35944C0.590325 7.18874 0.668097 5.96791 1.07558 4.8398C1.48306 3.71169 2.2034 2.72296 3.1523 1.9893C3.71928 1.55094 4.35384 1.21447 5.02759 0.991088C4.69163 1.84583 4.54862 2.77147 4.61793 3.7009C4.72758 5.17128 5.36134 6.55346 6.40394 7.59606C7.44654 8.63866 8.82873 9.27242 10.2991 9.38207C11.2285 9.45138 12.1542 9.30837 13.0089 8.97241Z"
+                          stroke="white"
+                          stroke-width="1.4"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </a>
+                  </div> --}}
+                  <div id="user-profile" class="hidden flex items-center space-x-4" style="cursor: pointer;"
+                  onclick="toggleDropdown()">
+                  @php
+  $image = asset('assets/images/users/avatar-large-square.jpg');
+  if (Auth::check() && Auth::user()->profile_image) {
+      $image = url(Auth::user()->profile_image);
+  }
+  @endphp
+
+  <img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full mx-4" id="user-logo">
+                  <span id="user-name" class="text-gray-700"></span>
+                  <div class="relative">
+                      <button class="text-gray-700">
+                          <i class="fas fa-caret-down"></i>
+                      </button>
+                      <div id="user-dropdown" class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md hidden">
+                          <a href="{{ route('users.user_profile') }}" class="block px-4 py-2 text-gray-700">Profile</a>
+                          <button onclick="logout()"
+                              class="block w-full text-left px-4 py-2 text-gray-700">Logout</button>
+                      </div>
+                  </div>
               </div>
 
-              <div class="header__right">
+              <div id="guest-buttons"
+              @guest class="flex flex-row justify-center space-x-2 w-full"
+              @else class="hidden"
+              @endguest>
 
-                {{-- <div class="mode-switcher">
-                  <a class="sun" href="#" onclick="switchTheme()">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7.99993 11.182C9.7572 11.182 11.1818 9.75745 11.1818 8.00018C11.1818 6.24291 9.7572 4.81836 7.99993 4.81836C6.24266 4.81836 4.81812 6.24291 4.81812 8.00018C4.81812 9.75745 6.24266 11.182 7.99993 11.182Z"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M8 1V2.27273"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M8 13.7271V14.9998"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M3.04956 3.04932L3.9532 3.95295"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M12.0469 12.0469L12.9505 12.9505"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M1 8H2.27273"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M13.7273 8H15"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M3.04956 12.9505L3.9532 12.0469"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M12.0469 3.95295L12.9505 3.04932"
-                        stroke="#23262F"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </a>
-                  <a href="#" class="moon" onclick="switchTheme()">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M13.0089 8.97241C12.7855 9.64616 12.4491 10.2807 12.0107 10.8477C11.277 11.7966 10.2883 12.5169 9.1602 12.9244C8.03209 13.3319 6.81126 13.4097 5.64056 13.1486C4.46987 12.8876 3.39772 12.2986 2.54959 11.4504C1.70145 10.6023 1.1124 9.53013 0.851363 8.35944C0.590325 7.18874 0.668097 5.96791 1.07558 4.8398C1.48306 3.71169 2.2034 2.72296 3.1523 1.9893C3.71928 1.55094 4.35384 1.21447 5.02759 0.991088C4.69163 1.84583 4.54862 2.77147 4.61793 3.7009C4.72758 5.17128 5.36134 6.55346 6.40394 7.59606C7.44654 8.63866 8.82873 9.27242 10.2991 9.38207C11.2285 9.45138 12.1542 9.30837 13.0089 8.97241Z"
-                        stroke="white"
-                        stroke-width="1.4"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </a>
-                </div> --}}
-                <div id="user-profile" class="hidden flex items-center space-x-4" style="cursor: pointer;"
-                onclick="toggleDropdown()">
-                @php
-                $image = asset('assets/images/users/avatar-large-square.jpg');
-                if (Auth::check() && Auth::user()->profile_image) {
-                    $image = url(Auth::user()->profile_image);
-                }
-                @endphp
+              <div class="wallet">
+                  <a href="{{ route('signUp.view') }}"
+                     class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignUp</a>
+              </div>
 
-                <img src="{{ $image }}" alt="User Logo" width="40" class="rounded-full" id="user-logo">
-                <span id="user-name" class="text-gray-700"></span>
-                <div class="relative">
-                    <button class="text-gray-700">
-                        <i class="fas fa-caret-down"></i>
-                    </button>
-                    <div id="user-dropdown" class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md hidden">
-                        <a href="{{ route('users.user_profile') }}" class="block px-4 py-2 text-gray-700">Profile</a>
-                        <button onclick="logout()"
-                            class="block w-full text-left px-4 py-2 text-gray-700">Logout</button>
-                    </div>
-                </div>
-            </div>
+              <div class="wallet">
+                  <a href="{{ route('login.view') }}"
+                     class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignIn</a>
+              </div>
 
-<!-- SignIn and SignUp buttons (Visible only if the user is not logged in) -->
-<div id="guest-buttons" @guest class="md:flex" @else class="hidden" @endguest>
-<div class="wallet">
-    <a href="{{ route('signUp.view') }}">SignUp</a>
-</div>
-<div class="wallet">
-    <a href="{{ route('login.view') }}">SignIn</a>
-</div>
-</div>
+          </div>
 
-<script>
 
+
+
+
+
+  <script>
+
+    // Function to toggle the dropdown visibility
+  function toggleDropdown() {
+      var dropdown = document.getElementById('user-dropdown');
+      dropdown.classList.toggle('hidden'); // Toggle the 'hidden' class to show/hide the dropdown
+  }
+
+  // Optional: Close the dropdown if user clicks anywhere outside the dropdown
+  window.onclick = function(event) {
+      var dropdown = document.getElementById('user-dropdown');
+      var userProfile = document.getElementById('user-profile');
+
+      if (!userProfile.contains(event.target)) {
+          dropdown.classList.add('hidden'); // Close dropdown if click is outside the profile
+      }
+  }
+
+
+
+  </script>
+
+
+  <script>
   // Function to toggle the dropdown visibility
-function toggleDropdown() {
-    var dropdown = document.getElementById('user-dropdown');
-    dropdown.classList.toggle('hidden'); // Toggle the 'hidden' class to show/hide the dropdown
-}
+  function toggleDropdown() {
+     var dropdown = document.getElementById('user-dropdown');
+     dropdown.classList.toggle('hidden'); // Toggle the 'hidden' class to show/hide the dropdown
+  }
 
-// Optional: Close the dropdown if user clicks anywhere outside the dropdown
-window.onclick = function(event) {
-    var dropdown = document.getElementById('user-dropdown');
-    var userProfile = document.getElementById('user-profile');
+  // Optional: Close the dropdown if user clicks anywhere outside the dropdown
+  window.onclick = function(event) {
+     var dropdown = document.getElementById('user-dropdown');
+     var userProfile = document.getElementById('user-profile');
 
-    if (!userProfile.contains(event.target)) {
-        dropdown.classList.add('hidden'); // Close dropdown if click is outside the profile
-    }
-}
+     if (!userProfile.contains(event.target)) {
+         dropdown.classList.add('hidden'); // Close dropdown if click is outside the profile
+     }
+  }
+  </script>
 
-
-
-</script>
-
-
-<script>
-// Function to toggle the dropdown visibility
-function toggleDropdown() {
-   var dropdown = document.getElementById('user-dropdown');
-   dropdown.classList.toggle('hidden'); // Toggle the 'hidden' class to show/hide the dropdown
-}
-
-// Optional: Close the dropdown if user clicks anywhere outside the dropdown
-window.onclick = function(event) {
-   var dropdown = document.getElementById('user-dropdown');
-   var userProfile = document.getElementById('user-profile');
-
-   if (!userProfile.contains(event.target)) {
-       dropdown.classList.add('hidden'); // Close dropdown if click is outside the profile
-   }
-}
-</script>
-
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
-    <!-- end Header -->
+  </header>
 
-@if ($sportId == 4)
     <div class="container" style="margin-bottom: 50px;">
       <div class="flex gap-10">
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px; background-color:#081c31;">
+          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px; background-color:#0c243d;">
 
-           <iframe
-    src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
-    style="width: 100%; height: 100%; border: 1px solid #ccc;"
-    allowfullscreen>
-</iframe>
+        <iframe
+            src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
+            style="width: 100%; height: 100%; border: 1px solid #ccc;"
+            allowfullscreen>
+        </iframe>
             {{-- <div class="match-container">
               <!-- Pakistan Team Info -->
               <div class="team-container">
@@ -589,99 +598,7 @@ window.onclick = function(event) {
         </div>
       </div>
   </div>
-  @endif
-@if ($sportId == 2)
-  <div class="container" style="margin-bottom: 50px;">
-    <div class="flex gap-10">
-        <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
 
-          <a href="" class="text-xl text-black mb-2 w-full block text-center">Germany  VS  England</a>
-          <hr class="mb-1">
-          <div class="match-container">
-            <!-- Pakistan Team Info -->
-            <div class="team-container">
-              <div class="team">
-                <p class="batting">Ger<span style="color: #ff002b">*</span></p>
-              </div>
-              <div class="stats">
-                <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
-              </div>
-            </div>
-
-            <div class="team-container">
-              <div class="team">
-                <p>Eng</p>
-              </div>
-              <div class="stats">
-                <p><span>38-2</span> <span class="overs">(7.2)</span></p>
-              </div>
-            </div>
-
-            <hr class="my-3.5" />
-            <p style="font-size: 17px; font-weight: 700; color:#0056b3; margin: 20px; margin-left: 100px;">Ger needs 4 Goals in 30 minutes</p>
-          </div>
-        </div>
-        <!-- Right Side: Video Player (Live Stream) -->
-      <div class="tv-container">
-        <h2 class="tv-title">Live TV Streaming</h2>
-        <div class="tv-frame">
-            <iframe
-                src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-    </div>
-</div>
-
-@endif
-@if ($sportId == 1)
-<div class="container" style="margin-bottom: 50px;">
-  <div class="flex gap-10">
-
-      <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 200px; width: 350px; min-width: 350px; border-radius: 15px;">
-        <a href="" class="text-xl text-black mb-2 w-full block text-center">Barcelona VS Spain</a>
-        <hr class="mb-1">
-        <div class="match-container">
-          <!-- Pakistan Team Info -->
-          <div class="team-container">
-            <div class="team">
-              <p class="batting">Barcelona<span style="color: #ff002b">*</span></p>
-            </div>
-            <div class="stats">
-              <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
-            </div>
-          </div>
-
-          <div class="team-container">
-            <div class="team">
-              <p>Spain</p>
-            </div>
-            <div class="stats">
-              <p><span>38-2</span> <span class="overs">(7.2)</span></p>
-            </div>
-          </div>
-          <hr class="my-2.5" />
-          <p style="font-size: 18px; font-weight: 700; color:#0056b3; margin: 20px; margin-left: 50px;">Pak needs 45 runs in 18 balls</p>
-        </div>
-      </div>
-      <!-- Right Side: Video Player (Live Stream) -->
-      <div class="tv-container">
-        <h2 class="tv-title">Live TV Streaming</h2>
-        <div class="tv-frame">
-            <iframe
-                src="https://live.oldd247.com/betfairtv/?cid={{$channelId}}"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
-  </div>
-</div>
-@endif
 <footer class="footer style-2">
       <div class="container">
         <div class="footer__main">

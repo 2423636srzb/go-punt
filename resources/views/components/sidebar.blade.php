@@ -25,7 +25,12 @@
                     <span>Payment Request</span>
                 </a>
             </li>
-
+            <li>
+                <a href="{{route('live.matches')}}">
+                    <iconify-icon icon="hugeicons:money-send-square" class="menu-icon"></iconify-icon>
+                    <span>Live Matches</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('users.user_profile') }}">
                     <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>

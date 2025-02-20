@@ -26,8 +26,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('live.matches')}}">
-                    <iconify-icon icon="hugeicons:money-send-square" class="menu-icon"></iconify-icon>
+                <a href="{{ route('live.matches') }}">
+                    <iconify-icon icon="mdi:trophy-outline" class="menu-icon"></iconify-icon>
                     <span>Live Matches</span>
                 </a>
             </li>
@@ -40,8 +40,8 @@
         </ul>
     </div>
 
-    <!-- Floating Live Stream Button -->
+    {{-- <!-- Floating Live Stream Button -->
     <a href="{{route('home')}}" class="live-stream-btn">
         Live Stream
-    </a>
+    </a> --}}
 </aside>

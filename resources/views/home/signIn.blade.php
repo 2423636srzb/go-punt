@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $websiteSettings->name }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{asset('assets/images/BD/All-Panel-Pro-Logo-Favicon.png')}}" sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
     <!-- BootStrap css -->
@@ -121,29 +121,29 @@
         <div id="otp-verification-popup" style="display: none; width: 300px; padding: 30px 15px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
             <!-- Close Button -->
             <button id="close-popup" style="position: absolute; top: -15px; right: 0px; background: none; border: none; font-size: 30px; font-weight: bold; cursor: pointer; color: #333;">&times;</button>
-            
+
             <!-- Title -->
             <h6 style="font-size: 14px; margin-bottom: 10px; text-align: center;">OTP Verification</h6>
-            
+
             <!-- OTP Info in One Line -->
             <p style="font-size: 14px; margin-bottom: 15px; text-align: center;">
                 An OTP has been sent to your email<span class="fw-bolder" id="masked-phone-number"></span>. Enter it below to continue.
             </p>
-            
+
             <!-- Form -->
             <form id="otp-form" style="text-align: center;">
                 @csrf
                 <input type="text" name="otp" class="form-control" placeholder="Enter OTP" style="font-size: 14px; padding: 5px; height: 30px; margin-bottom: 10px; width: 100%;">
                 <button type="submit" class="btn btn-primary" style="font-size: 14px; padding: 5px 10px; height: 35px;">Verify OTP</button>
             </form>
-            
+
             <!-- Error Message -->
             <p class="text-danger" id="otp-error" style="display: none; font-size: 12px; margin-top: 10px;"></p>
         </div>
-        
-        
-        
-        
+
+
+
+
 
     </section>
     <div id="toast"
@@ -259,7 +259,7 @@ $('#otp-form').on('submit', function (e) {
 
 
 
-    
+
                 // success: function (response) {
                 //     if (response.status === 'success') {
                 //         // Display success toast message

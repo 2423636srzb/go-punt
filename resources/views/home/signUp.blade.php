@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $websiteSettings->name }}</title>
-    <link rel="icon" type="image/png" href="assets/images/favicon.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{asset('assets/images/BD/All-Panel-Pro-Logo-Favicon.png')}}" sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
     <!-- BootStrap css -->
@@ -101,7 +101,7 @@
                         <span class="mt-12 text-sm text-secondary-light">Your password must have at least 8
                             characters</span>
                     </div>
-                    <!-- 
+                    <!--
                     <div class="">
                         <div class="d-flex justify-content-between gap-2">
                             <div class="form-check style-check d-flex align-items-start">

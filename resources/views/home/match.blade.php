@@ -234,7 +234,7 @@ hr {
     font-size: 24px;
     font-weight: bold;
     color: #050505;
-    text-align: center;
+    text-align: start;
     margin-bottom: 10px;
     /* background: #007bff; */
     padding: 10px;
@@ -249,7 +249,6 @@ hr {
     max-width: 900px; /* Increase for desktops */
     aspect-ratio: 16 / 9; /* Maintain proportion */
     background: #222;
-    border-radius: 20px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
     padding: 10px;
     border: 8px solid #444;
@@ -273,7 +272,7 @@ hr {
 }
 
 .services-box {
-  margin-top: 90px !important;
+  margin-top: 55px !important;
   width: 100% !important;
 }
 </style>
@@ -536,54 +535,19 @@ hr {
 
     <div class="container" style="margin-bottom: 50px;">
       <div class="flex gap-10">
-          <div class="services-box border p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; height: 315px; width: 350px; min-width: 350px; border-radius: 15px; background-color:#0c243d;">
+          <div>
+            <h2>{{$name}}</h2>
+        <div class="services-box "
+            style="box-shadow: rgba(95, 95, 95, 0.2) 0px 4px 15px 0px; height: 380px; width: 400px; min-width: 350px; background-color:#ffffff; margin: 0 auto;">
 
-        <iframe
-            src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
-            style="width: 100%; height: 100%; border: 1px solid #ccc;"
-            allowfullscreen>
-        </iframe>
-            {{-- <div class="match-container">
-              <!-- Pakistan Team Info -->
-              <div class="team-container">
-                <div class="team">
-                  <p class="batting">Pak <span style="color: #ff002b">*</span></p>
-                </div>
-                <div class="stats">
-                  <p><span class="batting">45-3</span> <span class="overs">(7.3)</span></p>
-                </div>
-              </div>
+            <iframe
+                src="https://live.oldd247.com/sr.php?eventid={{$eventId}}"
+                style="width: 100%; height: 90%; border: 1px solid #ccc;"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
 
-              <div class="team-container">
-                <div class="team"></div>
-                <div class="stats">
-                  <p class="-mt-2"><span class="overs">CRR (7.2)</span></p>
-                </div>
-              </div>
-              <div class="team-container">
-                <div class="team">
-                  <p>Ind</p>
-                </div>
-                <div class="stats">
-                  <p><span>38-2</span> <span class="overs">(7.2)</span></p>
-                </div>
-              </div>
-              <hr class="mt-1">
-              <div class="team mt-1">
-                <p class="batting">last 6 ball</p>
-              </div>
-              <div class="balls-container">
-                <div class="ball">1</div>
-                <div class="ball">0</div>
-                <div class="ball">4</div>
-                <div class="ball">6</div>
-                <div class="ball">1</div>
-                <div class="ball">0</div>
-              </div>
-              <hr class="my-2.5" />
-              <p style="font-size: 17px; font-weight: 700; color:#0056b3; margin: 20px auto; margin-left: 100px;">Pak needs 45 runs in 18 balls</p>
-            </div> --}}
-          </div>
           <!-- Right Side: Video Player (Live Stream) -->
           <div class="tv-container">
             <h2 class="tv-title">Live TV Streaming</h2>

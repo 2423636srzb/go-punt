@@ -43,7 +43,7 @@ Route::get('/signupPage', [HomeController::class, 'signupPage'])->name('signUp.v
 Route::get('/forgotPassword', [HomeController::class, 'forgotPassword'])->name('forgotpassword.view');
 Route::post('/approvePassword', [UsersController::class, 'approvePassword'])->name('approve.password');
 
-Route::get('/match/live/{eventId}/{sportId}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');
+Route::get('/match/live/{eventId}/{name}/{channelId}', [MatchController::class, 'cricketLive'])->name('match.live');
 // Route::get('/tennis/live', [MatchController::class, 'tennisLive'])->name('tennis.live');
 // Route::get('/football/live', [MatchController::class, 'footballLive'])->name('football.live');
 Route::post('/signup', [HomeController::class, 'store'])->name('signup.store');

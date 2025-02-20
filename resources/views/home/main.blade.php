@@ -777,26 +777,33 @@
         <!-- Cricket Container (default) -->
         <div class="container-cricket active mt-4">
             <div class="services__main d-flex flex-wrap justify-content-start" id="cricket-container">
-                @foreach ($liveCricket as $index => $cricket)
-                    <div class="services-box border p-3 cricket-item"
-                        style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; display: {{ $index < 4 ? 'block' : 'none' }};">
-                        <a href="" class=" text-black mb-2 w-full block text-center"
-                            style="font-size: 12px; line-height: 20px;">{{ $cricket['Name'] }}</a>
-                        <hr class="mb-1">
-                        <div class="match-container">
-                            <iframe src="https://live.oldd247.com/sr.php?eventid={{ $cricket['MatchID'] }}"
-                                width="250" height="200" style="border: 1px solid #ccc;"
-                                allowfullscreen></iframe>
-                            <div class="live-button-container">
-                                <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'sportId' => 4, 'channelId' => $cricket['Channel']]) : '#' }}"
-                                    onclick="checkLogin(event)">
-                                    <button type="submit" class="btn-action btn-live">Live Match</button>
-                                </a>
+                @if(count($liveCricket) > 0)
+                    @foreach ($liveCricket as $index => $cricket)
+                        <div class="services-box border p-3 cricket-item"
+                            style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; display: {{ $index < 4 ? 'block' : 'none' }};">
+                            <a href="" class=" text-black mb-2 w-full block text-center"
+                                style="font-size: 12px; line-height: 20px;">{{ $cricket['Name'] }}</a>
+                            <hr class="mb-1">
+                            <div class="match-container">
+                                <iframe src="https://live.oldd247.com/sr.php?eventid={{ $cricket['MatchID'] }}"
+                                    width="250" height="200" style="border: 1px solid #ccc;"
+                                    allowfullscreen></iframe>
+                                <div class="live-button-container">
+                                    <a href="{{ Auth::check() ? route('match.live', ['eventId' => $cricket['MatchID'], 'name' => $cricket['Name'], 'channelId' => $cricket['Channel']]) : '#' }}"
+                                        onclick="checkLogin(event)">
+                                        <button type="submit" class="btn-action btn-live">Live Match</button>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="w-100 text-center">
+                        <p class="text-black">No match is live</p>
                     </div>
-                @endforeach
+                @endif
             </div>
+
 
             @if (count($liveCricket) > 4)
                 <div class="text-center mt-3">
@@ -808,6 +815,7 @@
         <!-- Tennis Container -->
         <div class="container-tennis mt-4">
             <div class="services__main d-flex flex-wrap justify-content-start" id="tennis-container">
+                @if(count($liveTennis) > 0)
                 @foreach ($liveTennis as $index => $tennis)
                     <div class="services-box border p-3 tennis-item"
                         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; display: {{ $index < 4 ? 'block' : 'none' }};">
@@ -819,7 +827,7 @@
                                 width="250" height="200" style="border: 1px solid #ccc;"
                                 allowfullscreen></iframe>
                             <div class="live-button-container">
-                                <a href="{{ Auth::check() ? route('match.live', ['eventId' => $tennis['MatchID'], 'sportId' => 2, 'channelId' => $tennis['Channel']]) : '#' }}"
+                                <a href="{{ Auth::check() ? route('match.live', ['eventId' => $tennis['MatchID'], 'name' => $tennis['Name'], 'channelId' => $tennis['Channel']]) : '#' }}"
                                     onclick="checkLogin(event)">
                                     <button type="submit" class="btn-action btn-live">Live Match</button>
                                 </a>
@@ -827,6 +835,11 @@
                         </div>
                     </div>
                 @endforeach
+                @else
+                    <div class="w-100 text-center">
+                        <p class="text-black">No match is live</p>
+                    </div>
+                @endif
             </div>
 
             @if (count($liveTennis) > 4)
@@ -839,6 +852,7 @@
         <!-- Football Container -->
         <div class="container-football mt-4">
             <div class="services__main d-flex flex-wrap justify-content-start" id="football-container">
+                @if(count($liveFootball) > 0)
                 @foreach ($liveFootball as $index => $football)
                     <div class="services-box border p-3 football-item"
                         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 4px 15px 0px; display: {{ $index < 4 ? 'block' : 'none' }};">
@@ -850,7 +864,7 @@
                                 width="250" height="200" style="border: 1px solid #ccc;"
                                 allowfullscreen></iframe>
                             <div class="live-button-container">
-                                <a href="{{ Auth::check() ? route('match.live', ['eventId' => $football['MatchID'], 'sportId' => 1, 'channelId' => $football['Channel']]) : '#' }}"
+                                <a href="{{ Auth::check() ? route('match.live', ['eventId' => $football['MatchID'], 'name' => $football['Name'], 'channelId' => $football['Channel']]) : '#' }}"
                                     onclick="checkLogin(event)">
                                     <button type="submit" class="btn-action btn-live">Live Match</button>
                                 </a>
@@ -858,6 +872,11 @@
                         </div>
                     </div>
                 @endforeach
+                @else
+                <div class="w-100 text-center">
+                    <p class="text-black">No match is live</p>
+                </div>
+            @endif
             </div>
 
             @if (count($liveFootball) > 4)

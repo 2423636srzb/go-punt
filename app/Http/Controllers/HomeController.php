@@ -29,41 +29,50 @@ class HomeController extends Controller
     }
 
     public function index()
-{
-    $sportsData = $this->sportsService->getAllSportsData();
+    {
+        $sportsData = $this->sportsService->getAllSportsData();
 
-    $liveFootball = [];
-    $liveCricket = [];
-    $liveTennis = [];
-    $matchKey = []; // Store MatchIDs to check for duplicates
+        $liveFootball = [];
+        $liveCricket = [];
+        $liveTennis  = [];
+        $matchKey    = []; // Store MatchIDs to check for duplicates
 
-    // Filter unique matches based on type, IsLive, NowPlaying
-    foreach ($sportsData as $match) {
-        if ($match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
-            $matchID = $match['MatchID'] ?? $match['id']; // Get MatchID or id
+        // Only loop if $sportsData is a non-empty array.
+        if (is_array($sportsData) && count($sportsData) > 0) {
+            foreach ($sportsData as $match) {
+                // Ensure required keys exist and check if the match is live and now playing
+                if (isset($match['IsLive'], $match['NowPlaying']) && $match['IsLive'] == 1 && $match['NowPlaying'] == 1) {
+                    $matchID = $match['MatchID'] ?? $match['id'] ?? null;
 
-            if (!in_array($matchID, $matchKey)) { // Check if MatchID exists
-                $matchKey[] = $matchID; // Store MatchID to prevent duplicates
+                    // Proceed only if matchID is valid and hasn't been processed before.
+                    if ($matchID && !in_array($matchID, $matchKey)) {
+                        $matchKey[] = $matchID;
 
-                switch ($match['Type']) {
-                    case 'FOOTBALL':
-                        $liveFootball[] = $match;
-                        break;
-                    case 'CRICKET':
-                        $liveCricket[] = $match;
-                        break;
-                    case 'TENNIS':
-                        $liveTennis[] = $match;
-                        break;
+                        switch ($match['Type'] ?? null) {
+                            case 'FOOTBALL':
+                                $liveFootball[] = $match;
+                                break;
+                            case 'CRICKET':
+                                $liveCricket[] = $match;
+                                break;
+                            case 'TENNIS':
+                                $liveTennis[] = $match;
+                                break;
+                        }
+                    }
                 }
             }
         }
-    }
-//   dd($liveCricket,$liveFootball,$liveTennis);
-    $games = Game::where('status', 'active')->get();
+        // else {
+        //     // Log warning if needed.
+        //     \Log::warning('Sports API returned empty or invalid data.');
+        // }
 
-    return view('home/main', compact('games', 'liveFootball', 'liveCricket', 'liveTennis'));
-}
+        $games = Game::where('status', 'active')->get();
+
+        return view('home/main', compact('games', 'liveFootball', 'liveCricket', 'liveTennis'));
+    }
+
 
     public function score(){
 

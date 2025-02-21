@@ -317,7 +317,7 @@ $script = '
                                         </div>
                                     </div>
                                                                 <!-- Container for IFSC details -->
-                                    <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
+                                    <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;overflow-x:auto;">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -381,7 +381,7 @@ $script = '
                         <br />
                         <div class="row">
                             <!-- Bank Transfer Table -->
-                            <div class="col-12">
+                            <div class="col-12" style="overflow-x:auto">
                                 <h6 class="text-xl mb-16 mt-16">Bank</h6>
                                 <table class="table bordered-table mb-0">
                                     <thead>
@@ -417,7 +417,7 @@ $script = '
                             </div>
 
                             <!-- UPI Table -->
-                            <div class="col-12">
+                            <div class="col-12" style="overflow-x:auto">
                                 <h6 class="text-xl mb-16 mt-16">UPI</h6>
                                 <table class="table bordered-table mb-0">
                                     <thead>
@@ -450,7 +450,7 @@ $script = '
                             </div>
 
                             <!-- Crypto Table -->
-                            <div class="col-12">
+                            <div class="col-12" style="overflow-x:auto">
                                 <h6 class="text-xl mb-16 mt-16">Crypto</h6>
                                 <table class="table bordered-table mb-0">
                                     <thead>

@@ -140,7 +140,7 @@
                                 <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
                                     aria-controls="pills-to-do-list" aria-selected="true">
-                                    Our Gamming Panel
+                                    Our Gaming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{ $userAccountsCount }}</span>
                                 </button>
@@ -149,7 +149,7 @@
                                 <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
                                     aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                                    Upcoming Gamming Panel
+                                    Upcoming Gaming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">0</span>
                                 </button>

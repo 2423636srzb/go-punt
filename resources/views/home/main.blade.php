@@ -513,9 +513,9 @@
                                         <li class="menu-item">
                                             <a href="#" onclick="refreshPage()">Home</a>
                                         </li>
-                                        <li class="menu-item">
+                                        {{-- <li class="menu-item">
                                             <a href="#about">About</a>
-                                        </li>
+                                        </li> --}}
                                         <!-- <li class="menu-item">
                             <a href="#games">Games</a>
                         </li> -->

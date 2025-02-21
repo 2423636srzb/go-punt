@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class BankAccountController extends Controller
 {
+
+    public function bankAccount() {
+        return view('users.user_bank');
+    }
+
     public function store(Request $request)
     {
         // Validate the form input

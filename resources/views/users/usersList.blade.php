@@ -120,23 +120,34 @@
 <!-- Bonus Modal -->
 <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bonusModalLabel">Grant Bonus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="bonusUserId">
-                <label for="bonusAmount" class="form-label">Enter Bonus Amount</label>
-                <input type="number" id="bonusAmount" class="form-control" placeholder="Enter amount" min="1">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" onclick="submitBonus()">Give Bonus</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bonusModalLabel">Grant Bonus</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <input type="hidden" id="bonusUserId">
+
+          <label for="bonusAmount" class="form-label">Enter Bonus Amount</label>
+          <input type="number" id="bonusAmount" class="form-control" placeholder="Enter amount" min="1">
+
+          <label for="gameSelect" class="form-label mt-3">Select Game (Optional)</label>
+          <select id="gameSelect" class="form-select">
+            <option value="">All Platforms</option>
+            <!-- Loop through your games (example using Blade) -->
+            @foreach ($games as $game)
+              <option value="{{ $game->id }}">{{ $game->name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="submitBonus()">Give Bonus</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -289,46 +300,55 @@
     <script>
 
 function openBonusModal(userId) {
-    document.getElementById("bonusUserId").value = userId; // Store user ID
-    document.getElementById("bonusAmount").value = ""; // Reset input field
+  document.getElementById("bonusUserId").value = userId; // Store user ID
+  document.getElementById("bonusAmount").value = ""; // Reset bonus input
+  document.getElementById("gameSelect").value = ""; // Reset dropdown
 
-    let modal = new bootstrap.Modal(document.getElementById("bonusModal"));
-    modal.show();
+  let modal = new bootstrap.Modal(document.getElementById("bonusModal"));
+  modal.show();
 }
 
 function submitBonus() {
-    let userId = document.getElementById("bonusUserId").value;
-    let amount = document.getElementById("bonusAmount").value;
+  let userId = document.getElementById("bonusUserId").value;
+  let amount = document.getElementById("bonusAmount").value;
+  let gameId = document.getElementById("gameSelect").value; // optional
 
-    if (!amount || amount <= 0) {
-        alert("Please enter a valid bonus amount.");
-        return;
-    }
+  if (!amount || amount <= 0) {
+    alert("Please enter a valid bonus amount.");
+    return;
+  }
 
-    fetch("{{ route('admin.give.bonus') }}", {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ user_id: userId, amount: amount })
-    })
+  // Create payload, only include game_id if selected
+  let payload = { user_id: userId, amount: amount };
+  if (gameId) {
+    payload.game_id = gameId;
+  }
+
+  fetch("{{ route('admin.give.bonus') }}", {
+    method: "POST",
+    headers: {
+      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
     .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text) });
-        }
-        return response.json();
+      if (!response.ok) {
+        return response.text().then(text => { throw new Error(text) });
+      }
+      return response.json();
     })
     .then(data => {
-        alert(data.message);
-        let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
-        modal.hide();
+      alert(data.message);
+      let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
+      modal.hide();
     })
     .catch(error => {
-        console.error("Error:", error);
-        alert("An error occurred: " + error.message);
+      console.error("Error:", error);
+      alert("An error occurred: " + error.message);
     });
 }
+
 
 
 

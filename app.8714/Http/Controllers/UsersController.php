@@ -111,15 +111,12 @@ class UsersController extends Controller
         return response()->json(['success' => false, 'message' => 'No file selected.'], 400);
     }
 
-    /**
-     * Returns a view with a list of all non-admin users.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function usersList()
     {
+        $games = Game::all();
+        dd($games);
         $users = User::where("is_admin", 0)->get();
-        return view('users/usersList', compact('users'));
+        return view('users/usersList', compact('users','games'));
     }
 
 

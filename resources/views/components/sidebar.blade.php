@@ -31,6 +31,12 @@
                     <span>Live Matches</span>
                 </a>
             </li>
+            {{-- <li>
+                <a href="{{route('users.bankAccount.view')}}">
+                    <iconify-icon icon="mdi:bank-outline" class="menu-icon"></iconify-icon>
+                    <span>Bank Accounts</span>
+                </a>
+            </li> --}}
             <li>
                 <a href="{{ route('users.user_profile') }}">
                     <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>

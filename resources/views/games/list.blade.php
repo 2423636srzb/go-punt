@@ -39,70 +39,60 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
+            <div style="overflow-x:auto;">
+              <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
                 <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Login link</th>
-                        <th scope="col">Created Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Action</th>
-                    </tr>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Login link</th>
+                    <th scope="col">Created Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    @foreach ($games as $game)
-                        <tr> 
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ url($game->logo) }}" alt="{{ $game->name }}"
-                                        class="flex-shrink-0 me-12 radius-8" width="50" />
-                                    <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $game->name }}</h6>
-                                </div>
-                            </td>
-                            <td>{{ $game->login_link }}</td>
-                            <td>{{ $game->created_at }}</td>
-                            <td>
-                                <span
-                                    class=" @if ($game->status == 'active') bg-success-focus text-success-main @else bg-danger-focus text-danger-main @endif px-24 py-4 rounded-pill fw-medium text-sm"
-                                    id="game-status-{{ $game->id }}">
-                                    @if ($game->status == 'active')
-                                        Active
-                                    @else
-                                        Inactive
-                                    @endif
-                                </span>
-
-                            </td>
-
-                            <td>
-                                <!-- <a href="javascript:void(0);" data-id="{{ $game->id }}"
-                                class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center game-detail">
-                                <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                            </a>
-                        -->
-                                <div class="form-switch switch-success d-inline-flex align-items-center">
-                                    <input class="form-check-input switch-input" type="checkbox"
-                                        data-id="{{ $game->id }}" role="switch"
-                                        @if ($game->status == 'active') checked @endif>
-                                </div>
-                                <a href="javascript:void(0)" onclick="editGame({{ $game->id }})"
-                                    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                    <iconify-icon icon="lucide:edit"></iconify-icon>
-                                </a>
-
-            
-                            <a href="javascript:void(0)" data-id="{{ $game->id }}"
-                                class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete-game">
-                                <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                            </a>
-                            
-                            </td>
-                        </tr>
-                    @endforeach
-
+                  @foreach ($games as $game)
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img src="{{ url($game->logo) }}" alt="{{ $game->name }}"
+                               class="flex-shrink-0 me-12 radius-8" width="50" />
+                          <h6 class="text-md mb-0 fw-medium flex-grow-1">{{ $game->name }}</h6>
+                        </div>
+                      </td>
+                      <td>{{ $game->login_link }}</td>
+                      <td>{{ $game->created_at }}</td>
+                      <td>
+                        <span class="@if ($game->status == 'active') bg-success-focus text-success-main @else bg-danger-focus text-danger-main @endif px-24 py-4 rounded-pill fw-medium text-sm"
+                              id="game-status-{{ $game->id }}">
+                          @if ($game->status == 'active')
+                            Active
+                          @else
+                            Inactive
+                          @endif
+                        </span>
+                      </td>
+                      <td>
+                        <div class="form-switch switch-success d-inline-flex align-items-center">
+                          <input class="form-check-input switch-input" type="checkbox" data-id="{{ $game->id }}" role="switch"
+                                 @if ($game->status == 'active') checked @endif>
+                        </div>
+                        <a href="javascript:void(0)" onclick="editGame({{ $game->id }})"
+                           class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
+                          <iconify-icon icon="lucide:edit"></iconify-icon>
+                        </a>
+                        <a href="javascript:void(0)" data-id="{{ $game->id }}"
+                           class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center delete-game">
+                          <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                        </a>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
-            </table>
-        </div>
+              </table>
+            </div>
+          </div>
+
     </div>
 
 
@@ -135,7 +125,7 @@
                                 Please choose a file.
                             </div>
                         </div>
-                      
+
 
                         <div class="col-md-6">
                             <label class="form-label">Login Link</label>
@@ -163,7 +153,7 @@
             </div>
         </div>
     </div>
-    
+
 
 
     <div class="modal fade" id="UpdateGame" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
@@ -187,16 +177,16 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Logo</label>
-                            <input 
-                                class="form-control" 
-                                type="file" 
-                                name="logo" 
-                                id="logo" 
-                                required 
+                            <input
+                                class="form-control"
+                                type="file"
+                                name="logo"
+                                id="logo"
+                                required
                                 onchange="updateFileName(this)">
                             <small id="file-name" class="form-text text-muted mt-1"></small>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <label class="form-label">Login Link</label>
                             <input type="url" name="login_link" id="login_link" class="form-control"
@@ -267,7 +257,7 @@ function updateFileName(input) {
         dataType: 'json',
         success: function(data) {
             document.querySelector('#addTaskModalLabel .game-name').textContent = 'Update Game';
-            document.getElementById('submitButton').textContent = 'Update Game'; 
+            document.getElementById('submitButton').textContent = 'Update Game';
             // Populate the modal with the game's data
             $('#name').val(data.name);
             $('#login_link').val(data.login_link);
@@ -441,7 +431,7 @@ function updateFileName(input) {
 
             // Disable game
             $('.switch-input').on('click', function() {
-                
+
                 const gameId = $(this).data('id');
                 var curr_obj = $(this);
                 var status = '';

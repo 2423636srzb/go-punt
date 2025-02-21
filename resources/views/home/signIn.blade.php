@@ -73,48 +73,59 @@
                     <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
                 </div>
-                <form id="login-form">
+                <form id="login-form" autocomplete="off">
                     @csrf <!-- CSRF token -->
+
+                    <!-- Hidden fake inputs to prevent autofill -->
+                    <input type="text" name="fakeuser" id="fakeuser" style="display: none;">
+                    <input type="password" name="fakepassword" id="fakepassword" style="display: none;">
+
+                    <!-- Phone Number Input -->
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
-                            <iconify-icon icon="mage:email"></iconify-icon>
+                            <iconify-icon icon="mage:phone"></iconify-icon> <!-- Updated to phone icon -->
                         </span>
-                        <input type="text" name="email" class="form-control h-56-px bg-neutral-50 radius-12"
-                            placeholder="Email / Phone Number">
+                        <input autocomplete="off" type="text" name="phone_number"
+                               class="form-control h-56-px bg-neutral-50 radius-12"
+                               placeholder="Phone Number">
                     </div>
+
+                    <!-- Password Input -->
                     <div class="position-relative mb-20">
                         <div class="icon-field">
                             <span class="icon top-50 translate-middle-y">
                                 <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                             </span>
-                            <input type="password" name="password" class="form-control h-56-px bg-neutral-50 radius-12"
-                                id="your-password" placeholder="Password">
+                            <input autocomplete="new-password" type="password" name="password"
+                                   class="form-control h-56-px bg-neutral-50 radius-12"
+                                   id="your-password" placeholder="Password">
                         </div>
-                        <span
-                            class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
-                            data-toggle="#your-password"></span>
+                        <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                              data-toggle="#your-password"></span>
                     </div>
+
+                    <!-- Remember Me & Forgot Password -->
                     <div class="">
                         <div class="d-flex justify-content-between gap-2">
                             <div class="form-check style-check d-flex align-items-center">
-                                <input class="form-check-input border border-neutral-300" type="checkbox" value=""
-                                    id="remeber">
-                                <label class="form-check-label" for="remeber">Remember me </label>
+                                <input class="form-check-input border border-neutral-300" type="checkbox" value="" id="remember">
+                                <label class="form-check-label" for="remember">Remember me </label>
                             </div>
-                            <a href="{{route('forgotpassword.view')}}" class="text-primary-600 fw-medium">Forgot
-                                Password?</a>
+                            <a href="{{ route('forgotpassword.view') }}" class="text-primary-600 fw-medium">Forgot Password?</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32"> Sign
-                        In</button>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32">
+                        Sign In
+                    </button>
 
+                    <!-- Signup Link -->
                     <div class="mt-32 text-center text-sm">
-                        <p class="mb-0">Don’t have an account? <a href="{{  route('signUp.view') }}"
-                                class="text-primary-600 fw-semibold">Sign Up</a></p>
+                        <p class="mb-0">Don’t have an account? <a href="{{ route('signUp.view') }}" class="text-primary-600 fw-semibold">Sign Up</a></p>
                     </div>
-
                 </form>
+
             </div>
         </div>
 
@@ -216,10 +227,11 @@ function closePopup() {
         method: 'POST',
         data: formData,
         success: function (response) {
-            if (response.status === 'otp_required') {
+            if (response.status === 'admin') {
+                window.location.href = '{{ route('admin.dashboard') }}';
                 // $('#otp-verification-popup').find('#masked-phone-number').text(response.masked_phone); // Show masked phone number
-                $('#otp-verification-popup').show(); // Show OTP modal
-            } else if (response.status === 'success') {
+                // $('#otp-verification-popup').show(); // Show OTP modal
+            } else if (response.status === 'user') {
                 window.location.href = '{{ route('users.dashboard') }}'; // Redirect after successful login
             } else {
                 alert(response.message || 'An unexpected error occurred.');

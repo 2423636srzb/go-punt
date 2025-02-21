@@ -101,8 +101,10 @@ $script = '
     </div>
 </div>
 
-
-<div class="row gy-4 mt-1">
+<div id="unreadRequestsNotification" style="padding: 10px; background: #f0f8ff;  border-radius: 4px;">
+    New Password Reset Requests: <strong>0</strong>
+</div>
+<div class="row gy-4 ">
     <!--
     <div class="col-xxl-6 col-xl-12">
         <div class="card h-100">
@@ -466,4 +468,27 @@ $script = '
 -->
 </div>
 
+<script>
+    function fetchUnreadCount() {
+    $.ajax({
+        url: '{{ route("forgotRequests.unreadCount") }}',
+        type: 'GET',
+        success: function(response) {
+            console.log(response.count);
+            // Update the element with the new count
+            $('#unreadRequestsNotification').text(response.count);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching unread count:', error);
+        }
+    });
+}
+
+// Call the function on page load
+fetchUnreadCount();
+
+// And then set it to update every 30 seconds (adjust the interval as needed)
+setInterval(fetchUnreadCount, 2000);
+
+</script>
 @endsection

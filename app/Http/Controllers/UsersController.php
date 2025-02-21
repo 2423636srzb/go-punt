@@ -116,9 +116,11 @@ class UsersController extends Controller
     public function bonus(Request $request)
     {
         try {
+            // Validate incoming request
             $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'amount' => 'required|numeric|min:1',
+                'game_id' => 'nullable|exists:games,id', // Ensure game_id exists if provided
             ]);
 
             // Save bonus in database
@@ -126,6 +128,7 @@ class UsersController extends Controller
                 'user_id' => $request->user_id,
                 'bonus' => $request->amount,
                 'granted_by' => auth()->id(), // Store admin ID
+                'dedicated_to' => $request->game_id ?? null, // Save game_id if exists, else null
             ]);
 
             return response()->json(['success' => true, 'message' => 'Bonus granted successfully!']);
@@ -133,6 +136,7 @@ class UsersController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
 
 public function bonusList(){
 
@@ -203,9 +207,17 @@ return view('bonus.index',compact('bonuses'));
     }
 
 public function passwordRequestList(){
+    UserForgotRequest::where('is_read', 0)->update(['is_read' => 1]);
     $forgotList = UserForgotRequest::orderBy('created_at', 'desc')->get();
     return view('forgot_request.forgot_list',compact('forgotList'));
 
+}
+
+public function getUnreadCount()
+{
+    // If you're using a boolean flag:
+    $count = UserForgotRequest::where('is_read', 0)->count();
+    return response()->json(['count' => $count]);
 }
 
 public function approvePassword(Request $request)
@@ -263,10 +275,10 @@ public function approvePassword(Request $request)
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $request->user_id,
+            // 'email' => 'required|email|unique:users,email,' . $request->user_id,
             'phone_number' => 'nullable|string|max:20',
-            'language' => 'nullable|string|max:1000',
-            'password' => 'nullable|string|min:8',
+            // 'language' => 'nullable|string|max:1000',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         if ($request->filled('password')) {
@@ -278,9 +290,9 @@ public function approvePassword(Request $request)
         $user = User::find($request->user_id);
         if ($user) {
             $user->name = $validated['name'];
-            $user->email = $validated['email'];
+            // $user->email = $validated['email'];
             $user->phone_number = $validated['phone_number'];
-            $user->language = $validated['language'];
+            // $user->language = $validated['language'];
             if ($request->filled('password')) {
                 $user->password = $validated['password'];
             }
@@ -349,8 +361,10 @@ public function approvePassword(Request $request)
      */
     public function usersList()
     {
+        $games = Game::all();
+        // dd($games);
         $users = User::where("is_admin", 0)->get();
-        return view('users/usersList', compact('users'));
+        return view('users/usersList', compact('users','games'));
     }
 
 

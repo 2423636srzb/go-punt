@@ -53,7 +53,7 @@ $script = '
 @section('content')
 
 <div class="row gy-4">
-    <div class="col-lg-4">
+    {{-- <div class="col-lg-4">
         <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
             <img src="{{ asset('assets/images/users/image-cover.jpg') }}" alt="" class="w-100 object-fit-cover">
             <div class="pb-24 ms-16 mb-24 me-16  mt--100">
@@ -88,8 +88,8 @@ $script = '
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-8">
+    </div> --}}
+    <div class="col">
         <div class="card h-100">
             <div class="card-body p-24">
                 @if(!auth()->user()->is_admin)
@@ -133,11 +133,11 @@ $script = '
                             </div>
                         </div>
                         <!-- Upload Image End -->
-                        <form action="#" id="updateProfileForm">
+                        <form action="#" id="updateProfileForm" autocomplete="off">
                             @csrf
                             <input type="hidden" id="user_id" name="user_id" value="{{ auth()->user()->id }}">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="mb-20">
                                         <label for="name"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">Full Name
@@ -146,7 +146,7 @@ $script = '
                                             placeholder="Enter Full Name" value="{{ $user->name }}">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                {{-- <div class="col-sm-6">
                                     <div class="mb-20">
                                         <label for="name"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">UserName
@@ -163,8 +163,8 @@ $script = '
                                         <input type="email" name="email" class="form-control radius-8" id="email"
                                             placeholder="Enter email address" value="{{ $user->email }}">
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
+                                </div> --}}
+                                <div class="col-sm-4">
                                     <div class="mb-20">
                                         <label for="number"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
@@ -174,7 +174,7 @@ $script = '
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6">
+                                {{-- <div class="col-sm-6">
                                     <div class="mb-20">
                                         <label for="Language"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">Language
@@ -186,16 +186,30 @@ $script = '
                                             <option> Arabic</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="mb-20">
                                         <label for="your-password"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">New Password
                                             <span class="text-danger-600">*</span></label>
                                         <div class="position-relative">
-                                            <input type="password" class="form-control radius-8" id="password"
+                                            <input autocomplete="new-password" type="password" class="form-control radius-8" id="password"
                                                 name="password" value="" placeholder="Enter New Password*">
+                                            <span
+                                                class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                                                data-toggle="#your-password"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-20">
+                                        <label for="your-password"
+                                            class="form-label fw-semibold text-primary-light text-sm mb-8">Confirmed Password
+                                            <span class="text-danger-600">*</span></label>
+                                        <div class="position-relative">
+                                            <input type="password" class="form-control radius-8" id="confirm-password"
+                                            name="password_confirmation" value="" placeholder="Confirm Password*">
                                             <span
                                                 class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
                                                 data-toggle="#your-password"></span>
@@ -220,7 +234,7 @@ $script = '
                             <input type="hidden" name="_method" value=""> <!-- For update -->
                             <input type="hidden" id="bank_id" name="bank_id" value="">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="mb-20">
                                         <label for="payment-method" class="form-label fw-semibold text-primary-light text-sm mb-8">
                                             Select Payment Method <span class="text-danger-600">*</span>
@@ -235,7 +249,7 @@ $script = '
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6" style="display: none;" id="bank-name">
+                                <div class="col-sm-4" style="display: none;" id="bank-name">
                                     <div class="mb-20">
                                         <label class="form-label fw-semibold text-primary-light text-sm mb-8">Bank Name</label>
                                         <div class="position-relative">
@@ -243,7 +257,7 @@ $script = '
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="col-sm-6" id="account-title" style="display: none;" >
+                                    <div class="col-sm-4" id="account-title" style="display: none;" >
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">Account Holder Name</label>
                                             <div class="position-relative">
@@ -251,7 +265,7 @@ $script = '
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6" style="display: none;" id="account-number">
+                                    <div class="col-sm-4" style="display: none;" id="account-number">
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">Account Number</label>
                                             <div class="position-relative">
@@ -259,7 +273,7 @@ $script = '
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6" style="display: none;" id="crypto-wallet">
+                                    <div class="col-sm-4" style="display: none;" id="crypto-wallet">
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">Crypto Wallet Address</label>
                                             <div class="position-relative">
@@ -275,7 +289,7 @@ $script = '
                                             </div>
                                         </div>
                                     </div> --}}
-                                    <div class="col-sm-6" id="ifc-number" style="display: none;">
+                                    <div class="col-sm-4" id="ifc-number" style="display: none;">
                                         <div class="mb-20 position-relative">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">IFSC Number</label>
                                             <div class="position-relative d-flex">
@@ -286,7 +300,7 @@ $script = '
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6" style="display: none;" id="UPI-number">
+                                    <div class="col-sm-4" style="display: none;" id="UPI-number">
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">UPI Number</label>
                                             <div class="position-relative">
@@ -294,14 +308,14 @@ $script = '
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6" style="display: none;" id="upi-qr-code">
+                                    <div class="col-sm-4" style="display: none;" id="upi-qr-code">
                                         <div class="mb-20">
                                             <label class="form-label fw-semibold text-primary-light text-sm mb-8">UPI QR Code</label>
                                             <div class="position-relative">
                                                 <input type="file" class="form-control radius-8" name="upi_qr_code" value="">
                                             </div>
                                         </div>
-                                    </div>         
+                                    </div>
                                                                 <!-- Container for IFSC details -->
                                     <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
                                         <table class="table table-bordered">
@@ -401,7 +415,7 @@ $script = '
                                     </tbody>
                                 </table>
                             </div>
-                        
+
                             <!-- UPI Table -->
                             <div class="col-12">
                                 <h6 class="text-xl mb-16 mt-16">UPI</h6>
@@ -419,7 +433,7 @@ $script = '
                                                 <tr>
                                                     <td><a href="javascript:void(0)" class="text-primary-600" id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a></td>
                                                     <td id="{{$bankAccount->id}}-upi_number">{{$bankAccount->upi_number}}</td>
-                                            
+
                                                     <td>
                                                         <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
                                                             <iconify-icon icon="lucide:edit"></iconify-icon>
@@ -434,7 +448,7 @@ $script = '
                                     </tbody>
                                 </table>
                             </div>
-                        
+
                             <!-- Crypto Table -->
                             <div class="col-12">
                                 <h6 class="text-xl mb-16 mt-16">Crypto</h6>
@@ -467,7 +481,7 @@ $script = '
                                 </table>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -514,7 +528,7 @@ $script = '
                     <li><strong>City:</strong> <span id="modal-city"></span></li>
                     <li><strong>District:</strong> <span id="modal-district"></span></li>
                     <li><strong>State:</strong> <span id="modal-state"></span></li>
-                    <li><strong>Pincode:</strong> <span id="modal-pincode"></span></li> 
+                    <li><strong>Pincode:</strong> <span id="modal-pincode"></span></li>
                     <li><strong>Country:</strong> <span id="modal-country"></span></li>
                     <li><strong>Address:</strong> <span id="modal-address"></span></li>
                 </ul>
@@ -601,34 +615,34 @@ $script = '
     // Trigger OTP modal on form submission
     $('#bank-account-form').submit(function (e) {
         e.preventDefault();
-
-        if (isOtpVerified) {
+        submitBankAccountForm();
+        // if (isOtpVerified) {
             // If OTP is already verified, save the bank account
-            saveBankAccount();
-        } else {
-            // Show the OTP modal
-            $('#otpModal').modal('show');
+            // saveBankAccount();
+        // } else {
+        //     // Show the OTP modal
+        //     $('#otpModal').modal('show');
 
-            // Generate and send OTP
-            $.ajax({
-                url: '{{ route("send.otp") }}',
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        generatedOtp = response.otp; // Store OTP for comparison
-                        showToast('OTP sent to your email.', 'success');
-                    } else {
-                        showToast(response.message, 'error');
-                    }
-                },
-                error: function () {
-                    showToast('Failed to send OTP. Please try again.', 'error');
-                }
-            });
-        }
+        //     // Generate and send OTP
+        //     $.ajax({
+        //         url: '{{ route("send.otp") }}',
+        //         method: 'POST',
+        //         headers: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //         success: function (response) {
+        //             if (response.status === 'success') {
+        //                 generatedOtp = response.otp; // Store OTP for comparison
+        //                 showToast('OTP sent to your email.', 'success');
+        //             } else {
+        //                 showToast(response.message, 'error');
+        //             }
+        //         },
+        //         error: function () {
+        //             showToast('Failed to send OTP. Please try again.', 'error');
+        //         }
+            // });
+        // }
     });
 //    verify otp
 $('#verify-otp-btn').click(function () {
@@ -648,7 +662,7 @@ $('#verify-otp-btn').click(function () {
                 console.log("submit");
                 // Submit the form with edited data
                 submitBankAccountForm();
-               
+
             } else {
                 $('#otp-error').text(response.message).show();
             }
@@ -670,8 +684,8 @@ function submitBankAccountForm() {
 
     // Determine method and URL
     const method = formData.get('bank_id') ? 'PUT' : 'POST';
-    const url = formData.get('bank_id') 
-        ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id')) 
+    const url = formData.get('bank_id')
+        ? '{{ route("bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id'))
         : '{{ route("users.bankAccount") }}';
 
     if (method === 'PUT') {
@@ -773,14 +787,14 @@ $(document).on('click', '.edit', function () {
                 $('input[name="ifc_number"]').val(bankAccount.ifc_number || '');
                 $('input[name="upi_number"]').val(bankAccount.upi_number || '');
                 $('input[name="_method"]').val('PUT');
-                
+
                 togglePaymentFieldsEdit();
-                
+
                 // Scroll to form
                 $('html, body').animate({
                     scrollTop: $('#bank-account-form').offset().top
                 }, 500);
-                  
+
                 showToast('Account details loaded successfully.', 'success');
             } else {
                 showToast(response.message, 'error');
@@ -796,7 +810,7 @@ $(document).on('click', '.edit', function () {
 </script>
 
 <script>
-  
+
     $(document).ready(function () {
         var hash = window.location.hash; // Get the hash from the URL
         if (hash) {
@@ -881,10 +895,11 @@ $(document).on('click', '.edit', function () {
             data: {
                 user_id: $('#user_id').val(),
                 name: $('#name').val(),
-                email: $('#email').val(),
+                // email: $('#email').val(),
                 phone_number: $('#phone_number').val(),
-                language: $('#Language').val(),
-                password: $('#password').val()
+                // language: $('#Language').val(),
+                password: $('#password').val(),
+                password_confirmation: $('#confirm-password').val()
             },
             success: function (response) {
                 if (response.success) {
@@ -1072,7 +1087,7 @@ $(document).on('click', '.edit', function () {
         document.getElementById('ifc-number').style.display = 'none';
         document.getElementById('UPI-number').style.display = 'none';
         document.getElementById('upi-qr-code').style.display = 'none';
-       
+
         const searchBtn = $('#ifsc-search-btn');
         const detailsDiv = $('#ifsc-details');
         const saveBut = $('#btnBankProfile');

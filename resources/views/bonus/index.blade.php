@@ -44,7 +44,10 @@
                             <td>{{ date('Y-m-d', strtotime($bonus->granted_date)) }}</td>
                             <td>{{ $bonus->granted_by }}</td>
                             <td>{{ $bonus->platform_name }}</td>
-                            <td>{{ $bonus->redem ? 'Redeemed' : 'Pending' }}</td>
+                            <td class="{{ $bonus->redem ? 'text-success' : 'text-danger' }}">
+                                {{ $bonus->redem ? 'Redeemed' : 'Pending' }}
+                            </td>
+
                         </tr>
                     @endforeach
             </tbody>

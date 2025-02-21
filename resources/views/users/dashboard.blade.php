@@ -41,20 +41,21 @@
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">TOTAL BALANCE</p>
-                            <h6 class="mb-0">{{ $depositeSum }}</h6>
+                            <p class="fw-medium text-primary-light mb-1">Assigned Sites</p>
+                            <h6 class="mb-0">{{ $userAccountsCount }}</h6>
                         </div>
                         <div
                             class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="hugeicons:money-send-square" class="text-white text-2xl mb-0"></iconify-icon>
+                            <iconify-icon icon="mdi:map-marker-outline" class="text-white text-2xl mb-0"></iconify-icon>
+
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
+                    {{-- <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
                         <span class="d-inline-flex align-items-center gap-1 text-success-main">
                             {{ isset($lastApprovedRequest->amount) ? $lastApprovedRequest->amount : 0 }}
                         </span>
                         Last Transaction
-                    </p>
+                    </p> --}}
                 </div>
             </div><!-- card end -->
         </div>
@@ -139,7 +140,7 @@
                                 <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
                                     aria-controls="pills-to-do-list" aria-selected="true">
-                                    Assigned Accounts
+                                    Our Gamming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{ $userAccountsCount }}</span>
                                 </button>
@@ -148,7 +149,7 @@
                                 <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
                                     aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                                    Pending Accounts
+                                    Upcoming Gamming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">0</span>
                                 </button>
@@ -274,7 +275,7 @@
                                                         <img src="{{ asset('assets/images/BD/play-now.jpg') }}"
                                                             alt="Live Stream" class="button-image" />
                                                     </button> --}}
-                                                        <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Live Match</button>
+                                                        <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
                                                 </a>
                                             </div>
                                         </div>

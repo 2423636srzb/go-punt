@@ -6,7 +6,7 @@
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <?php 
+    <?php
         if(Auth::Check())
             if(Auth::user()->is_admin == 1){ ?>
     <x-sidebaradmin />
@@ -79,7 +79,7 @@ function viewWithDrawRequest(id) {
         .then(response => response.json())
         .then(data => {
             console.log(data); // Debugging - Ensure data is received
-            
+
             // ✅ Update Labels
             $('#withdrawRequestUser').text(data.user_name || 'N/A');
             $('#withdrawPlatform').text(data.payment_method || 'N/A');
@@ -180,24 +180,25 @@ resetInactivityTimer(); // Initialize the inactivity timer
 </script>
 
 <script>
-    $('#withdrawalForm').on('submit', function (e) { 
+
+$('#withdrawalForm').on('submit', function (e) {
     e.preventDefault(); // Prevent page reload
 
     var amount = $('#Drawamount').val();
-    // var accountOption = $("input[name='accountOption']:checked").val();
-
     var formData = new FormData();
     formData.append('amount', amount);
-    // formData.append('accountOption', accountOption);
 
-    // if (accountOption === 'newAccount') {
-    //     formData.append('newAccountData[bankName]', $('#bankName').val());
-    //     formData.append('newAccountData[accountNumber]', $('#accountNumber').val());
-    //     formData.append('newAccountData[accountHolderName]', $('#accountHolderName').val());
-    //     formData.append('newAccountData[iban]', $('#iban').val());
-    // } else {
-        formData.append('bankId', $('#savedAccounts').val());
-    // }
+    // Get the account id based on the selected payment method:
+    var accountId;
+    if (selectedMethod  === 'bank') {
+        accountId = $('#savedBankAccounts').val();
+    } else if (selectedMethod === 'upi') {
+        accountId = $('#savedUpiAccounts').val();
+    } else if (selectedMethod === 'crypto') {
+        accountId = $('#savedCryptoAccounts').val();
+    }
+
+    formData.append('bankId', accountId);
 
     console.log([...formData]); // Debugging to check the data being sent
 
@@ -211,13 +212,14 @@ resetInactivityTimer(); // Initialize the inactivity timer
         processData: false, // Don't process the data
         contentType: false, // Let the browser set the content type
         success: function (response) {
-            location.reload(); 
+            location.reload();
         },
         error: function (xhr, status, error) {
             alert('Error occurred while processing withdrawal');
         }
     });
 });
+
 
 </script>
 
@@ -274,7 +276,7 @@ $(document).ready(function () {
     });
 });
 
-   
+
         $(document).ready(function() {
             $('#transactionForm').on('submit', function(e) {
                 e.preventDefault(); // Prevent default form submission
@@ -328,7 +330,7 @@ $(document).ready(function () {
                 });
             });
         });
-   
+
 
 
 </script>

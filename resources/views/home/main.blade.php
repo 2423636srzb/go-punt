@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+        <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{ asset('assets/app/dist/app.css') }}" />
@@ -651,21 +651,21 @@
                                 </div>
                             </div>
 
-                            <div id="guest-buttons"
-                                @guest class="flex flex-row justify-center space-x-2 w-full"
-            @else class="hidden" @endguest>
-
+                            <div id="guest-buttons" @guest class="flex flex-row justify-center space-x-2 w-full" @else class="hidden" @endguest>
                                 <div class="wallet">
-                                    <a href="{{ route('signUp.view') }}"
-                                        class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignUp</a>
+                                    <a href="{{ route('signUp.view') }}" class="flex items-center space-x-1 text-center px-2 py-1 text-lg sm:text-sm md:text-base">
+                                        <iconify-icon icon="mdi:account-plus-outline" style="font-size: 24px;"></iconify-icon>
+                                        <span>SignUp</span>
+                                    </a>
                                 </div>
-
                                 <div class="wallet">
-                                    <a href="{{ route('login.view') }}"
-                                        class="block text-center px-2 py-1 text-lg sm:text-sm md:text-base">SignIn</a>
+                                    <a href="{{ route('login.view') }}" class="flex items-center space-x-1 text-center px-2 py-1 text-lg sm:text-sm md:text-base">
+                                        <iconify-icon icon="mdi:login-variant" style="font-size: 24px;"></iconify-icon>
+                                        <span>SignIn</span>
+                                    </a>
                                 </div>
-
                             </div>
+
 
 
 

@@ -74,6 +74,7 @@ Route::post('/user/bank-accounts/otp', [BankAccountController::class, 'sendOtp']
 Route::post('/verify-otp', [BankAccountController::class, 'verifyOtp'])->name('verify.otp');
 
 Route::get('/users/bankAccount/{id}', [BankAccountController::class, 'edit'])->name('users.bankAccount.edit');
+Route::get('/bank_account', [BankAccountController::class, 'bankAccount'])->name('users.bankAccount.view');
 Route::any('/user/bank-accounts/{id}', [BankAccountController::class, 'update'])->name('bank_accounts.update');
 
 Route::post('/user/bank-accounts', [BankAccountController::class, 'store'])->name('users.bankAccount');
@@ -90,7 +91,8 @@ Route::delete('/admin/bank-accounts/delete/{id}', [BankAccountController::class,
 
 
 /* Payment Request */
-
+Route::get('/forgot-requests/unread-count', [UsersController::class, 'getUnreadCount'])
+    ->name('forgotRequests.unreadCount');
 Route::get('/live/matches', [UsersController::class, 'liveMatches'])->middleware('auth')->name('live.matches');
 Route::get('/live/stream/{eventId}/{sportId}/{channelId}', [UsersController::class, 'liveStream'])->middleware('auth')->name('live.stream');
 Route::get('/payment/request', [UsersController::class, 'paymentRequest'])->middleware('auth')->name('users.payment_request');

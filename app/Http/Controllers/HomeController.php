@@ -153,74 +153,91 @@ class HomeController extends Controller
 {
     // Validate the request
     $validated = $request->validate([
-        'email' => 'required|email',
+        'phone_number' => [
+            'required',
+            'string',
+            'max:20',
+            'regex:/^[0-9\-\+\s\(\)]+$/', // adjust the regex to suit your requirements
+        ],
         'password' => 'required|string|min:8',
     ]);
 
     // Attempt to find the user by email
-    $user = User::where('email', $validated['email'])->first();
+    $user = User::where('phone_number', $validated['phone_number'])->first();
 
     if (!$user) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Invalid email or password.',
+            'message' => 'Invalid Phone Number or password.',
         ], 401);
     }
 
     // Check if the user is an admin
     if ($user->is_admin) {
-        // Verify password
-        if (!Hash::check($validated['password'], $user->password)) {
+
+        if (Auth::attempt(['phone_number' => $validated['phone_number'], 'password' => $validated['password']], true)) {
+            return response()->json([
+                'status' => 'admin',
+                'message' => 'Login successful. Welcome!',
+            ]);
+        } else {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid email or password.',
             ], 401);
         }
+        // Verify password
+        // if (!Hash::check($validated['password'], $user->password)) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Invalid phone number or password.',
+        //     ], 401);
+        // }
 
         // Generate OTP and store it in the database
-        $otp = rand(100000, 999999);
-        $expiresAt = now()->addMinutes(10);
+        // $otp = rand(100000, 999999);
+        // $expiresAt = now()->addMinutes(10);
 
         // Store OTP in the 'otps' table
-        OTP::create([
-            'user_id' => $user->id,
-            'otp' => $otp,
-            'expires_at' => $expiresAt,
-        ]);
+        // OTP::create([
+        //     'user_id' => $user->id,
+        //     'otp' => $otp,
+        //     'expires_at' => $expiresAt,
+        // ]);
 
         // Store the user credentials (email, password, user_id) in session
-        session([
-            'otp_user_id' => $user->id,
-            'otp_email' => $user->email,
-            'otp_password' => $validated['password'],  // Store password (to authenticate later)
-        ]);
+        // session([
+        //     'otp_user_id' => $user->id,
+        //     'otp_email' => $user->email,
+        //     'otp_password' => $validated['password'],  // Store password (to authenticate later)
+        // ]);
 
         // Send OTP to admin's email
-        try {
-            Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+        // try {
+        //     Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
             // $this->otpService->sendOtp($user->phone_number, $otp);
             // $user->notify(new WhatsAppOTPNotification($otp));
             // $phoneNumber = $user->phone_number;
             //  $maskedPhone = substr($phoneNumber, 0, 3) . str_repeat('*', strlen($phoneNumber) - 6) . substr($phoneNumber, -3);
 
-            return response()->json([
-                'status' => 'otp_required',
-                'message' => 'An OTP has been sent to your email for verification.',
-                // 'masked_phone' => $maskedPhone,
-            ]);
-        } catch (\Exception $e) {
-           report($e);
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+    //         return response()->json([
+    //             'status' => 'otp_required',
+    //             'message' => 'An OTP has been sent to your email for verification.',
+    //             // 'masked_phone' => $maskedPhone,
+    //         ]);
+    //     } catch (\Exception $e) {
+    //        report($e);
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => $e->getMessage(),
+    //         ], 500);
+    //     }
     }
 
     // Non-admin users login directly
-    if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']], true)) {
+    if (Auth::attempt(['phone_number' => $validated['phone_number'], 'password' => $validated['password']], true)) {
         return response()->json([
-            'status' => 'success',
+            'status' => 'user',
             'message' => 'Login successful. Welcome!',
         ]);
     } else {
@@ -232,6 +249,7 @@ class HomeController extends Controller
 }
 
 
+
     public function forgotPassword()
     {
         //
@@ -240,19 +258,15 @@ class HomeController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validate the request data (password_confirmation must match password)
         $validated = $request->validate([
-            'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|string|email|max:255|unique:users,email',
             'phone_number' => 'required|string|max:20|unique:users,phone_number',
-            'password' => 'required|string|min:8'
+            'password' => 'required|string|min:8|confirmed', // "confirmed" checks for a matching field called password_confirmation
         ]);
 
         try {
-            // Create the new user
+            // Create the new user using only the phone_number and password
             $user = User::create([
-                'username' => $validated['username'],
-                'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
                 'password' => Hash::make($validated['password']),
             ]);
@@ -281,16 +295,16 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             Log::error('User creation error: ' . $e->getMessage());
 
-            // Return a structured error response with an `errors` key
             return response()->json([
                 'status' => 'error',
                 'message' => 'An error occurred while creating the user. Please try again.',
                 'errors' => [
-                    'general' => [$e->getMessage()], // Wrap error message in an array
+                    'general' => [$e->getMessage()],
                 ],
             ], 500);
         }
     }
+
 
 
     public function logout(Request $request)

@@ -192,7 +192,7 @@ return view('bonus.index',compact('bonuses'));
             'password' => 'required|string',
             'requested_by' => 'required|string',
         ]);
-     
+
         // Save the request in the `user_forgot_request` table
         UserForgotRequest::create([
             'user_account_id' => $request->user_account_id,

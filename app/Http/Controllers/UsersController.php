@@ -185,6 +185,7 @@ return view('bonus.index',compact('bonuses'));
     }
     public function forgotPassword(Request $request)
     {
+        try{
         $request->validate([
             'user_account_id' => 'required|exists:user_accounts,id',
             'game_name' => 'required|string',
@@ -206,6 +207,11 @@ return view('bonus.index',compact('bonuses'));
 
         return response()->json(['success' => true, 'message' => 'Password reset request submitted successfully']);
     }
+    catch(Exception $e){
+        return response()->json(['error' => true, 'message' => $e]);
+    }
+
+}
 
 public function passwordRequestList(){
     UserForgotRequest::where('is_read', 0)->update(['is_read' => 1]);

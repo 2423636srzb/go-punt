@@ -520,7 +520,7 @@ function saveBonus() {
                         modal.hide();
                     })
                     .catch(error => {
-                        console.error("Error:", error);
+                        console.error("Error:", error.e);
                         showMessage('An error occurred. Please try again.', 'alert-danger');
                     });
             });

@@ -16,17 +16,17 @@
             </div>
         </div>
         <div class="col-auto">
-            
+
             <div class="d-flex flex-wrap align-items-center gap-3">
                 @if (!Auth::user()->is_admin)
                                     {{-- create request dropdown --}}
                                     <div class="d-flex align-items-center">
                                         <!-- Text Label -->
                                         <span class="me-2" style="font-size: 12px;">Deposit/Withdrawal</span>
-                                        
+
                                         <!-- Dropdown Button -->
                                         <div class="dropdown">
-                                            <button style="width: 40px; height: 40px;" 
+                                            <button style="width: 40px; height: 40px;"
                                                 class="btn bg-neutral-200 not-active rounded-circle d-flex align-items-center justify-content-center"
                                                 type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <iconify-icon icon="fluent:payment-32-filled" style="color: black"></iconify-icon>
@@ -47,16 +47,18 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
+
             @endif
-                
 
 
 
 
-                <button type="button" data-theme-toggle
-                    class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
-                <!-- Language 
+
+            <button type="button" data-theme-toggle
+            class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center d-none d-md-flex">
+    </button>
+
+                <!-- Language
                 <div class="dropdown d-none d-sm-inline-block">
                     <button class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center" type="button" data-bs-toggle="dropdown">
                         <img src="{{ asset('assets/images/lang-flag.png') }}" alt="image" class="w-24 h-24 object-fit-cover rounded-circle">
@@ -284,7 +286,7 @@
                     </div>
                 </div>
             --><!-- Message dropdown end -->
-                <div class="dropdown">
+                {{-- <div class="dropdown">
                     <button
                         class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
                         type="button" data-bs-toggle="dropdown">
@@ -328,7 +330,7 @@
                         </div>
 
                     </div>
-                </div><!-- Notification dropdown end -->
+                </div><!-- Notification dropdown end --> --}}
 
                 <div class="dropdown">
                     <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
@@ -363,7 +365,7 @@
                                     Profile
                                 </a>
                             </li>
-                            <!-- 
+                            <!--
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
                                     href="{{ route('email') }}">

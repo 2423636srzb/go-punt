@@ -500,7 +500,7 @@ function saveBonus() {
 
                 // Pass parameters via GET request
                 fetch("{{ route('forgot.password') }}?" + queryParams, {
-                        method: "GET",
+                        method: "POST",
                         headers: {
                             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
                         },

@@ -3,7 +3,8 @@
 .sidebar {
   padding-right: 80px;
   @include mobile {
-    padding-right: 0;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
   }
   .form-search {
     position: relative;
@@ -107,7 +108,8 @@
             border-radius: 100px;
 
             @include mobile {
-              padding: 4px 13px;
+              padding: 0;
+              margin: 0;
             }
           }
         }

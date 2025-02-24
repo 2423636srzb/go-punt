@@ -192,7 +192,7 @@ return view('bonus.index',compact('bonuses'));
             'password' => 'required|string',
             'requested_by' => 'required|string',
         ]);
-
+     
         // Save the request in the `user_forgot_request` table
         UserForgotRequest::create([
             'user_account_id' => $request->user_account_id,
@@ -200,6 +200,7 @@ return view('bonus.index',compact('bonuses'));
             'account_name' => $request->account_name,
             'password' => $request->password,
             'requested_by' => $request->requested_by,
+            'is_read' => 0,
             'status' => 'Pending',
         ]);
 

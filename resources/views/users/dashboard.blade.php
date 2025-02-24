@@ -482,48 +482,49 @@ function saveBonus() {
 
             // Handle confirmation button click
             document.getElementById("confirmForgotPassword").addEventListener("click", function() {
-                if (!userId) {
-                    showMessage('No user account selected.', 'alert-danger');
-                    return;
-                }
+    if (!userId) {
+        showMessage('No user account selected.', 'alert-danger');
+        return;
+    }
 
-                console.log("Submitting request for User ID:", userId); // Debugging output
+    console.log("Submitting request for User ID:", userId);
 
-                // Build query parameters for GET request
-                let queryParams = new URLSearchParams({
-                    user_account_id: userId,
-                    game_name: gameName,
-                    account_name: accountName,
-                    password: password,
-                    requested_by: loggedInUserName
-                }).toString();
+    let formData = new FormData();
+    formData.append('user_account_id', userId);
+    formData.append('game_name', gameName);
+    formData.append('account_name', accountName);
+    formData.append('password', password);
+    formData.append('requested_by', loggedInUserName);
 
-                // Pass parameters via GET request
-                fetch("{{ route('forgot.password') }}?" + queryParams, {
-                        method: "POST",
-                        headers: {
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showMessage('Password reset request submitted successfully!',
-                                'alert-success');
-                        } else {
-                            showMessage('Something went wrong. Please try again.', 'alert-danger');
-                        }
+    fetch("{{ route('forgot.password') }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+            "Accept": "application/json"
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text || response.statusText); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showMessage('Password reset request submitted successfully!', 'alert-success');
+        } else {
+            showMessage('Something went wrong. Please try again.', 'alert-danger');
+        }
 
-                        // Hide the modal
-                        let modal = bootstrap.Modal.getInstance(document.getElementById(
-                            "forgotPasswordModal"));
-                        modal.hide();
-                    })
-                    .catch(error => {
-                        console.error("Error:", error.message);
-                        showMessage('An error occurred. Please try again.', 'alert-danger');
-                    });
-            });
+        let modal = bootstrap.Modal.getInstance(document.getElementById("forgotPasswordModal"));
+        modal.hide();
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        showMessage('An error occurred. Please try again.', 'alert-danger');
+    });
+});
 
             function showMessage(message, alertClass) {
                 let messageContainer = document.getElementById('messageContainer');

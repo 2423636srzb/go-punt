@@ -62,7 +62,7 @@ Route::get('/notifications', [UsersController::class, 'showNotification'])->name
 Route::get('/notifications/{id}/read', [UsersController::class, 'markAsRead'])->name('notifications.read');
 Route::post('games/uploadAccountMultiplee', [GameController::class, 'uploadAccountsMultiple']);
 Route::get('/users/dashboard', [UsersController::class, 'dashboard'])->middleware('auth')->name('users.dashboard');
-Route::get('/forgot-password', [UsersController::class, 'forgotPassword'])->name('forgot.password');
+Route::post('/forgot-password', [UsersController::class, 'forgotPassword'])->name('forgot.password');
 Route::get('/users/profile', [UsersController::class, 'profile'])->middleware('auth')->name('users.user_profile');
 Route::post('/users/upload-profile-image', [UsersController::class, 'uploadProfileImage'])->middleware('auth')->name('users.uploadProfileImage');
 Route::post('/users/updateProfile', [UsersController::class, 'updateProfile'])->middleware('auth')->name('users.updateProfile');

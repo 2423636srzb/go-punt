@@ -101,8 +101,8 @@ $script = '
     </div>
 </div>
 
-<div id="unreadRequestsNotification" style="padding: 10px; background: #f0f8ff;  border-radius: 4px;">
-    New Password Reset Requests: <strong>0</strong>
+<div id="unreadRequestsNotification"  style="padding: 10px; background: #f0f8ff; border-radius: 4px;">
+   <a href="{{route('admin.user_password_request')}}">New Password Reset Requests: <strong style="color: #e73535">0</strong></a>
 </div>
 <div class="row gy-4 ">
     <!--
@@ -466,29 +466,38 @@ $script = '
         </div>
     </div>
 -->
+
 </div>
 
 <script>
-    function fetchUnreadCount() {
-    $.ajax({
-        url: '{{ route("forgotRequests.unreadCount") }}',
-        type: 'GET',
-        success: function(response) {
-            console.log(response.count);
-            // Update the element with the new count
-            $('#unreadRequestsNotification').text(response.count);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching unread count:', error);
-        }
-    });
-}
+    $(document).ready(function() {
+     function fetchUnreadCount() {
+         $.ajax({
+             url: '{{ route("forgotRequests.unreadCount") }}',
+             type: 'GET',
+             success: function(response) {
+                 console.log(response.count);
+                 if(response.count > 0){
+                    $('#unreadRequestsNotification').css('display', 'block');
+                    $('#unreadRequestsNotification strong').text(response.count);
+                } else {
+                    $('#unreadRequestsNotification').css('display', 'none');
+                }
+             },
+             error: function(xhr, status, error) {
+                 console.error('Error fetching unread count:', error);
+             }
+         });
+     }
 
-// Call the function on page load
-fetchUnreadCount();
+     // Call the function on page load
+     fetchUnreadCount();
 
-// And then set it to update every 30 seconds (adjust the interval as needed)
-setInterval(fetchUnreadCount, 2000);
+     // And then set it to update every 2 seconds (for testing, change to 30 seconds later)
+     setInterval(fetchUnreadCount, 2000);
+ });
 
-</script>
+ </script>
+
 @endsection
+

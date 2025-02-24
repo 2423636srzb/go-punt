@@ -216,6 +216,7 @@ public function passwordRequestList(){
 public function getUnreadCount()
 {
     // If you're using a boolean flag:
+    // $count = UserForgotRequest::where('is_read', 0)->count();
     $count = UserForgotRequest::where('is_read', 0)->count();
     return response()->json(['count' => $count]);
 }

@@ -15,6 +15,7 @@ class Bonus extends Model
         'bonus',
         'granted_by',
         'redem',
+        'dedicated_to',
     ];
 
     public function user()

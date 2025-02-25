@@ -33,7 +33,7 @@
                             <th scope="col">Granted Date</th>
                             <th scope="col">Granted By</th>
                             <th scope="col">PlateForm</th>
-                            <th scope="col">Redeem</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>

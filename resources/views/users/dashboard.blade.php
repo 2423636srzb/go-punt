@@ -120,9 +120,10 @@
                         <span class="d-inline-flex align-items-center gap-1 text-success-main">
 
                         </span>
-                        <h3 class="text-lg font-semibold cursor-pointer text-blue-500 hover:underline" onclick="openBonusModal()">
+                        <a href="{{route('user.bonus.list')}}">
+                        <h3 class="text-lg font-semibold cursor-pointer text-blue-500 hover:underline">
                             Redeem Bonus
-                        </h3>
+                        </h3></a>
                     </p>
                 </div>
             </div><!-- card end -->
@@ -365,44 +366,7 @@
     </div>
 
 
-    <!-- Bonus Modal -->
-<div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="bonusModalLabel">Redeem Your Bonus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- Display Total Bonus -->
-                <p class="text-gray-700 text-center mb-3">Total Bonus:
-                    <span class="font-semibold text-primary" id="bonusAmount">{{ $totalBonus }}</span>
-                </p>
-
-                <!-- Game Platform Dropdown -->
-                <label for="gamePlatform" class="form-label">Select Platform:</label>
-                <select id="gamePlatform" class="form-select">
-                    <option value="">-- Select Platform --</option>
-                    @foreach ($userAccounts as $userAccount)
-                        <option value="{{ $userAccount->id }}" data-user-name="{{ $userAccount->game_name }}">
-                            {{ $userAccount->game_name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="assignBonus()">Redeem</button>
-                <button type="button" class="btn btn-success" onclick="saveBonus()">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
     </div>
 
@@ -412,52 +376,7 @@
 @section('js')
 
 <script>
-   // Open Modal Function (Bootstrap automatically handles this)
-function openBonusModal() {
-    let bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"));
-    bonusModal.show();
-}
 
-// Assign Bonus Function
-function assignBonus() {
-    let gamePlatformDropdown = document.getElementById("gamePlatform");
-    let userAccountId = gamePlatformDropdown.value;
-    let gamePlatformName = gamePlatformDropdown.options[gamePlatformDropdown.selectedIndex]?.dataset.userName;
-
-    if (!userAccountId) {
-        alert("Please select a game platform!");
-        return;
-    }
-
-    fetch("{{ route('admin.assign.bonus') }}", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            user_id: "{{ auth()->id() }}",
-            user_account_id: userAccountId,
-            game_name: gamePlatformName,
-            totalBonus: "{{ $totalBonus }}"
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
-        modal.hide(); // Close modal after success
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Save Bonus (Example function)
-function saveBonus() {
-    alert("Bonus saved successfully!");
-    let modal = bootstrap.Modal.getInstance(document.getElementById("bonusModal"));
-    modal.hide(); // Close modal after saving
-}
 
 
         document.addEventListener("DOMContentLoaded", function() {

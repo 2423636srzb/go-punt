@@ -323,7 +323,7 @@ function submitBonus() {
   if (gameId) {
     payload.game_id = gameId;
   }
-
+   console.log(gameId);
   fetch("{{ route('admin.give.bonus') }}", {
     method: "POST",
     headers: {

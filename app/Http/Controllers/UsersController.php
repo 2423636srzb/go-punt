@@ -24,6 +24,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 use App\Services\SportsService;
 
+
 class UsersController extends Controller
 {
     protected $analytics;
@@ -122,7 +123,7 @@ class UsersController extends Controller
                 'amount' => 'required|numeric|min:1',
                 'game_id' => 'nullable|exists:games,id', // Ensure game_id exists if provided
             ]);
-
+        //    dd($request->game_id);
             // Save bonus in database
             Bonus::create([
                 'user_id' => $request->user_id,
@@ -161,28 +162,109 @@ public function bonusList(){
 
 return view('bonus.index',compact('bonuses'));
 }
-    public function assignBonus(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'user_account_id' => 'required|exists:user_accounts,id',
-            'game_name' => 'required|string',
+
+
+
+public function userBonusList()
+{
+     // Get the logged-in user ID
+    $user = Auth::user();
+    $bonuses = DB::table('bonuses')
+    ->join('users as u1', 'bonuses.user_id', '=', 'u1.id') // user who received bonus
+    ->join('users as u2', 'bonuses.granted_by', '=', 'u2.id') // admin who granted bonus
+    ->leftJoin('user_accounts', 'bonuses.plateform_id', '=', 'user_accounts.id') // allow NULL platform
+    ->leftJoin('accounts', 'user_accounts.account_id', '=', 'accounts.id')
+    ->leftJoin('games', 'accounts.game_id', '=', 'games.id')
+    // Left join to fetch dedicated game name
+    ->leftJoin('games as dedicated_game', 'bonuses.dedicated_to', '=', 'dedicated_game.id')
+    ->select(
+        'bonuses.id',
+        'u1.name as user_name',
+        'bonuses.bonus',
+        'bonuses.created_at as granted_date',
+        'u2.name as granted_by',
+        DB::raw('COALESCE(games.name, "None") as platform_name'),
+        'dedicated_game.name as dedicated_game_name',
+        'bonuses.redem'
+    )
+    ->where('bonuses.user_id', $user->id) // filter for logged in user
+    ->get();
+
+
+        $totalBonus = Bonus::where('user_id', $user->id)
+        ->where('redem', 0)
+        ->sum('bonus');
+
+
+
+        $userAccounts = UserAccount::where('user_accounts.user_id', $user->id) // Filter by current user's ID
+        ->where('accounts.status', 1) // Filter accounts with status = 1
+        ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id') // Join accounts table
+        ->join('games', 'games.id', '=', 'accounts.game_id') // Join games table
+        ->leftJoin('user_platform_transactions', function ($join) use ($user) {
+            $join->on('user_platform_transactions.platform_id', '=', 'games.id')
+                 ->where('user_platform_transactions.user_id', '=', $user->id)
+                 ->where('user_platform_transactions.status', '=', 'approved');
+        })
+        ->leftJoin('user_forgot_request', function ($join) {
+            $join->on('user_forgot_request.user_account_id', '=', 'user_accounts.id')
+                 ->where('user_forgot_request.status', '=', 'Pending');
+        })
+        ->select(
+            'user_accounts.id',
+            'accounts.id as account_id',
+            'accounts.game_id as account_game_id',
+            'accounts.username',
+            'accounts.password',
+            'accounts.status',
+            'games.login_link',
+            'games.id as game_id',
+            'games.name as game_name',
+            'games.logo as game_logo',
+            DB::raw('SUM(user_platform_transactions.amount) as transaction_amount'),
+            'user_forgot_request.status as forgot_request_status'
+        )
+        ->groupBy(
+            'user_accounts.id',
+            'accounts.id',
+            'accounts.game_id',
+            'accounts.username',
+            'accounts.password',
+            'accounts.status',
+            'games.login_link',
+            'games.id',
+            'games.name',
+            'games.logo',
+            'user_forgot_request.status'
+        )
+        ->get();
+
+    return view('users.user_bonus_list', compact('bonuses','totalBonus','userAccounts'));
+}
+
+public function assignBonus(Request $request)
+{
+    $request->validate([
+        'bonus_id' => 'required|exists:bonuses,id',
+        'user_account_id' => 'required|exists:user_accounts,id',
+        'game_name' => 'required|string',
+    ]);
+
+    // Update the bonus record that matches the provided bonus_id and is pending (redem == 0)
+    $affectedRows = Bonus::where('id', $request->bonus_id)
+        ->where('redem', 0) // Optionally keep this if you want to ensure it is still unredeemed.
+        ->update([
+            'redem' => 1,
+            'plateform_id' => $request->user_account_id, // Assign platform ID
         ]);
 
-        // Update all bonuses where user_id matches and redem is 0
-        $affectedRows = Bonus::where('user_id', $request->user_id)
-            ->where('redem', 0)
-            ->update([
-                'redem' => 1,
-                'plateform_id' => $request->user_account_id, // Assign platform ID
-            ]);
-
-        if ($affectedRows > 0) {
-            return response()->json(['message' => "Bonus successfully assigned to {$request->game_name}!"]);
-        } else {
-            return response()->json(['message' => "No available bonus found to assign."], 400);
-        }
+    if ($affectedRows > 0) {
+        return response()->json(['message' => "Bonus successfully assigned to {$request->game_name}!"]);
+    } else {
+        return response()->json(['message' => "No available bonus found to assign."], 400);
     }
+}
+
     public function forgotPassword(Request $request)
     {
         try{

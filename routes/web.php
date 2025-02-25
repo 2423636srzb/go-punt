@@ -137,6 +137,7 @@ Route::get('/admin/users', [UsersController::class, 'usersList'])->middleware('a
 
 Route::post('/give-bonus', [UsersController::class, 'bonus'])->middleware('auth')->name('admin.give.bonus');
 Route::get('/bonus-list', [UsersController::class, 'bonusList'])->middleware('auth')->name('admin.bonus.list');
+Route::get('/user-bonus-list', [UsersController::class, 'userBonusList'])->middleware('auth')->name('user.bonus.list');
 Route::post('/assign-bonus', [UsersController::class, 'assignBonus'])->middleware('auth')->name('admin.assign.bonus');
 
 Route::get('/admin/users/userDetail/{id}', [UsersController::class, 'userDetail'])->middleware('auth')->name('admin.user.view');

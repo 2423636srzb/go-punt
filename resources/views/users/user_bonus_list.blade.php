@@ -51,20 +51,26 @@
                             </td>
                             <td>{{ $bonus->dedicated_game_name ?? ' ' }}</td>
                             <td>
-                              @if(!$bonus->redem == "Redeem")
+                                @if(!$bonus->redem =="Redeem")
                                     <!-- Show Redeem button only if bonus is pending -->
-                                    <button class="btn btn-primary btn-xs" style="font-size: 12px; padding: 5px 10px;"> <a href="javascript:void(0)"
-                                    class="redeem-btn"
-                                    data-bonus-id="{{ $bonus->id }}"
-                                    data-bonus="{{ $bonus->bonus }}"
-                                    data-dedicated-game="{{ $bonus->dedicated_game_name ?? '' }}">
-                                    Redeem
-                                    </a></button>
+                                    <button class="btn btn-primary btn-xs" style="font-size: 12px; padding: 5px 10px; width:100px;">
+                                        <a href="javascript:void(0)"
+                                           class="redeem-btn"
+                                           data-bonus-id="{{ $bonus->id }}"
+                                           data-bonus="{{ $bonus->bonus }}"
+                                           data-dedicated-game="{{ $bonus->dedicated_game_name ?? '' }}"
+                                           style="font-size: 12px; color:inherit; text-decoration:none; display:block;">
+                                            Redeem
+                                        </a>
+                                    </button>
                                 @else
-                                    <!-- Optionally, show a disabled button or nothing -->
-                                    <button class="btn btn-secondary btn-xs"style="font-size: 12px; padding: 5px 10px;" disabled>Redeemed</button>
+                                    <!-- Show disabled button for redeemed bonus -->
+                                    <button class="btn btn-secondary btn-xs" style="font-size: 12px; padding: 5px 10px; width:100px;" disabled>
+                                        Redeemed
+                                    </button>
                                 @endif
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>

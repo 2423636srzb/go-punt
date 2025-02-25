@@ -53,7 +53,7 @@
                             <td>
                               @if(!$bonus->redem == "Redeem")
                                     <!-- Show Redeem button only if bonus is pending -->
-                                    <button class="btn btn-primary btn-sm"> <a href="javascript:void(0)"
+                                    <button class="btn btn-primary btn-xs"> <a href="javascript:void(0)"
                                     class="redeem-btn"
                                     data-bonus-id="{{ $bonus->id }}"
                                     data-bonus="{{ $bonus->bonus }}"
@@ -62,7 +62,7 @@
                                     </a></button>
                                 @else
                                     <!-- Optionally, show a disabled button or nothing -->
-                                    <button class="btn btn-secondary btn-sm" disabled>Redeemed</button>
+                                    <button class="btn btn-secondary btn-xs" disabled>Redeemed</button>
                                 @endif
                             </td>
                         </tr>

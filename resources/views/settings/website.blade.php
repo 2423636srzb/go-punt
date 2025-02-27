@@ -301,9 +301,9 @@ $script = '
             <br />
             <div class="row">
                 <!-- Bank Transfer Table -->
-                <div class="col-12">
+                <div class="col-12 table-responsive">
                     <h6 class="text-xl mb-16 mt-16">Bank</h6>
-                    <table class="table bordered-table mb-0">
+                    <table class="table bordered-table mb-0" scr>
                         <thead>
                             <tr>
                                 <th scope="col">Account Holder Name</th>
@@ -337,7 +337,7 @@ $script = '
                 </div>
 
                 <!-- UPI Table -->
-                <div class="col-6">
+                <div class="col-md-6 table-responsive">
                     <h6 class="text-xl mb-16 mt-16">UPI</h6>
                     <table class="table bordered-table mb-0">
                         <thead>
@@ -370,7 +370,7 @@ $script = '
                 </div>
 
                 <!-- Crypto Table -->
-                <div class="col-6">
+                <div class="col-md-6 table-responsive">
                     <h6 class="text-xl mb-16 mt-16">Crypto</h6>
                     <table class="table bordered-table mb-0">
                         <thead>

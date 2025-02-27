@@ -35,10 +35,10 @@
                     <thead>
                         <tr>
                             {{-- <th scope="col">Username</th> --}}
-                            <th scope="col">Name</th>
+                            <th>Name</th>
                             {{-- <th scope="col">Join Date</th> --}}
                             {{-- <th scope="col">Email</th> --}}
-                            <th scope="col">Phone Number</th>
+                            <th>Phone Number</th>
                             <th scope="col" class="text-center">Bonus</th>
                             <th scope="col" class="text-center">Action</th>
                         </tr>

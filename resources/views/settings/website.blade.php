@@ -49,10 +49,10 @@ $script = '
 @section('content')
 <div class="row">
 <div class="col-md-7">
-            
+
     <div class="card ">
         <div class="card-body ">
-        
+
             <form method="POST" action="{{ route('website.update') }}" enctype="multipart/form-data">
 
                 @csrf
@@ -74,7 +74,7 @@ $script = '
                                 <span class="text-danger-600">*</span></label>
                                 <input type="file" name="logo" class="form-control radius-8" id="logo" readonly
                                 style="line-height: normal; padding-top: 10px; padding-bottom: 10px;">
-                         
+
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -82,12 +82,12 @@ $script = '
                             <label for="email"
                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Currency <span
                                     class="text-danger-600">*</span></label>
-                                  
+
                             <input type="text" name="currency" class="form-control radius-8" id="email"
                                 placeholder="Enter email address" value="{{ $settings->currency }}">
                         </div>
                     </div>
-                    
+
 
                     <div class="col-sm-6">
                         <div class="mb-20">
@@ -108,30 +108,30 @@ $script = '
                     </button>
                 </div>
             </form>
-        
+
         </div>
     </div>
 </div>
 <div class="col-md-5">
-            
+
     <div class="card ">
         <div class="card-body ">
-        
+
             <form method="POST" action="{{ route('website.announce') }}" enctype="multipart/form-data">
 
                 @csrf
-               
+
                     <div class="col-sm-12">
                         <div class="mb-20">
                             <label for="email"
                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Announcement <span
                                     class="text-danger-600">*</span></label>
                                     <small class="text-muted">For Line Break used / forward slash</small>
-                            <textarea name="announce" class="form-control radius-8" id="announce" 
+                            <textarea name="announce" class="form-control radius-8" id="announce"
                             placeholder="Enter Announcement text" rows="5" style="width: 100%;"></textarea>
                         </div>
                     </div>
-                    
+
                 <div class="d-flex align-items-center justify-content-center gap-3">
                     <button type="submit"
                         class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
@@ -139,14 +139,14 @@ $script = '
                     </button>
                 </div>
             </form>
-        
+
         </div>
     </div>
 </div>
 </div>
 <h6 class="fw-semibold mt-9">Bank Accounts</h6>
 <div class="col-md-12 ">
-            
+
     <div class="card ">
         <div class="card-body ">
             <form id="bank-account-form" action="#" enctype="multipart/form-data">
@@ -235,7 +235,7 @@ $script = '
                                     <input type="file" class="form-control radius-8" name="upi_qr_code" value="">
                                 </div>
                             </div>
-                        </div>         
+                        </div>
                                                     <!-- Container for IFSC details -->
                         <div id="ifsc-details" class="border p-3 radius-8 mt-3" style="display: none;">
                             <table class="table table-bordered mt-3">
@@ -335,7 +335,7 @@ $script = '
                         </tbody>
                     </table>
                 </div>
-            
+
                 <!-- UPI Table -->
                 <div class="col-6">
                     <h6 class="text-xl mb-16 mt-16">UPI</h6>
@@ -353,7 +353,7 @@ $script = '
                                     <tr>
                                         <td><a href="javascript:void(0)" class="text-primary-600" id="{{$bankAccount->id}}-accountholder">{{$bankAccount->account_holder_name}}</a></td>
                                         <td id="{{$bankAccount->id}}-upi_number">{{$bankAccount->upi_number}}</td>
-                                
+
                                         <td>
                                             <a href="javascript:void(0)" data-id="{{$bankAccount->id}}" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center edit">
                                                 <iconify-icon icon="lucide:edit"></iconify-icon>
@@ -368,7 +368,7 @@ $script = '
                         </tbody>
                     </table>
                 </div>
-            
+
                 <!-- Crypto Table -->
                 <div class="col-6">
                     <h6 class="text-xl mb-16 mt-16">Crypto</h6>
@@ -401,8 +401,8 @@ $script = '
                     </table>
                 </div>
             </div>
-            
-        
+
+
     </div>
 </div>
 </div>
@@ -513,34 +513,34 @@ $script = '
     // Trigger OTP modal on form submission
     $('#bank-account-form').submit(function (e) {
         e.preventDefault();
-
-        if (isOtpVerified) {
+        submitBankAccountForm();
+        // if (isOtpVerified) {
             // If OTP is already verified, save the bank account
-            saveBankAccount();
-        } else {
-            // Show the OTP modal
-            $('#otpModal').modal('show');
+            // saveBankAccount();
+        // } else {
+        //     // Show the OTP modal
+        //     $('#otpModal').modal('show');
 
-            // Generate and send OTP
-            $.ajax({
-                url: '{{ route("send.otp") }}',
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        generatedOtp = response.otp; // Store OTP for comparison
-                        showToast('OTP sent to your email.', 'success');
-                    } else {
-                        showToast(response.message, 'error');
-                    }
-                },
-                error: function () {
-                    showToast('Failed to send OTP. Please try again.', 'error');
-                }
-            });
-        }
+        //     // Generate and send OTP
+        //     $.ajax({
+        //         url: '{{ route("send.otp") }}',
+        //         method: 'POST',
+        //         headers: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //         },
+        //         success: function (response) {
+        //             if (response.status === 'success') {
+        //                 generatedOtp = response.otp; // Store OTP for comparison
+        //                 showToast('OTP sent to your email.', 'success');
+        //             } else {
+        //                 showToast(response.message, 'error');
+        //             }
+        //         },
+        //         error: function () {
+        //             showToast('Failed to send OTP. Please try again.', 'error');
+        //         }
+        //     });
+        // }
     });
 //    verify otp
 $('#verify-otp-btn').click(function () {
@@ -560,7 +560,7 @@ $('#verify-otp-btn').click(function () {
                 console.log("submit");
                 // Submit the form with edited data
                 submitBankAccountForm();
-               
+
             } else {
                 $('#otp-error').text(response.message).show();
             }
@@ -582,8 +582,8 @@ function submitBankAccountForm() {
 
     // Determine method and URL
     const method = formData.get('bank_id') ? 'PUT' : 'POST';
-    const url = formData.get('bank_id') 
-        ? '{{ route("admin.bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id')) 
+    const url = formData.get('bank_id')
+        ? '{{ route("admin.bank_accounts.update", ":id") }}'.replace(':id', formData.get('bank_id'))
         : '{{ route("admin.bankAccount") }}';
 
     if (method === 'PUT') {
@@ -685,14 +685,14 @@ $(document).on('click', '.edit', function () {
                 $('input[name="ifc_number"]').val(bankAccount.ifc_number || '');
                 $('input[name="upi_number"]').val(bankAccount.upi_number || '');
                 $('input[name="_method"]').val('PUT');
-                
+
                 togglePaymentFieldsEdit();
-                
+
                 // Scroll to form
                 $('html, body').animate({
                     scrollTop: $('#bank-account-form').offset().top
                 }, 500);
-                  
+
                 showToast('Account details loaded successfully.', 'success');
             } else {
                 showToast(response.message, 'error');
@@ -793,7 +793,7 @@ $(document).on('click', '.edit', function () {
         document.getElementById('ifc-number').style.display = 'none';
         document.getElementById('UPI-number').style.display = 'none';
         document.getElementById('upi-qr-code').style.display = 'none';
-       
+
         const searchBtn = $('#ifsc-search-btn');
         const detailsDiv = $('#ifsc-details');
         const saveButton = $('#btnBankProfile');

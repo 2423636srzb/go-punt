@@ -20,7 +20,7 @@
             </li>
             <li class="sidebar-menu-group-title">
                 <a href="{{ route('user.bonus.list') }}">
-                    <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+                    <iconify-icon icon="mdi:gift-outline" class="menu-icon"></iconify-icon>
                     <span>Bonus List</span>
                 </a>
             </li>

@@ -432,6 +432,9 @@
     .then(data => {
         if (data.success) {
             showMessage('Password reset request submitted successfully!', 'alert-success');
+            setTimeout(() => {
+            location.reload(); // Refresh page after success
+        }, 1000);
         } else {
             showMessage('Something went wrong. Please try again.', 'alert-danger');
         }

@@ -34,10 +34,10 @@
                 <table class="table bordered-table sm-table mb-0" id="dataTable">
                     <thead>
                         <tr>
-                            <th scope="col">Username</th>
+                            {{-- <th scope="col">Username</th> --}}
                             <th scope="col">Name</th>
                             {{-- <th scope="col">Join Date</th> --}}
-                            <th scope="col">Email</th>
+                            {{-- <th scope="col">Email</th> --}}
                             <th scope="col">Phone Number</th>
                             <th scope="col" class="text-center">Bonus</th>
                             <th scope="col" class="text-center">Action</th>
@@ -60,13 +60,13 @@
                                             class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
                                         <div class="flex-grow-1">
                                             <span
-                                                class="text-md mb-0 fw-normal text-secondary-light">{{ $user->username }}</span>
+                                                class="text-md mb-0 fw-normal text-secondary-light">{{ $user->name }}</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $user->name }}</td>
+                                {{-- <td>{{ $user->name }}</td> --}}
                                 {{-- <td>{{ $user->created_at->format('M d, Y') }}</td> --}}
-                                <td>{{ $user->email }}</td>
+                                {{-- <td>{{ $user->email }}</td> --}}
                                 <td>{{ $user->phone_number }}</td>
                                 <td>
                                     <button class="btn btn-primary btn-xs ms-2" style="font-size: 12px; padding: 5px 10px;" onclick="openBonusModal({{ $user->id }})">
@@ -160,14 +160,14 @@
                         method="POST" enctype="multipart/form-data" novalidate>
                         @csrf
                         <input type="hidden" name="user_id" id="user_id" value="" />
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label class="form-label">User Name</label>
                             <input type="text" name="username" id="username" class="form-control" value=""
                                 required>
                             <div class="valid-feedback">
                                 User name
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <label class="form-label">Name</label>
                             <input type="text" name="name" id="name" class="form-control" value=""
@@ -176,14 +176,14 @@
                                 Name
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label class="form-label">Email</label>
                             <input type="text" name="email" id="email" class="form-control" value=""
                                 required>
                             <div class="valid-feedback">
                                 Email
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <label class="form-label">  Phone Number</label>
                             <input type="text" name="phone" id="phone" class="form-control" value=""
@@ -232,9 +232,9 @@
                 dataType: 'json',
                 success: function(data) {
                     $('#user_id').val(data.id);
-                    $('#username').val(data.username);
+                    // $('#username').val(data.username);
                     $('#name').val(data.name);
-                    $('#email').val(data.email);
+                    // $('#email').val(data.email);
                     $('#phone').val(data.phone_number);
                     $('#password').val('');
                     $('#password_confirmation').val('');

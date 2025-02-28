@@ -82,23 +82,21 @@ class UsersController extends Controller
         )
         ->get();
 
-
-
-        $assignedGameIds = UserAccount::where('user_accounts.user_id', $user->id)
-        ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id')
-        ->pluck('accounts.game_id'); // Get assigned game IDs
-
-    $unassignedGames = Game::whereNotIn('games.id', $assignedGameIds) // Use `games.id` explicitly
-        ->leftJoin('accounts', function ($join) {
-            $join->on('accounts.game_id', '=', 'games.id')
-                ->whereNotNull('accounts.username') // Account must have username
-                ->whereNotNull('accounts.password'); // Account must have password
+        $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id') // Join accounts table
+        ->leftJoin('user_accounts', function ($join) use ($user) {
+            $join->on('user_accounts.account_id', '=', 'accounts.id')
+                 ->where('user_accounts.user_id', '=', $user->id); // Check if assigned to current user
         })
-        ->whereNull('accounts.id') // Ensure there's no assigned account for the game
+        ->where(function ($query) use ($user) {
+            $query->whereNull('user_accounts.user_id') // Not assigned to this user
+                  ->orWhereNull('accounts.id'); // No accounts exist for this game
+        })
         ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
-        ->distinct() // Prevent duplicate results
+        ->distinct()
         ->get();
 
+
+            // dd($unassignedGames);
 
         $totalBonus = Bonus::where('user_id', $user->id)
         ->where('redem', 0)

@@ -7,6 +7,7 @@ use App\Models\Game;
 use App\Models\Account;
 use App\Models\UserAccount;
 use App\Models\User;
+use App\Models\GameAccountRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use App\Exports\SampleFileExport;
@@ -67,6 +68,63 @@ public function accountsRequestList(){
     ->get();
 
 return view('games.account_request', compact('requests'));
+}
+
+public function accountApprove(Request $request)
+{
+    try {
+        DB::beginTransaction(); // Start transaction
+
+        // Extract values from request
+        $requestId = $request->request_id;
+
+        $username = $request->username;
+        $password = $request->password;
+          $data =   GameAccountRequest::where('id', $requestId)->first();
+          $userId = $data->user_id;
+        $gameId = $data->game_id;
+        // Step 1: Create an account
+        $account = Account::create([
+            'game_id' => $gameId,
+            'username' => $username,
+            'password' => $password, // Secure password storage
+            'status' => 1, // Status set to approved
+            'is_assigned' => 1, // Mark as assigned
+        ]);
+
+        // Step 2: Create a record in user_accounts
+        UserAccount::create([
+            'user_id' => $userId,
+            'account_id' => $account->id,
+            'assigned_at' => now(),
+        ]);
+
+        // Step 3: Update the request status to approved
+        GameAccountRequest::where('id', $requestId)->update([
+            'status' => 'approved'
+        ]);
+
+        DB::commit(); // Commit the transaction
+
+        return response()->json(['success' => true, 'message' => 'Request approved successfully!']);
+    } catch (\Exception $e) {
+        DB::rollBack(); // Rollback on error
+        return response()->json(['success' => false, 'message' => 'Error processing request: ' . $e->getMessage()], 500);
+    }
+}
+
+public function accountReject(Request $request)
+{
+    $request->validate(['request_id' => 'required|exists:game_account_request,id']);
+
+    DB::table('game_account_request')
+        ->where('id', $request->request_id)
+        ->update([
+            'status' => 'rejected',
+            'updated_at' => now()
+        ]);
+
+    return response()->json(['message' => 'Request rejected successfully']);
 }
     public function accounts()
     {

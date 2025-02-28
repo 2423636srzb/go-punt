@@ -30,4 +30,7 @@ class Game extends Model
 {
     return $this->belongsTo(Game::class);
 }
+public function accountRequest(){
+    return $this->hasMany(GameAccountRequest::class);
+}
 }

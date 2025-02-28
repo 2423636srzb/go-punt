@@ -34,8 +34,8 @@
             </li>
             <li>
                 <a href="{{ route('admin.game_account_request') }}">
-                    <iconify-icon icon="mage:lock" class="menu-icon"></iconify-icon>
-                    <span>Game Account Request</span>
+                    <iconify-icon icon="mdi:account-key" class="menu-icon"></iconify-icon>
+                    <span>Account Request</span>
                 </a>
             </li>
 

@@ -74,4 +74,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(AdminBankAccount::class);
     }
+
+    public function accountRequest(){
+        return $this->hasMany(GameAccountRequest::class);
+    }
 }

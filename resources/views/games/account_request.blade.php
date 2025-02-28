@@ -1,8 +1,8 @@
 @extends('layout.layout')
 
 @php
-    $title = 'Forgot Password List';
-    $subTitle = 'Forgot Password List';
+    $title = 'Account Requests';
+    $subTitle = 'Account Requests';
 @endphp
 <style>
     #dt-length-0 {
@@ -46,8 +46,23 @@
                             <td>{{ $request->game_name }}</td>
                             <td>{{ $request->created_at }}</td>
                             <td>{{ $request->phone_number }}</td>
-
                             <td>{{ ucfirst($request->status) }}</td>
+                            <td class="text-center">
+                                @if($request->status == 'pending')
+                                    <!-- Approve Button -->
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#approveModal"
+                                    data-id="{{ $request->id }}" data-user="{{ $request->name }}">
+                                        Approve
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button class="btn btn-danger btn-sm" onclick="rejectRequest({{ $request->id }})">
+                                        Reject
+                                    </button>
+                                @else
+                                    <span class="badge badge-primary" style="color: black">Processed</span>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                                 {{-- <td scope="col">
@@ -78,29 +93,110 @@
 
         </div>
     </div>
-
-    <!-- Approval Modal -->
+<!-- Approve Modal -->
 <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="approveModalLabel">Enter New Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h6 class="modal-title" id="approveModalLabel">Account Detail</h6>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="listId">
-                <div class="mb-3">
-                    <label for="newPassword" class="form-label">New Password</label>
-                    <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="submitNewPassword">Submit</button>
+                <form id="approveForm" autocomplete="off">
+
+                    <input type="hidden" id="requestId">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="username" autocomplete="off" required >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="password" autocomplete="new-password" required >
+                    </div>
+
+                    <!-- Button aligned to the right -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary">Approve</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function () {
+    // Open Approve Modal
+    $(document).on('click', '[data-target="#approveModal"]', function () {
+        let requestId = $(this).data('id');
+
+        $('#requestId').val(requestId);
+
+
+        $('#approveModal').modal('show');
+    });
+
+    // Prevent browser autofill for username & password
+    $('#username, #password').attr('autocomplete', 'off');
+
+    // Handle Approve Form Submission
+    $('#approveForm').submit(function (e) {
+        e.preventDefault();
+
+        let requestId = $('#requestId').val();
+        let userId = $('#userId').val();
+        let gameId = $('#gameId').val();
+        let username = $('#username').val();
+        let password = $('#password').val();
+
+        $.ajax({
+            url: "{{ route('account-requests.approve') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                request_id: requestId,
+                user_id: userId,
+                game_id: gameId,
+                username: username,
+                password: password
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message); // Show success message
+                    $('#approveModal').modal('hide');
+                    location.reload(); // Refresh page
+                } else {
+                    alert("Error: " + response.message);
+                }
+            },
+            error: function (xhr) {
+                alert("An error occurred: " + xhr.responseJSON.message);
+            }
+        });
+    });
+});
+
+
+// Reject Request Function
+function rejectRequest(requestId) {
+    if (confirm('Are you sure you want to reject this request?')) {
+        $.ajax({
+            url: "{{ route('account-requests.reject') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                request_id: requestId
+            },
+            success: function () {
+                location.reload(); // Refresh page
+            }
+        });
+    }
+}
+</script>
 @endsection
 
 

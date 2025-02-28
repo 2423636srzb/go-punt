@@ -159,6 +159,9 @@ Route::post('/game/account/request', [GameController::class, 'requestAccount'])-
 Route::get('games/accounts', [GameController::class, 'accounts'])->name('games.accounts');
 Route::get('games/accounts_request', [GameController::class, 'accountsRequestList'])->name('admin.game_account_request');
 
+Route::post('/account-requests/approve', [GameController::class, 'accountApprove'])->name('account-requests.approve');
+Route::post('/account-requests/reject', [GameController::class, 'accountReject'])->name('account-requests.reject');
+
 
 Route::post('/acount-store', [GameController::class, 'accountStore'])->name('account.store');
 

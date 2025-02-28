@@ -152,7 +152,7 @@
                                     aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
                                     None Assigned Gaming Panel
                                     <span
-                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">0</span>
+                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{$unassignedGames->count()}}</span>
                                 </button>
                             </li>
                         </ul>
@@ -292,15 +292,11 @@
                                             </span>
                                         @endif --}}
 
-                                        {{-- <div class="live-button-container">
-                                            <a href="{{$game->login_link }}"> --}}
-                                                {{-- <button class="circular-button">
-                                                    <img src="{{ asset('assets/images/BD/play-now.jpg') }}"
-                                                        alt="Live Stream" class="button-image" />
-                                                </button> --}}
-                                                    {{-- <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
+                                        <div class="live-button-container">
+                                            <a href="{{$game->login_link }}">
+                                                    <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
                                             </a>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

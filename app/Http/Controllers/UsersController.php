@@ -83,13 +83,11 @@ class UsersController extends Controller
         ->get();
 
         $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id') // Join accounts table
-        ->leftJoin('user_accounts', function ($join) use ($user) {
-            $join->on('user_accounts.account_id', '=', 'accounts.id')
-                 ->where('user_accounts.user_id', '=', $user->id); // Check if assigned to current user
-        })
+        ->leftJoin('user_accounts', 'user_accounts.account_id', '=', 'accounts.id') // Join user_accounts
         ->where(function ($query) use ($user) {
-            $query->whereNull('user_accounts.user_id') // Not assigned to this user
-                  ->orWhereNull('accounts.id'); // No accounts exist for this game
+            $query->whereNull('user_accounts.user_id') // Game has no assigned user
+                  ->orWhere('user_accounts.user_id', '!=', $user->id) // Assigned to someone else
+                  ->orWhereNull('accounts.id'); // Game has no account at all
         })
         ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
         ->distinct()

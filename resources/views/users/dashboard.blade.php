@@ -294,7 +294,7 @@
 
                                         <div class="live-button-container">
                                             <a href="{{$game->login_link }}">
-                                                    <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
+                                                    <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Account Request</button>
                                             </a>
                                         </div>
                                     </div>

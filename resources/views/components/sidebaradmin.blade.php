@@ -32,6 +32,12 @@
                     <span>Password Request</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('admin.game_account_request') }}">
+                    <iconify-icon icon="mage:lock" class="menu-icon"></iconify-icon>
+                    <span>Game Account Request</span>
+                </a>
+            </li>
 
             <li>
                 <a href="{{ route('admin.bonus.list') }}">

@@ -154,9 +154,10 @@ Route::get('/admin/dashboard', [UsersController::class, 'adminDashboard'])->midd
 Route::get('games/list', [GameController::class, 'listing'])->name('games.list'); // Define specific routes first
 Route::get('/games/{id}/edit', [GameController::class, 'edit'])->name('games.edit');
 Route::post('/games/{id}', [GameController::class, 'update'])->name('games.update');
-
+Route::post('/game/account/request', [GameController::class, 'requestAccount'])->name('game.account.request');
 
 Route::get('games/accounts', [GameController::class, 'accounts'])->name('games.accounts');
+Route::get('games/accounts_request', [GameController::class, 'accountsRequestList'])->name('admin.game_account_request');
 
 
 Route::post('/acount-store', [GameController::class, 'accountStore'])->name('account.store');

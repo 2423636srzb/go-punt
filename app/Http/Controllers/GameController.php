@@ -20,6 +20,54 @@ class GameController extends Controller
         $games = Game::orderBy('id', 'desc')->get();
         return view('games.list', compact('games'));
     }
+
+    public function requestAccount(Request $request)
+{
+    $validated = $request->validate([
+        'game_id' => 'required|exists:games,id',
+    ]);
+
+    $userId = auth()->id();
+    $gameId = $request->game_id;
+
+    // Check if the request already exists
+    $exists = DB::table('game_account_request')
+        ->where('user_id', $userId)
+        ->where('game_id', $gameId)
+        ->exists();
+
+    if ($exists) {
+        return response()->json(['success' => false, 'message' => 'You have already requested an account for this game.']);
+    }
+
+    // Insert request into table
+    DB::table('game_account_request')->insert([
+        'user_id' => $userId,
+        'game_id' => $gameId,
+        'status' => 'pending',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return response()->json(['success' => true, 'message' => 'Request submitted successfully.']);
+}
+public function accountsRequestList(){
+    $requests = DB::table('game_account_request')
+    ->join('users', 'users.id', '=', 'game_account_request.user_id')
+    ->join('games', 'games.id', '=', 'game_account_request.game_id')
+    ->select(
+        'game_account_request.id',
+        'users.name',
+        'users.phone_number', // Make sure `phone` exists in users table
+        'games.name as game_name',
+        'games.logo as game_logo',
+        'game_account_request.status',
+        'game_account_request.created_at'
+    )
+    ->get();
+
+return view('games.account_request', compact('requests'));
+}
     public function accounts()
     {
 

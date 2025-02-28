@@ -44,8 +44,7 @@
                             <p class="fw-medium text-primary-light mb-1">Assigned Sites</p>
                             <h6 class="mb-0">{{ $userAccountsCount }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
+                        <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
                             <iconify-icon icon="mdi:map-marker-outline" class="text-white text-2xl mb-0"></iconify-icon>
 
                         </div>
@@ -69,7 +68,7 @@
                         </div>
                         <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
                             <iconify-icon icon="fa6-solid:file-invoice-dollar"
-                            class="text-white text-2xl mb-0"></iconify-icon>
+                                class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
                     <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
@@ -86,7 +85,7 @@
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total  Withdrawal</p>
+                            <p class="fw-medium text-primary-light mb-1">Total Withdrawal</p>
                             <h6 class="mb-0">{{ $withDrawSum }}</h6>
                         </div>
                         <div
@@ -120,10 +119,11 @@
                         <span class="d-inline-flex align-items-center gap-1 text-success-main">
 
                         </span>
-                        <a href="{{route('user.bonus.list')}}">
-                        <h3 class="text-lg font-semibold cursor-pointer text-blue-500 hover:underline">
-                            Redeem Bonus
-                        </h3></a>
+                        <a href="{{ route('user.bonus.list') }}">
+                            <h3 class="text-lg font-semibold cursor-pointer text-blue-500 hover:underline">
+                                Redeem Bonus
+                            </h3>
+                        </a>
                     </p>
                 </div>
             </div><!-- card end -->
@@ -152,7 +152,7 @@
                                     aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
                                     None Assigned Gaming Panel
                                     <span
-                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{$unassignedGames->count()}}</span>
+                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{ $unassignedGames->count() }}</span>
                                 </button>
                             </li>
                         </ul>
@@ -170,69 +170,73 @@
                             </div>
                             <div class="row ">
                                 @foreach ($userAccounts as $userAccount)
-                                <div class="col-md-3 mt-10">
-                                    <div class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
-                                        <div class="center text-center">
-                                            <span class="icon-btc">
-                                                <img src="{{ url($userAccount->game_logo) }}" alt="Game 1 Logo"
-                                                    width="125"
-                                                    class="mx-auto mb-2 rounded-lg transition-transform duration-300">
-                                            </span>
-                                            <h6 class="price" style="font-size: 18px !important;" data-game-name="{{ $userAccount->game_name }}">
-                                                {{ $userAccount->game_name }}
-                                            </h6>
-                                            <div class="copy-container">
-                                                <span id="user-email" data-account-name="{{ $userAccount->username }}">
-                                                    {{ $userAccount->username }}
+                                    <div class="col-md-3 mt-10">
+                                        <div
+                                            class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
+                                            <div class="center text-center">
+                                                <span class="icon-btc">
+                                                    <img src="{{ url($userAccount->game_logo) }}" alt="Game 1 Logo"
+                                                        width="125"
+                                                        class="mx-auto mb-2 rounded-lg transition-transform duration-300">
                                                 </span>
-                                                <iconify-icon icon="mage:copy" class="icon"
-                                                    onclick="copyToClipboard('user-email')"
-                                                    title="Copy Email"></iconify-icon>
-                                            </div>
-                                            <br />
-                                            <div class="copy-container">
-                                                <span class="user-password"
-                                                    data-password="{{ $userAccount->password }}"
-                                                    data-row-id="{{ $userAccount->id }}">
-                                                    ..........
-                                                </span>
-                                                <iconify-icon icon="mage:copy" class="icon"
-                                                    onclick="copyToClipboard(this)"
-                                                    title="Copy Password"></iconify-icon>
-                                                <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye"
-                                                    onclick="showPassword(this)"
-                                                    title="Show Password"></iconify-icon>
-                                            </div>
+                                                <h6 class="price" style="font-size: 18px !important;"
+                                                    data-game-name="{{ $userAccount->game_name }}">
+                                                    {{ $userAccount->game_name }}
+                                                </h6>
+                                                <div class="copy-container">
+                                                    <span id="user-email"
+                                                        data-account-name="{{ $userAccount->username }}">
+                                                        {{ $userAccount->username }}
+                                                    </span>
+                                                    <iconify-icon icon="mage:copy" class="icon"
+                                                        onclick="copyToClipboard('user-email')"
+                                                        title="Copy Email"></iconify-icon>
+                                                </div>
+                                                <br />
+                                                <div class="copy-container">
+                                                    <span class="user-password"
+                                                        data-password="{{ $userAccount->password }}"
+                                                        data-row-id="{{ $userAccount->id }}">
+                                                        ..........
+                                                    </span>
+                                                    <iconify-icon icon="mage:copy" class="icon"
+                                                        onclick="copyToClipboard(this)"
+                                                        title="Copy Password"></iconify-icon>
+                                                    <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye"
+                                                        onclick="showPassword(this)" title="Show Password"></iconify-icon>
+                                                </div>
 
-                                            <!-- Show Pending Request or Forgot Password -->
-                                            @if ($userAccount->forgot_request_status === 'Pending')
-                                                <span class="text-warning d-block" style="font-size:11px;">
-                                                    Pending Request
-                                                </span>
-                                            @else
-                                                <span class="text-primary d-block forgot-password"
-                                                    style="font-size:11px; cursor:pointer;"
-                                                    data-id="{{ $userAccount->id }}"
-                                                    data-game-name="{{ $userAccount->game_name }}"
-                                                    data-account-name="{{ $userAccount->username }}"
-                                                    data-password="{{ $userAccount->password }}">
-                                                    Forgot Password
-                                                </span>
-                                            @endif
+                                                <!-- Show Pending Request or Forgot Password -->
+                                                @if ($userAccount->forgot_request_status === 'Pending')
+                                                    <span class="text-warning d-block" style="font-size:11px;">
+                                                        Pending Request
+                                                    </span>
+                                                @else
+                                                    <span class="text-primary d-block forgot-password"
+                                                        style="font-size:11px; cursor:pointer;"
+                                                        data-id="{{ $userAccount->id }}"
+                                                        data-game-name="{{ $userAccount->game_name }}"
+                                                        data-account-name="{{ $userAccount->username }}"
+                                                        data-password="{{ $userAccount->password }}">
+                                                        Forgot Password
+                                                    </span>
+                                                @endif
 
-                                            <div class="live-button-container">
-                                                <a href="{{ $userAccount->login_link }}">
-                                                    {{-- <button class="circular-button">
+                                                <div class="live-button-container">
+                                                    <a href="{{ $userAccount->login_link }}">
+                                                        {{-- <button class="circular-button">
                                                         <img src="{{ asset('assets/images/BD/play-now.jpg') }}"
                                                             alt="Live Stream" class="button-image" />
                                                     </button> --}}
-                                                        <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
-                                                </a>
+                                                        <button type="submit" class="btn btn-primary"
+                                                            style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play
+                                                            Now</button>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -259,50 +263,35 @@
 
                         <div id="messageContainer" style="display: none;" class="alert alert-info" role="alert">
                         </div>
-                        @if($unassignedGames->isNotEmpty())
-                        <div class="row ">
-                            @foreach($unassignedGames as $game)
-                            <div class="col-md-3 mt-10">
-                                <div class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="center text-center">
-                                        <span class="icon-btc">
-                                            <img src="{{ url($game->logo) }}" alt="Game 1 Logo"
-                                                width="125"
-                                                class="mx-auto mb-2 rounded-lg transition-transform duration-300">
-                                        </span>
-                                        <h6 class="price" style="font-size: 18px !important;" data-game-name="{{ $game->game_name }}">
-                                            {{ $game->game_name }}
-                                        </h6>
+                        @if ($unassignedGames->isNotEmpty())
+                            <div class="row ">
+                                @foreach ($unassignedGames as $game)
+                                    <div class="col-md-3 mt-10">
+                                        <div
+                                            class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
+                                            <div class="center text-center">
+                                                <span class="icon-btc">
+                                                    <img src="{{ url($game->logo) }}" alt="Game 1 Logo" width="125"
+                                                        class="mx-auto mb-2 rounded-lg transition-transform duration-300">
+                                                </span>
+                                                <h6 class="price" style="font-size: 18px !important;"
+                                                    data-game-name="{{ $game->game_name }}">
+                                                    {{ $game->game_name }}
+                                                </h6>
 
-                                        <br />
-{{--
-                                        <!-- Show Pending Request or Forgot Password -->
-                                        @if ($userAccount->forgot_request_status === 'Pending')
-                                            <span class="text-warning d-block" style="font-size:11px;">
-                                                Pending Request
-                                            </span>
-                                        @else
-                                            <span class="text-primary d-block forgot-password"
-                                                style="font-size:11px; cursor:pointer;"
-                                                data-id="{{ $userAccount->id }}"
-                                                data-game-name="{{ $userAccount->game_name }}"
-                                                data-account-name="{{ $userAccount->username }}"
-                                                data-password="{{ $userAccount->password }}">
-                                                Forgot Password
-                                            </span>
-                                        @endif --}}
-
-                                        <div class="live-button-container">
-                                            <a href="{{$game->login_link }}">
-                                                    <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Account Request</button>
-                                            </a>
+                                                <div class="live-button-container">
+                                                    <button type="button" class="btn btn-primary request-account"
+                                                        data-game-id="{{ $game->game_id }}"
+                                                        style="padding: 5px 20px; margin-bottom: 10px;border-radius: 90px;color: #fff;">
+                                                        Account Request
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
-                        @endforeach
-                        </div>
-                          @endif
+                        @endif
                     </div>
                 </div>
             </div>
@@ -337,9 +326,38 @@
 @endsection
 
 @section('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.request-account').forEach(button => {
+                button.addEventListener('click', function() {
+                    let gameId = this.getAttribute('data-game-id');
+                    let userId = {{ auth()->id() }}; // Get the logged-in user ID
 
-<script>
-
+                    if (confirm("Are you sure you want to request an account for this game?")) {
+                        fetch("{{ route('game.account.request') }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    game_id: gameId,
+                                    user_id: userId
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert("Account request sent successfully!");
+                                } else {
+                                    alert("Error: " + data.message);
+                                }
+                            })
+                            .catch(error => console.error("Error:", error));
+                    }
+                });
+            });
+        });
 
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -364,52 +382,56 @@
 
             // Handle confirmation button click
             document.getElementById("confirmForgotPassword").addEventListener("click", function() {
-    if (!userId) {
-        showMessage('No user account selected.', 'alert-danger');
-        return;
-    }
+                if (!userId) {
+                    showMessage('No user account selected.', 'alert-danger');
+                    return;
+                }
 
-    console.log("Submitting request for User ID:", userId);
+                console.log("Submitting request for User ID:", userId);
 
-    let formData = new FormData();
-    formData.append('user_account_id', userId);
-    formData.append('game_name', gameName);
-    formData.append('account_name', accountName);
-    formData.append('password', password);
-    formData.append('requested_by', loggedInUserName);
+                let formData = new FormData();
+                formData.append('user_account_id', userId);
+                formData.append('game_name', gameName);
+                formData.append('account_name', accountName);
+                formData.append('password', password);
+                formData.append('requested_by', loggedInUserName);
 
-    fetch("{{ route('forgot.password') }}", {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "Accept": "application/json"
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text || response.statusText); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            showMessage('Password reset request submitted successfully!', 'alert-success');
-            setTimeout(() => {
-            location.reload(); // Refresh page after success
-        }, 1000);
-        } else {
-            showMessage('Something went wrong. Please try again.', 'alert-danger');
-        }
+                fetch("{{ route('forgot.password') }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                            "Accept": "application/json"
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text || response.statusText);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            showMessage('Password reset request submitted successfully!',
+                                'alert-success');
+                            setTimeout(() => {
+                                location.reload(); // Refresh page after success
+                            }, 1000);
+                        } else {
+                            showMessage('Something went wrong. Please try again.', 'alert-danger');
+                        }
 
-        let modal = bootstrap.Modal.getInstance(document.getElementById("forgotPasswordModal"));
-        modal.hide();
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showMessage('An error occurred. Please try again.', 'alert-danger');
-    });
-});
+                        let modal = bootstrap.Modal.getInstance(document.getElementById(
+                            "forgotPasswordModal"));
+                        modal.hide();
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        showMessage('An error occurred. Please try again.', 'alert-danger');
+                    });
+            });
 
             function showMessage(message, alertClass) {
                 let messageContainer = document.getElementById('messageContainer');

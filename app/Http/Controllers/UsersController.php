@@ -81,15 +81,20 @@ class UsersController extends Controller
             'user_forgot_request.status'
         )
         ->get();
+
+
         $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id')
-        ->leftJoin('user_accounts', function ($join) use ($user) {
-            $join->on('user_accounts.account_id', '=', 'accounts.id')
-                ->where('user_accounts.user_id', '=', $user->id); // Check if the current user has an account
-        })
-        ->whereNull('user_accounts.user_id') // Exclude games where the current user has an account
-        ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
-        ->distinct()
-        ->get();
+    ->leftJoin('user_accounts', 'user_accounts.account_id', '=', 'accounts.id')
+    ->whereNotExists(function ($query) use ($user) {
+        $query->select(DB::raw(1))
+            ->from('user_accounts')
+            ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id')
+            ->whereColumn('accounts.game_id', 'games.id')
+            ->where('user_accounts.user_id', '=', $user->id); // Exclude games where the user has an account
+    })
+    ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
+    ->distinct()
+    ->get();
 
             // dd($unassignedGames);
 

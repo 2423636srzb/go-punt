@@ -82,6 +82,24 @@ class UsersController extends Controller
         )
         ->get();
 
+
+
+        $assignedGameIds = UserAccount::where('user_accounts.user_id', $user->id)
+        ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id')
+        ->pluck('accounts.game_id'); // Get assigned game IDs
+
+    $unassignedGames = Game::whereNotIn('games.id', $assignedGameIds) // Use `games.id` explicitly
+        ->leftJoin('accounts', function ($join) {
+            $join->on('accounts.game_id', '=', 'games.id')
+                ->whereNotNull('accounts.username') // Account must have username
+                ->whereNotNull('accounts.password'); // Account must have password
+        })
+        ->whereNull('accounts.id') // Ensure there's no assigned account for the game
+        ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
+        ->distinct() // Prevent duplicate results
+        ->get();
+
+
         $totalBonus = Bonus::where('user_id', $user->id)
         ->where('redem', 0)
         ->sum('bonus');
@@ -111,7 +129,7 @@ class UsersController extends Controller
         ->where('status', 'approved') // Fix the typo in 'statua' to 'status'
         ->orderBy('created_at', 'desc') // Assuming 'created_at' is the timestamp column
         ->first();
-        return view('users.dashboard', compact( 'totalBonus','user','userAccounts','userAccountsCount','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
+        return view('users.dashboard', compact( 'unassignedGames','totalBonus','user','userAccounts','userAccountsCount','transactions','depositeSum','withDrawSum','depositePendingRequest','withDrawSumPendingRequest','lastApprovedRequest')); // Passing the user to the view
     }
 
     public function bonus(Request $request)
@@ -306,7 +324,7 @@ public function getUnreadCount()
 {
     // If you're using a boolean flag:
     // $count = UserForgotRequest::where('is_read', 0)->count();
-    $count = UserForgotRequest::where('is_read', 0)->count();
+    $count = UserForgotRequest::where('status', 'Pending')->count();
     return response()->json(['count' => $count]);
 }
 

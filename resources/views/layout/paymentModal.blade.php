@@ -105,7 +105,7 @@
                         <div class="col-md-6">
                             @if ($adminAccounts !== null)
                                 <div class="mb-3">
-                                    <label for="adminAccount" class="form-label">Select Admin Account</label>
+                                    <label for="adminAccount" class="form-label">Select Payment Method</label>
                                     <select class="form-select" id="adminAccount" name="admin_account_id" required>
                                         <option selected disabled>Choose Account</option>
                                         @foreach ($adminAccounts as $adminAccount)
@@ -130,9 +130,9 @@
                             </div>
                             @if (count($shareaccounts) > 0)
                                 <div class="mb-3">
-                                    <label for="platform" class="form-label">Select Platform</label>
+                                    <label for="platform" class="form-label">Choose Platform</label>
                                     <select class="form-select" id="platform" name="platform_id" disabled required>
-                                        <option selected disabled>Choose a platform</option>
+                                        <option selected disabled>Choose platform</option>
                                         @foreach ($shareaccounts as $account)
                                             <option value="{{ $account->game->id }}">{{ $account->game->name }}</option>
                                         @endforeach
@@ -447,7 +447,7 @@
                 console.log(response);
 
                 // Check if the necessary fields exist in the response
-                if (response.user_name && response.name && response.amount && response.created_at) {
+                if (response.user_name || response.name || response.amount || response.created_at) {
                     $('#paymentRequestUser').html(response.user_name);
                     $('#viewPlatform').html(response.name);
                     $('#enteredAmount').html(response.amount);

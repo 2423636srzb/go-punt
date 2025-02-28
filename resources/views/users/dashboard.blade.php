@@ -141,7 +141,7 @@
                                 <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
                                     aria-controls="pills-to-do-list" aria-selected="true">
-                                    Our Gaming Panel
+                                    Assigned Gaming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">{{ $userAccountsCount }}</span>
                                 </button>
@@ -150,7 +150,7 @@
                                 <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
                                     data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
                                     aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                                    Upcoming Gaming Panel
+                                    None Assigned Gaming Panel
                                     <span
                                         class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">0</span>
                                 </button>
@@ -166,56 +166,6 @@
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-to-do-list" role="tabpanel"
                             aria-labelledby="pills-to-do-list-tab" tabindex="0">
-                            <!-- <div class="table-responsive scroll-sm">
-                                <table class="table bordered-table sm-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Platforms </th>
-                                            <th scope="col">Credentials</th>
-                                            <th scope="col">Balance</th>
-                                            <th scope="col" class="text-center">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                       @foreach ($userAccounts as $userAccount)
-    <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url($userAccount->game_logo) }}" alt=""
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">{{ $userAccount->game_name }}</h6>
-                                                        <span class="text-sm text-secondary-light fw-medium"><a
-                                                                href="{{ $userAccount->login_link }}"
-                                                                target="_blank">{{ $userAccount->login_link }}</a></span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="copy-container">
-                                                    <span id="user-email">{{ $userAccount->username }}</span>
-                                                    <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard('user-email')" title="Copy Email"></iconify-icon>
-                                                </div>
-                                                <br />
-                                                <div class="copy-container">
-                                                    <span class="user-password" data-password="{{ $userAccount->password }}" data-row-id="{{ $userAccount->id }}">
-                                                        ..........
-                                                    </span>
-                                                    <iconify-icon icon="mage:copy" class="icon" onclick="copyToClipboard(this)" title="Copy Password"></iconify-icon>
-                                                    <iconify-icon class="eye-icon cursor-pointer" icon="mdi:eye" onclick="showPassword(this)" title="Show Password"></iconify-icon>
-                                                </div>
-                                            </td>
-                                            <td>{{ $userAccount->transaction_amount ?? 0 }}</td>
-                                            <td class="text-center">
-                                                <span class="bg-{{ $userAccount->status == 1 ? 'success-focus text-success-main' : 'danger-focus text-danger-main' }} px-24 py-4 rounded-pill fw-medium text-sm">
-                                                    {{ $userAccount->status == 1 ? 'Active' : 'Inactive' }}
-                                                </span>
-                                            </td>
-                                        </tr>
-    @endforeach
-                                    </tbody>
-                                </table>
-                            </div> -->
                             <div id="messageContainer" style="display: none;" class="alert alert-info" role="alert">
                             </div>
                             <div class="row ">
@@ -306,40 +256,57 @@
                     </script>
                     <div class="tab-pane fade" id="pills-recent-leads" role="tabpanel"
                         aria-labelledby="pills-recent-leads-tab" tabindex="0">
-                        <div class="table-responsive scroll-sm">
-                            <table class="table bordered-table sm-table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Users </th>
-                                        <th scope="col">Registered On</th>
-                                        <th scope="col">Plan</th>
-                                        <th scope="col" class="text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('assets/images/users/user1.png') }}" alt=""
-                                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
-                                                    <span
-                                                        class="text-sm text-secondary-light fw-medium">redaniel@gmail.com</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>27 Mar 2024</td>
-                                        <td>Free</td>
-                                        <td class="text-center">
-                                            <span
-                                                class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                        </td>
-                                    </tr> --}}
 
-                                </tbody>
-                            </table>
+                        <div id="messageContainer" style="display: none;" class="alert alert-info" role="alert">
                         </div>
+                        @if($unassignedGames->isNotEmpty())
+                        <div class="row ">
+                            @foreach($unassignedGames as $game)
+                            <div class="col-md-3 mt-10">
+                                <div class="crypto-box mt-4 d-flex flex-column align-items-center justify-content-center">
+                                    <div class="center text-center">
+                                        <span class="icon-btc">
+                                            <img src="{{ url($game->logo) }}" alt="Game 1 Logo"
+                                                width="125"
+                                                class="mx-auto mb-2 rounded-lg transition-transform duration-300">
+                                        </span>
+                                        <h6 class="price" style="font-size: 18px !important;" data-game-name="{{ $game->game_name }}">
+                                            {{ $game->game_name }}
+                                        </h6>
+
+                                        <br />
+{{--
+                                        <!-- Show Pending Request or Forgot Password -->
+                                        @if ($userAccount->forgot_request_status === 'Pending')
+                                            <span class="text-warning d-block" style="font-size:11px;">
+                                                Pending Request
+                                            </span>
+                                        @else
+                                            <span class="text-primary d-block forgot-password"
+                                                style="font-size:11px; cursor:pointer;"
+                                                data-id="{{ $userAccount->id }}"
+                                                data-game-name="{{ $userAccount->game_name }}"
+                                                data-account-name="{{ $userAccount->username }}"
+                                                data-password="{{ $userAccount->password }}">
+                                                Forgot Password
+                                            </span>
+                                        @endif --}}
+
+                                        {{-- <div class="live-button-container">
+                                            <a href="{{$game->login_link }}"> --}}
+                                                {{-- <button class="circular-button">
+                                                    <img src="{{ asset('assets/images/BD/play-now.jpg') }}"
+                                                        alt="Live Stream" class="button-image" />
+                                                </button> --}}
+                                                    {{-- <button type="submit" class="btn btn-primary" style="padding: 5px 20px; margin-bottom: 10px; margin-top:10px;border-radius: 90px;color: #fff;display: inline-block;position: relative;overflow: hidden;">Play Now</button>
+                                            </a>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        </div>
+                          @endif
                     </div>
                 </div>
             </div>

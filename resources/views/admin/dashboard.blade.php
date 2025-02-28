@@ -101,10 +101,10 @@ $script = '
     </div>
 </div>
 
-<div id="unreadRequestsNotification"  style="padding: 10px; background: #f0f8ff; border-radius: 4px;">
-   <a href="{{route('admin.user_password_request')}}">New Password Reset Requests: <strong style="color: #e73535">0</strong></a>
+<div id="unreadRequestsNotification"  style="padding: 10px; background: #f0f8ff; border-radius: 4px; margin-bottom:-33px;">
+   <a href="{{route('admin.user_password_request')}}">Pending Password Reset Requests: <strong style="color: #e73535">0</strong></a>
 </div>
-<div class="row gy-4 ">
+<div class="row gy-4 mt-10">
     <!--
     <div class="col-xxl-6 col-xl-12">
         <div class="card h-100">

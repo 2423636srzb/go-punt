@@ -30,6 +30,14 @@ class HomeController extends Controller
 
     public function index()
     {
+        if (Auth::check()) {
+            // Check if the user is an admin or normal user
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+            } else {
+                return redirect()->route('users.dashboard'); // Redirect to user dashboard
+            }
+        }
         $sportsData = $this->sportsService->getAllSportsData();
 
         $liveFootball = [];

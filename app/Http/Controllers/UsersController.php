@@ -81,17 +81,16 @@ class UsersController extends Controller
             'user_forgot_request.status'
         )
         ->get();
-
-        $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id') // Join accounts table
-        ->leftJoin('user_accounts', function ($join) use ($user) {
-            $join->on('user_accounts.account_id', '=', 'accounts.id')
-                 ->where('user_accounts.user_id', '=', $user->id); // Only check assignments for current user
+        $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id')
+        ->leftJoin('user_accounts', 'user_accounts.account_id', '=', 'accounts.id')
+        ->where(function ($query) use ($user) {
+            $query->whereNull('accounts.id') // Games with no accounts at all
+                  ->orWhereNull('user_accounts.id') // Games with accounts that are unassigned
+                  ->orWhere('user_accounts.user_id', '!=', $user->id); // Exclude games assigned to the current user
         })
-        ->whereNull('user_accounts.id') // Ensure the current user has no assigned account for this game
         ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
         ->distinct()
         ->get();
-
 
             // dd($unassignedGames);
 

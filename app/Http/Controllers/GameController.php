@@ -39,7 +39,7 @@ class GameController extends Controller
             })
             ->where('is_admin', 0)  // Make sure the user is not an admin
             ->first();
-        
+
 
             if ($user) {
                 // Assign the account to the user
@@ -102,7 +102,7 @@ class GameController extends Controller
         })
         ->where('is_admin', 0)  // Make sure the user is not an admin
         ->first();
-    
+
 
         if ($user) {
             // Assign the account to the user
@@ -227,43 +227,43 @@ public function update(Request $request, $id)
         try {
             // Begin a database transaction
             DB::beginTransaction();
-    
+
             // Fetch all account IDs associated with this game
             $accountIds = DB::table('accounts')
                 ->where('game_id', $game->id)
                 ->pluck('id');
-    
+
             // Delete all entries in the user_accounts table linked to these accounts
             DB::table('user_accounts')
                 ->whereIn('account_id', $accountIds)
                 ->delete();
-    
+
             // Delete all accounts associated with this game
             DB::table('accounts')
                 ->where('game_id', $game->id)
                 ->delete();
-    
+
             // Finally, delete the game
             $game->delete();
-    
+
             // Commit the transaction
             DB::commit();
-    
+
             return response()->json([
                 'message' => 'Game and associated accounts deleted successfully.'
             ], 200);
-    
+
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
-    
+
             return response()->json([
                 'message' => 'Error deleting game.',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
-    
+
 
     /**
      * Disable a game.
@@ -363,7 +363,7 @@ public function update(Request $request, $id)
                         })
                         ->where('is_admin', 0)  // Make sure the user is not an admin
                         ->first();
-                    
+
 
                         if ($user) {
                             // Assign the account to the user

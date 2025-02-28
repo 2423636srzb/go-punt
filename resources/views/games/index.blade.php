@@ -50,7 +50,7 @@
                         <th scope="col">Assigned </th>
                         <th scope="col">Available </th>
                         <th scope="col">Status</th>
-                       
+
                     </tr>
                 </thead>
                 <tbody>
@@ -87,7 +87,7 @@
                                 </span>
 
                             </td>
-    
+
                         </tr>
                     @endforeach
                 </tbody>

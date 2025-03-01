@@ -279,13 +279,50 @@
                                                     {{ $game->game_name }}
                                                 </h6>
 
-                                                <div class="live-button-container">
+                                                {{-- <div class="live-button-container">
                                                     <button type="button" class="btn btn-primary request-account"
                                                         data-game-id="{{ $game->game_id }}"
                                                         style="padding: 5px 20px; margin-bottom: 10px;border-radius: 90px;color: #fff;">
                                                         Account Request
                                                     </button>
+                                                </div> --}}
+
+
+                                                 <!-- Show Pending Request or Forgot Password -->
+                                                 @if ($game->reqStatus === 'pending')
+                                                 <span class="text-warning d-block" style="font-size:11px;">
+                                                     Pending Request
+                                                 </span>
+                                             @elseif ($game->reqStatus ==='rejected')
+                                                 <span class="text-danger d-block forgot-password"
+                                                     style="font-size:11px; cursor:pointer;">
+                                                     Rejected Request
+                                                 </span>
+
+                                                 @else
+                                                 <span class="text-secondary d-block forgot-password"
+                                                 style="font-size:11px; cursor:pointer;">
+                                                 No Request
+                                             </span>
+                                             @endif
+
+                                                <div class="live-button-container">
+                                                    <!-- Status Text on Separate Line -->
+
+
+                                                    <!-- Button Below the Text -->
+                                                    <button type="button" class="btn btn-primary request-account"
+                                                        data-game-id="{{ $game->game_id }}"
+                                                        style="padding: 5px 20px; margin-bottom: 10px;border-radius: 90px;color: #fff;"
+                                                        @if ($game->reqStatus === 'pending') disabled @endif>
+                                                        @if ($game->reqStatus === 'rejected')
+                                                        Request Again
+                                                        @else
+                                                        Account Request
+                                                        @endif
+                                                    </button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>

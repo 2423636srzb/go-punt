@@ -38,6 +38,7 @@
                     </thead>
                     <tbody>
                         @foreach ($requests as $key => $request)
+
                         <tr>
                             <td>{{ $request->name }}</td>
                             <td>

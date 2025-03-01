@@ -33,4 +33,9 @@ class Game extends Model
 public function accountRequest(){
     return $this->hasMany(GameAccountRequest::class);
 }
+
+public function requests()
+{
+    return $this->hasMany(GameAccountRequest::class, 'game_id', 'id');
+}
 }

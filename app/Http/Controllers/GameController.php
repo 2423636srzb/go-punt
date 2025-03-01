@@ -32,14 +32,14 @@ class GameController extends Controller
     $gameId = $request->game_id;
 
     // Check if the request already exists
-    $exists = DB::table('game_account_request')
-        ->where('user_id', $userId)
-        ->where('game_id', $gameId)
-        ->exists();
+    // $exists = DB::table('game_account_request')
+    //     ->where('user_id', $userId)
+    //     ->where('game_id', $gameId)
+    //     ->exists();
 
-    if ($exists) {
-        return response()->json(['success' => false, 'message' => 'You have already requested an account for this game.']);
-    }
+    // if ($exists) {
+    //     return response()->json(['success' => false, 'message' => 'You have already requested an account for this game.']);
+    // }
 
     // Insert request into table
     DB::table('game_account_request')->insert([
@@ -53,19 +53,26 @@ class GameController extends Controller
     return response()->json(['success' => true, 'message' => 'Request submitted successfully.']);
 }
 public function accountsRequestList(){
-    $requests = DB::table('game_account_request')
-    ->join('users', 'users.id', '=', 'game_account_request.user_id')
-    ->join('games', 'games.id', '=', 'game_account_request.game_id')
+    $requests = DB::table('game_account_request as gar')
+    ->join('users', 'users.id', '=', 'gar.user_id')
+    ->join('games', 'games.id', '=', 'gar.game_id')
+    ->whereIn('gar.id', function ($query) {
+        $query->select(DB::raw('MAX(id)')) // Get the latest request ID per game per user
+            ->from('game_account_request')
+            ->groupBy('user_id', 'game_id'); // Group by user & game
+    })
     ->select(
-        'game_account_request.id',
+        'gar.id',
         'users.name',
-        'users.phone_number', // Make sure `phone` exists in users table
+        'users.phone_number',
         'games.name as game_name',
         'games.logo as game_logo',
-        'game_account_request.status',
-        'game_account_request.created_at'
+        'gar.status',
+        'gar.created_at'
     )
+    ->orderBy('gar.created_at', 'desc') // Order results in descending order
     ->get();
+
 
 return view('games.account_request', compact('requests'));
 }

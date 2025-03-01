@@ -84,17 +84,38 @@ class UsersController extends Controller
 
 
         $unassignedGames = Game::leftJoin('accounts', 'accounts.game_id', '=', 'games.id')
-    ->leftJoin('user_accounts', 'user_accounts.account_id', '=', 'accounts.id')
-    ->whereNotExists(function ($query) use ($user) {
-        $query->select(DB::raw(1))
-            ->from('user_accounts')
-            ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id')
-            ->whereColumn('accounts.game_id', 'games.id')
-            ->where('user_accounts.user_id', '=', $user->id); // Exclude games where the user has an account
-    })
-    ->select('games.id as game_id', 'games.name as game_name', 'games.logo', 'games.login_link')
-    ->distinct()
-    ->get();
+        ->leftJoin('user_accounts', 'user_accounts.account_id', '=', 'accounts.id')
+        ->leftJoin(DB::raw("(SELECT game_account_request.game_id,
+                                    game_account_request.user_id,
+                                    game_account_request.status
+                             FROM game_account_request
+                             WHERE game_account_request.user_id = {$user->id}
+                             AND game_account_request.created_at = (
+                                 SELECT MAX(created_at)
+                                 FROM game_account_request AS sub
+                                 WHERE sub.game_id = game_account_request.game_id
+                                 AND sub.user_id = game_account_request.user_id
+                             )) as latest_requests"),
+            function ($join) {
+                $join->on('latest_requests.game_id', '=', 'games.id');
+            })
+        ->whereNotExists(function ($query) use ($user) {
+            $query->select(DB::raw(1))
+                ->from('user_accounts')
+                ->join('accounts', 'accounts.id', '=', 'user_accounts.account_id')
+                ->whereColumn('accounts.game_id', 'games.id')
+                ->where('user_accounts.user_id', '=', $user->id);
+        })
+        ->select(
+            'games.id as game_id',
+            'games.name as game_name',
+            'games.logo',
+            'games.login_link',
+            'latest_requests.status as reqStatus' // Get the latest status for each game
+        )
+        ->distinct()
+        ->get();
+
 
             // dd($unassignedGames);
 
